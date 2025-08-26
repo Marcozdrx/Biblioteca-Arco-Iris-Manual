@@ -24,12 +24,8 @@ CREATE TABLE usuarios (
     email VARCHAR(100),
     is_admin BOOLEAN DEFAULT FALSE,
     ativo BOOLEAN DEFAULT TRUE,
-    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultimo_acesso TIMESTAMP NULL,
     tem_debito BOOLEAN DEFAULT FALSE,
-    tem_doacao_pendente BOOLEAN DEFAULT FALSE,
-    total_emprestimos INT DEFAULT 0,
-    total_devolvidos INT DEFAULT 0
+    tem_doacao_pendente BOOLEAN DEFAULT FALSE
 );
 
 -- =====================================================
@@ -39,8 +35,7 @@ DROP TABLE IF EXISTS categorias;
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL UNIQUE,
-    descricao TEXT,
-    ativo BOOLEAN DEFAULT TRUE
+    descricao TEXT
 );
 
 -- =====================================================
@@ -70,14 +65,10 @@ CREATE TABLE livros (
     numero_paginas INT,
     descricao TEXT,
     imagem_capa VARCHAR(255),
-    estoque_total INT DEFAULT 0,
-    estoque_disponivel INT DEFAULT 0,
-    preco DECIMAL(10,2),
+    estoque INT DEFAULT 0,
     editora VARCHAR(100),
     idioma VARCHAR(20) DEFAULT 'Português',
     ativo BOOLEAN DEFAULT TRUE,
-    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (autor_id) REFERENCES autores(id) ON DELETE SET NULL,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
 );
@@ -97,9 +88,7 @@ CREATE TABLE fornecedores (
     estado VARCHAR(2),
     cep VARCHAR(10),
     status ENUM('ativo', 'inativo') DEFAULT 'ativo',
-    total_doacoes INT DEFAULT 0,
-    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    total_doacoes INT DEFAULT 0
 );
 
 -- =====================================================
@@ -115,7 +104,6 @@ CREATE TABLE emprestimos (
     data_devolucao_real TIMESTAMP NULL,
     status ENUM('emprestado', 'devolvido', 'atrasado', 'aguardando_devolucao') DEFAULT 'emprestado',
     renovado BOOLEAN DEFAULT FALSE,
-    observacoes TEXT,
     multa_valor DECIMAL(10,2) DEFAULT 0.00,
     multa_paga BOOLEAN DEFAULT FALSE,
     data_multa_paga TIMESTAMP NULL,
@@ -134,7 +122,6 @@ CREATE TABLE agendamentos (
     data_agendamento DATE NOT NULL,
     horario TIME NOT NULL,
     status ENUM('agendado', 'concluido', 'cancelado') DEFAULT 'agendado',
-    observacoes TEXT,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
@@ -148,10 +135,8 @@ DROP TABLE IF EXISTS doacoes;
 CREATE TABLE doacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    fornecedor_id INT,
-    tipo_doacao ENUM('livro', 'item_higiene', 'dinheiro') NOT NULL,
+    tipo_doacao ENUM('livro', 'item_higiene') NOT NULL,
     descricao TEXT NOT NULL,
-    valor DECIMAL(10,2),
     quantidade INT DEFAULT 1,
     status ENUM('pendente', 'aprovada', 'rejeitada', 'entregue') DEFAULT 'pendente',
     data_doacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -159,7 +144,6 @@ CREATE TABLE doacoes (
     aprovado_por INT,
     observacoes TEXT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (fornecedor_id) REFERENCES fornecedores(id) ON DELETE SET NULL,
     FOREIGN KEY (aprovado_por) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
@@ -171,7 +155,6 @@ CREATE TABLE multas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     emprestimo_id INT NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
-    motivo TEXT NOT NULL,
     status ENUM('pendente', 'paga', 'cancelada') DEFAULT 'pendente',
     data_geracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_pagamento TIMESTAMP NULL,
@@ -187,7 +170,7 @@ DROP TABLE IF EXISTS historico_atividades;
 CREATE TABLE historico_atividades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT,
-    tipo_acao ENUM('login', 'logout', 'emprestimo', 'devolucao', 'renovacao', 'agendamento', 'doacao') NOT NULL,
+    tipo_acao ENUM('emprestimo', 'devolucao', 'renovacao', 'agendamento', 'doacao') NOT NULL,
     descricao TEXT NOT NULL,
     dados_json JSON,
     ip_address VARCHAR(45),
@@ -210,36 +193,78 @@ CREATE TABLE configuracoes (
 );
 
 -- =====================================================
--- ÍNDICES PARA OTIMIZAÇÃO
+-- ÍNDICES PARA OTIMIZAÇÃO DE PERFORMANCE
 -- =====================================================
 
--- Índices para usuários
+-- ÍNDICES PARA TABELA USUARIOS
+-- Otimiza login, busca por CPF e filtros administrativos
 CREATE INDEX idx_usuarios_cpf ON usuarios(cpf);
 CREATE INDEX idx_usuarios_email ON usuarios(email);
 CREATE INDEX idx_usuarios_admin ON usuarios(is_admin);
+CREATE INDEX idx_usuarios_ativo ON usuarios(ativo);
+CREATE INDEX idx_usuarios_debito ON usuarios(tem_debito);
 
--- Índices para livros
+-- ÍNDICES PARA TABELA LIVROS
+-- Acelera busca no catálogo, filtros e relacionamentos
 CREATE INDEX idx_livros_titulo ON livros(titulo);
 CREATE INDEX idx_livros_isbn ON livros(isbn);
 CREATE INDEX idx_livros_autor ON livros(autor_id);
 CREATE INDEX idx_livros_categoria ON livros(categoria_id);
 CREATE INDEX idx_livros_ativo ON livros(ativo);
+CREATE INDEX idx_livros_editora ON livros(editora);
+CREATE INDEX idx_livros_ano ON livros(ano_publicacao);
 
--- Índices para empréstimos
+-- ÍNDICES PARA TABELA EMPRÉSTIMOS
+-- Otimiza consultas de histórico, status e datas
 CREATE INDEX idx_emprestimos_usuario ON emprestimos(usuario_id);
 CREATE INDEX idx_emprestimos_livro ON emprestimos(livro_id);
 CREATE INDEX idx_emprestimos_status ON emprestimos(status);
-CREATE INDEX idx_emprestimos_data ON emprestimos(data_emprestimo);
+CREATE INDEX idx_emprestimos_data_emprestimo ON emprestimos(data_emprestimo);
+CREATE INDEX idx_emprestimos_data_devolucao ON emprestimos(data_devolucao_prevista);
+CREATE INDEX idx_emprestimos_renovado ON emprestimos(renovado);
+CREATE INDEX idx_emprestimos_multa ON emprestimos(multa_paga);
 
--- Índices para agendamentos
+-- ÍNDICES PARA TABELA AGENDAMENTOS
+-- Melhora performance de consultas de agenda
 CREATE INDEX idx_agendamentos_usuario ON agendamentos(usuario_id);
 CREATE INDEX idx_agendamentos_livro ON agendamentos(livro_id);
 CREATE INDEX idx_agendamentos_data ON agendamentos(data_agendamento);
 CREATE INDEX idx_agendamentos_status ON agendamentos(status);
+CREATE INDEX idx_agendamentos_horario ON agendamentos(horario);
 
--- Índices para fornecedores
+-- ÍNDICES PARA TABELA FORNECEDORES
+-- Otimiza busca e filtros de fornecedores
 CREATE INDEX idx_fornecedores_cpf_cnpj ON fornecedores(cpf_cnpj);
 CREATE INDEX idx_fornecedores_status ON fornecedores(status);
+CREATE INDEX idx_fornecedores_cidade ON fornecedores(cidade);
+CREATE INDEX idx_fornecedores_estado ON fornecedores(estado);
+
+-- ÍNDICES PARA TABELA DOAÇÕES
+-- Melhora consultas de doações pendentes
+CREATE INDEX idx_doacoes_usuario ON doacoes(usuario_id);
+CREATE INDEX idx_doacoes_status ON doacoes(status);
+CREATE INDEX idx_doacoes_tipo ON doacoes(tipo_doacao);
+CREATE INDEX idx_doacoes_data ON doacoes(data_doacao);
+
+-- ÍNDICES PARA TABELA MULTAS
+-- Otimiza consultas de multas pendentes
+CREATE INDEX idx_multas_emprestimo ON multas(emprestimo_id);
+CREATE INDEX idx_multas_status ON multas(status);
+CREATE INDEX idx_multas_metodo ON multas(metodo_pagamento);
+
+-- ÍNDICES PARA TABELA HISTÓRICO
+-- Acelera consultas de auditoria e logs
+CREATE INDEX idx_historico_usuario ON historico_atividades(usuario_id);
+CREATE INDEX idx_historico_tipo ON historico_atividades(tipo_acao);
+CREATE INDEX idx_historico_data ON historico_atividades(data_acao);
+
+-- ÍNDICES COMPOSTOS PARA CONSULTAS FREQUENTES
+-- Combinações de campos mais consultados juntos
+CREATE INDEX idx_emprestimos_usuario_status ON emprestimos(usuario_id, status);
+CREATE INDEX idx_emprestimos_livro_status ON emprestimos(livro_id, status);
+CREATE INDEX idx_agendamentos_usuario_data ON agendamentos(usuario_id, data_agendamento);
+CREATE INDEX idx_livros_categoria_ativo ON livros(categoria_id, ativo);
+CREATE INDEX idx_usuarios_admin_ativo ON usuarios(is_admin, ativo);
 
 -- =====================================================
 -- DADOS DE EXEMPLO
@@ -291,18 +316,18 @@ INSERT INTO autores (nome, biografia, nacionalidade, data_nascimento) VALUES
 ('Ashlee Vance', 'Jornalista americano especializado em tecnologia', 'Americano', '1977-01-01');
 
 -- Inserindo livros (corrigido)
-INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, preco, editora) VALUES
-('Dom Casmurro', 1, 8, '978-8535925690', 1899, 256, 'Um dos romances mais conhecidos de Machado de Assis.', 'IMG/domcasmurro.jpg', 29.90, 'Companhia das Letras'),
-('O Senhor dos Anéis', 2, 7, '978-8533613377', 1954, 1216, 'A épica jornada pela Terra-média.', 'IMG/senhoraneis.jpg', 89.90, 'Martins Fontes'),
-('1984', 3, 1, '978-8535914847', 1949, 416, 'Um clássico distópico sobre totalitarismo.', 'IMG/1984.jpg', 39.90, 'Companhia das Letras'),
-('Cem Anos de Solidão', 4, 9, '978-8535932568', 1967, 448, 'A história da família Buendía.', 'IMG/cemanos.jpg', 49.90, 'Record'),
-('Harry Potter e a Pedra Filosofal', 5, 13, '978-8532530781', 1997, 264, 'O início da saga de Harry Potter.', 'IMG/harrypotter1.jpg', 34.90, 'Rocco'),
-('A Arte da Guerra', 6, 2, '978-8537811588', NULL, 160, 'Estratégias militares e de vida.', 'IMG/artedaguerra.jpg', 19.90, 'Lafonte'),
-('O Pequeno Príncipe', 7, 14, '978-8522031443', 1943, 96, 'Um clássico da literatura infantil.', 'IMG/pequenoprincipe.jpg', 24.90, 'Agir'),
-('A Menina que Roubava Livros', 8, 5, '978-8533914847', 2005, 480, 'Uma emocionante história durante a Segunda Guerra.', 'IMG/meninaroubava.jpg', 39.90, 'Intrínseca'),
-('Orgulho e Preconceito', 9, 4, '978-8525419804', 1813, 424, 'Um dos maiores romances da literatura mundial.', 'IMG/orgulho.jpg', 29.90, 'Penguin Companhia'),
-('O Código Da Vinci', 10, 11, '978-8532511667', 2003, 432, 'Um thriller que mistura arte, religião e conspirações.', 'IMG/codigodavinci.jpg', 44.90, 'Sextante'),
-('Elon Musk', 25, 10, '978-8543102074', 2015, 416, 'A vida e carreira do empreendedor Elon Musk.', 'IMG/elonmusk.jpg', 44.90, 'Intrínseca');
+INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, editora) VALUES
+('Dom Casmurro', 1, 8, '978-8535925690', 1899, 256, 'Um dos romances mais conhecidos de Machado de Assis.', 'IMG/domcasmurro.jpg', 'Companhia das Letras'),
+('O Senhor dos Anéis', 2, 7, '978-8533613377', 1954, 1216, 'A épica jornada pela Terra-média.', 'IMG/senhoraneis.jpg', 'Martins Fontes'),
+('1984', 3, 1, '978-8535914847', 1949, 416, 'Um clássico distópico sobre totalitarismo.', 'IMG/1984.jpg', 'Companhia das Letras'),
+('Cem Anos de Solidão', 4, 9, '978-8535932568', 1967, 448, 'A história da família Buendía.', 'IMG/cemanos.jpg', 'Record'),
+('Harry Potter e a Pedra Filosofal', 5, 13, '978-8532530781', 1997, 264, 'O início da saga de Harry Potter.', 'IMG/harrypotter1.jpg', 'Rocco'),
+('A Arte da Guerra', 6, 2, '978-8537811588', NULL, 160, 'Estratégias militares e de vida.', 'IMG/artedaguerra.jpg', 'Lafonte'),
+('O Pequeno Príncipe', 7, 14, '978-8522031443', 1943, 96, 'Um clássico da literatura infantil.', 'IMG/pequenoprincipe.jpg', 'Agir'),
+('A Menina que Roubava Livros', 8, 5, '978-8533914847', 2005, 480, 'Uma emocionante história durante a Segunda Guerra.', 'IMG/meninaroubava.jpg', 'Intrínseca'),
+('Orgulho e Preconceito', 9, 4, '978-8525419804', 1813, 424, 'Um dos maiores romances da literatura mundial.', 'IMG/orgulho.jpg', 'Penguin Companhia'),
+('O Código Da Vinci', 10, 11, '978-8532511667', 2003, 432, 'Um thriller que mistura arte, religião e conspirações.', 'IMG/codigodavinci.jpg', 'Sextante'),
+('Elon Musk', 25, 10, '978-8543102074', 2015, 416, 'A vida e carreira do empreendedor Elon Musk.', 'IMG/elonmusk.jpg', 'Intrínseca');
 
 -- Inserir usuários (senha: 123456 - hash bcrypt)
 INSERT INTO usuarios (nome, cpf, telefone, senha, email, is_admin) VALUES
@@ -344,12 +369,8 @@ AFTER INSERT ON emprestimos
 FOR EACH ROW
 BEGIN
     UPDATE livros 
-    SET estoque_disponivel = estoque_disponivel - 1
+    SET estoque = estoque - 1
     WHERE id = NEW.livro_id;
-    
-    UPDATE usuarios 
-    SET total_emprestimos = total_emprestimos + 1
-    WHERE id = NEW.usuario_id;
 END//
 
 -- Trigger para atualizar estoque quando um livro é devolvido
@@ -359,12 +380,8 @@ FOR EACH ROW
 BEGIN
     IF NEW.status = 'devolvido' AND OLD.status != 'devolvido' THEN
         UPDATE livros 
-        SET estoque_disponivel = estoque_disponivel + 1
+        SET estoque = estoque + 1
         WHERE id = NEW.livro_id;
-        
-        UPDATE usuarios 
-        SET total_devolvidos = total_devolvidos + 1
-        WHERE id = NEW.usuario_id;
     END IF;
 END//
 
@@ -386,16 +403,15 @@ SELECT
     l.titulo,
     a.nome as autor,
     c.nome as categoria,
-    l.estoque_total,
-    l.estoque_disponivel,
+    l.estoque,
     COUNT(e.id) as total_emprestimos
 FROM livros l
 LEFT JOIN autores a ON l.autor_id = a.id
 LEFT JOIN categorias c ON l.categoria_id = c.id
 LEFT JOIN emprestimos e ON l.id = e.livro_id
 WHERE l.ativo = TRUE
-GROUP BY l.id, l.titulo, a.nome, c.nome, l.estoque_total, l.estoque_disponivel
-ORDER BY total_emprestimos DESC;
+GROUP BY l.id, l.titulo, a.nome, c.nome, l.estoque
+ORDER BY COUNT(e.id) DESC;
 
 -- View para empréstimos atrasados
 CREATE VIEW vw_emprestimos_atrasados AS
@@ -408,7 +424,7 @@ SELECT
     e.data_emprestimo,
     e.data_devolucao_prevista,
     DATEDIFF(CURRENT_DATE, e.data_devolucao_prevista) as dias_atraso,
-    (DATEDIFF(CURRENT_DATE, e.data_devolucao_prevista) * 2.00) as multa_calculada
+    (DATEDIFF(CURRENT_DATE, e.data_devolucao_prevista) * 0.25) as multa_calculada
 FROM emprestimos e
 JOIN usuarios u ON e.usuario_id = u.id
 JOIN livros l ON e.livro_id = l.id
@@ -439,7 +455,7 @@ CREATE PROCEDURE RenovarEmprestimo(IN emprestimo_id INT)
 BEGIN
     DECLARE dias_para_renovacao INT DEFAULT 6;
     DECLARE prazo_emprestimo INT DEFAULT 7;
-    DECLARE data_emprestimo DATE;
+    DECLARE data_emprestimo TIMESTAMP;
     DECLARE dias_passados INT;
     
     -- Verificar se o empréstimo existe e não foi renovado
@@ -447,7 +463,7 @@ BEGIN
     FROM emprestimos 
     WHERE id = emprestimo_id AND status = 'emprestado';
     
-    IF @renovado = FALSE THEN
+    IF @renovado = FALSE AND data_emprestimo IS NOT NULL THEN
         SET dias_passados = DATEDIFF(CURRENT_DATE, data_emprestimo);
         
         IF dias_passados >= dias_para_renovacao THEN
@@ -477,11 +493,10 @@ BEGIN
     AND data_devolucao_prevista < CURRENT_DATE;
     
     -- Inserir multas para empréstimos atrasados
-    INSERT INTO multas (emprestimo_id, valor, motivo, status)
+    INSERT INTO multas (emprestimo_id, valor, status)
     SELECT 
         e.id,
         (DATEDIFF(CURRENT_DATE, e.data_devolucao_prevista) * valor_multa) as valor,
-        CONCAT('Multa por atraso de ', DATEDIFF(CURRENT_DATE, e.data_devolucao_prevista), ' dias') as motivo,
         'pendente'
     FROM emprestimos e
     WHERE e.status = 'atrasado'
@@ -503,8 +518,8 @@ DELIMITER ;
 -- COMANDOS FINAIS
 -- =====================================================
 
--- Executar cálculo inicial de multas
-CALL CalcularMultas();
+-- Executar cálculo inicial de multas (comentado para evitar erro na primeira execução)
+-- CALL CalcularMultas();
 
 -- Mostrar estatísticas iniciais
 SELECT * FROM vw_estatisticas_gerais;
