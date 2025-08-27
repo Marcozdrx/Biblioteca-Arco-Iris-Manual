@@ -8,7 +8,7 @@ require_once '../PHP/conexao.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Biblioteca Arco-Íris - Usuário</title>
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="CSS/usuario.css">
+  <link rel="stylesheet" href="../CSS/usuario.css">
 </head>
 <body style="background-image: url(IMG/fundo.png);
              background-size: cover;
@@ -16,7 +16,7 @@ require_once '../PHP/conexao.php';
              background-repeat: no-repeat;" >
   <header class="header">
     <div class="header-title">
-      <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+      <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
       <span>Biblioteca Arco-Íris</span>
     </div>
     <form style="display: flex; align-items: center; gap: 8px;" onsubmit="event.preventDefault();">
@@ -31,48 +31,48 @@ require_once '../PHP/conexao.php';
 
   <div class="carousel-container">
     <div class="carousel">
-      <img src="IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="IMG/acabana.jpg" alt="Banner 3">
-      <img src="IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="IMG/1984.jpg" alt="Banner 5">
-      <img src="IMG/domquixote.jpg" alt="Banner 6">
-      <img src="IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
       <!-- Duplicar as imagens para criar o loop infinito -->
-      <img src="IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="IMG/acabana.jpg" alt="Banner 3">
-      <img src="IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="IMG/1984.jpg" alt="Banner 5">
-      <img src="IMG/domquixote.jpg" alt="Banner 6">
-      <img src="IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="IMG/arevolucaodosbichos.jpg" alt="Banner 10">
-      <img src="IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="IMG/acabana.jpg" alt="Banner 3">
-      <img src="IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="IMG/1984.jpg" alt="Banner 5">
-      <img src="IMG/domquixote.jpg" alt="Banner 6">
-      <img src="IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
       <!-- Duplicar as imagens para criar o loop infinito -->
-      <img src="IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="IMG/acabana.jpg" alt="Banner 3">
-      <img src="IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="IMG/1984.jpg" alt="Banner 5">
-      <img src="IMG/domquixote.jpg" alt="Banner 6">
-      <img src="IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
     </div>
   </div>
 

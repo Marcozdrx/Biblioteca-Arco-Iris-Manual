@@ -7,7 +7,7 @@ require_once '../PHP/conexao.php';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cadastro Fornecedor</title>
-    <link rel="stylesheet" href="CSS/cadastro_fornecedor.css" />
+    <link rel="stylesheet" href="../CSS/cadastro_fornecedor.css" />
 </head>
 <body style="background-image: url(IMG/fundo.png);
              background-size: cover;

@@ -8,7 +8,7 @@ require_once '../PHP/conexao.php';
   <meta charset="UTF-8">
   <title>Meus Empréstimos - Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="CSS/emprestimo.css">
+  <link rel="stylesheet" href="../CSS/emprestimo.css">
 </head>
 <body>
   <header class="header">

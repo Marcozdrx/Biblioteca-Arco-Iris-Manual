@@ -6,15 +6,16 @@ require_once '../PHP/conexao.php';
       $telefone = $_POST['telefone'];
       $senha = $_POST['senha'];
       $nome = $_POST['nome'];
+      $email = $_POST['email'];
+      $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
       $sql = "INSERT INTO usuarios (nome, cpf, telefone, senha, email, is_admin) VALUES (:nome, :cpf, :telefone, :senha, :email, 0)";
-      $stmt = $conn->prepare($sql);
-      $stmt->bind_param(":nome", $nome);
-      $stmt->bind_param(":cpf", $cpf);
-      $stmt->bind_param(":telefone", $telefone);
-      $stmt->bind_param(":senha", $senha);
-      $stmt->bind_param(":email", $email);
-      $stmt->bind_param(":is_admin", 0);
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(":nome", $nome);
+      $stmt->bindParam(":cpf", $cpf);
+      $stmt->bindParam(":telefone", $telefone);
+      $stmt->bindParam(":senha", $senha_hash);
+      $stmt->bindParam(":email", $email);
       
       if($stmt->execute()) {
         echo "<script>alert('Usuário cadastrado com sucesso');</script>";
@@ -24,8 +25,6 @@ require_once '../PHP/conexao.php';
 
       header('Location: login.php');
       exit();
-    }else{
-      echo "<script>alert('Método de requisição inválido');</script>";
     }
   } catch (Exception $e) {
     echo "<script>alert('Erro ao cadastrar usuário: " . $e->getMessage() . "');</script>";
@@ -37,7 +36,7 @@ require_once '../PHP/conexao.php';
   <meta charset="UTF-8">
   <title>Registro - Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="CSS/styles.css">
+  <link rel="stylesheet" href="../CSS/styles.css">
 </head>
 <body>
   <div class="container">
@@ -47,21 +46,25 @@ require_once '../PHP/conexao.php';
         <br>
         <span>A</span><span>R</span><span>C</span><span>O</span><span>-</span><span>Í</span><span>R</span><span>I</span><span>S</span>
       </div>
-      <form class="form-box" id="registroForm" method="POST" action="PHP/auth.php">
+      <form class="form-box" id="registroForm" method="POST" action="../HTML/registro.php">
         <div class="input-group">
 
           <span class="icon">👤</span>
           <input type="text" name="nome" placeholder="Nome" required>
-
+          </div>
+          <div class="input-group">
           <span class="icon">📚</span>
           <input type="text" name="cpf" placeholder="CPF (somente números)" pattern="\d*" maxlength="11" required>
-          
+          </div>
+          <div class="input-group">
           <span class="icon">📞</span>
           <input type="tel" name="telefone" placeholder="Telefone" maxlength="11" required>
-
+          </div>
+          <div class="input-group">
           <span class="icon">✉️</span>
           <input type="email" name="email" placeholder="E-mail" required>
-
+          </div>
+          <div class="input-group">
           <span class="icon">🔒</span>
           <input type="password" name="senha" placeholder="Senha" required>
           <button type="button" class="toggle-password" onclick="togglePassword(this)">👁️</button>  

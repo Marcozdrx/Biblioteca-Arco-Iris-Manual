@@ -8,7 +8,7 @@ require_once '../PHP/conexao.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráficos - Biblioteca Arco-Íris</title>
     <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="CSS/graficos.css">
+    <link rel="stylesheet" href="../CSS/graficos.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>

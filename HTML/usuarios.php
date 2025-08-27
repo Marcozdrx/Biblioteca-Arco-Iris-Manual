@@ -8,7 +8,7 @@ require_once '../PHP/conexao.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuários - Biblioteca Arco-Íris</title>
     <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="CSS/usuarios.css">
+    <link rel="stylesheet" href="../CSS/usuarios.css">
 </head>
 <body>
     <div>

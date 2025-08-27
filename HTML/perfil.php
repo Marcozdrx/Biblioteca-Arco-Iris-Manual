@@ -7,7 +7,7 @@ require_once '../PHP/conexao.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Perfil - Biblioteca Arco-Íris</title>
-  <link rel="stylesheet" href="CSS/perfil.css">
+  <link rel="stylesheet" href="../CSS/perfil.css">
 </head>
 <body>
   <header class="header">

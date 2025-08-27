@@ -7,7 +7,7 @@ require_once '../PHP/conexao.php';
   <meta charset="UTF-8">
   <title>Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="CSS/styles.css">
+  <link rel="stylesheet" href="../CSS/styles.css">
 </head>
 <body>
   <div class="container landing-page">
