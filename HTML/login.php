@@ -1,37 +1,45 @@
 <?php
-  session_start();
-  require_once '../PHP/conexao.php';
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-  if($_SERVER['REQUEST_METHOD']=='POST'){
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+session_start();
+require_once '../PHP/conexao.php';
 
-    $sql = "SELECT * FROM usuarios WHERE email = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $usuarios = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if($usuarios && password_verify($senha, $usuarios['senha'])){
-      $_SESSION['usuarios'] = $usuarios['nome'];
-      $_SESSION['is_admin'] = $usuarios['is_admin'];
-      $_SESSION['id'] = $usuarios['id'];
-
-      if($usuarios['is_admin']== 1){
-        header("Location: inicio-admin.php");
-        exit();
-      }else{
-        header("Location: usuario.php");
-        exit();
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $email = trim($_POST['email']);
+  $senha = trim($_POST['senha']);
+  
+  if(!empty($email) && !empty($senha)) {
+    try {
+      $sql = "SELECT * FROM usuarios WHERE email = :email";
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(':email', $email);
+      $stmt->execute();
+      $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+      if($usuario && password_verify($senha, $usuario['senha'])) {
+        $_SESSION['usuario'] = $usuario['nome'];
+        $_SESSION['id'] = $usuario['id'];
+        $_SESSION['is_admin'] = $usuario['is_admin'];
+        
+        if($usuario['is_admin'] == 1) {
+          header("Location: inicio-admin.php");
+          exit();
+        } else {
+          header("Location: usuario.php");
+          exit();
+        }
+      } else {
+        $erro = "E-mail ou senha incorretos.";
       }
-
-    }else{
-      echo "<script>alert('E-mail ou senha incorretos.');</script>";
+    } catch (Exception $e) {
+      $erro = "Erro ao conectar com o banco de dados.";
     }
-
+  } else {
+    $erro = "Por favor, preencha todos os campos.";
   }
-
-
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -40,9 +48,6 @@
   <title>Login - Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="../CSS/styles.css">
-  <style>
-
-  </style>
 </head>
 <body>
   <button class="help-btn" onclick="showHelpModal()">?</button>
@@ -61,9 +66,11 @@
       </p>
     </div>
   </div>
-<div>
-  <a class="voltar" href="index.php">Voltar</a>
-</div>
+  
+  <div>
+    <a class="voltar" href="index.php">Voltar</a>
+  </div>
+  
   <div class="container">
     <div class="form-container">
       <div class="arco-iris">
@@ -71,17 +78,24 @@
         <br>
         <span>A</span><span>R</span><span>C</span><span>O</span><span>-</span><span>Í</span><span>R</span><span>I</span><span>S</span>
       </div>
-      <form class="form-box" id="loginForm" action="login.php" method="POST">
+      
+      <?php if(isset($erro)): ?>
+        <div class="erro-mensagem" style="color: red; text-align: center; margin: 10px 0; padding: 10px; background: #ffe6e6; border-radius: 5px;">
+          <?php echo htmlspecialchars($erro); ?>
+        </div>
+      <?php endif; ?>
+      
+      <form method="POST" class="form-box" id="loginForm" action="login.php">
         <div class="input-group">
-        <span class="icon">✉️</span>
-        <input type="email" name="email" placeholder="exemplo@gmail.com" required>
+          <span class="icon">✉️</span>
+          <input type="email" name="email" placeholder="exemplo@gmail.com" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
         </div>
         <div class="input-group">
           <span class="icon">🔒</span>
           <input type="password" id="senha" name="senha" placeholder="Senha" required>
           <button type="button" class="toggle-password" onclick="togglePassword(this)">👁️</button>
-          </div>
-          <div class="input-group">
+        </div>
+        <div class="input-group">
           <a href="recuperar-senha.php">Esqueceu a senha?</a>
           <button type="submit" class="btn">Entrar</button>
         </div>
@@ -92,5 +106,34 @@
       </form>
     </div>
   </div>
+
+  <script>
+    function togglePassword(button) {
+      const input = button.previousElementSibling;
+      if (input.type === 'password') {
+        input.type = 'text';
+        button.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        button.textContent = '👁️';
+      }
+    }
+
+    function showHelpModal() {
+      document.getElementById('helpModal').style.display = 'block';
+    }
+
+    function closeHelpModal() {
+      document.getElementById('helpModal').style.display = 'none';
+    }
+
+    // Fechar modal ao clicar fora
+    window.onclick = function(event) {
+      const modal = document.getElementById('helpModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html> 
