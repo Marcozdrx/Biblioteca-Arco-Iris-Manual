@@ -1,5 +1,35 @@
 <?php
 require_once '../PHP/conexao.php';
+  try{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $cpf = $_POST['cpf'];
+      $telefone = $_POST['telefone'];
+      $senha = $_POST['senha'];
+      $nome = $_POST['nome'];
+
+      $sql = "INSERT INTO usuarios (nome, cpf, telefone, senha, email, is_admin) VALUES (:nome, :cpf, :telefone, :senha, :email, 0)";
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param(":nome", $nome);
+      $stmt->bind_param(":cpf", $cpf);
+      $stmt->bind_param(":telefone", $telefone);
+      $stmt->bind_param(":senha", $senha);
+      $stmt->bind_param(":email", $email);
+      $stmt->bind_param(":is_admin", 0);
+      
+      if($stmt->execute()) {
+        echo "<script>alert('Usuário cadastrado com sucesso');</script>";
+      } else {
+        echo "<script>alert('Erro ao cadastrar usuário');</script>";
+      }
+
+      header('Location: login.php');
+      exit();
+    }else{
+      echo "<script>alert('Método de requisição inválido');</script>";
+    }
+  } catch (Exception $e) {
+    echo "<script>alert('Erro ao cadastrar usuário: " . $e->getMessage() . "');</script>";
+  }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -19,21 +49,22 @@ require_once '../PHP/conexao.php';
       </div>
       <form class="form-box" id="registroForm" method="POST" action="PHP/auth.php">
         <div class="input-group">
-          <span class="icon">📚</span>
-          <input type="text" name="cpf" placeholder="CPF (somente números)" pattern="\d*" maxlength="11" required>
-        </div>
-        <div class="input-group">
-          <span class="icon">📞</span>
-          <input type="tel" name="telefone" placeholder="Telefone" maxlength="11" required>
-        </div>
-        <div class="input-group">
-          <span class="icon">🔒</span>
-          <input type="password" name="senha" placeholder="Senha" required>
-          <button type="button" class="toggle-password" onclick="togglePassword(this)">👁️</button>
-        </div>
-        <div class="input-group">
+
           <span class="icon">👤</span>
           <input type="text" name="nome" placeholder="Nome" required>
+
+          <span class="icon">📚</span>
+          <input type="text" name="cpf" placeholder="CPF (somente números)" pattern="\d*" maxlength="11" required>
+          
+          <span class="icon">📞</span>
+          <input type="tel" name="telefone" placeholder="Telefone" maxlength="11" required>
+
+          <span class="icon">✉️</span>
+          <input type="email" name="email" placeholder="E-mail" required>
+
+          <span class="icon">🔒</span>
+          <input type="password" name="senha" placeholder="Senha" required>
+          <button type="button" class="toggle-password" onclick="togglePassword(this)">👁️</button>  
         </div>
         <button type="submit" class="btn">REGISTRAR</button>
         <div class="links" style="display: flex; justify-content: center;">
