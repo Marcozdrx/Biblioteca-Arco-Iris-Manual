@@ -14,6 +14,7 @@ define('DB_CHARSET', 'utf8mb4');
 // Configurações de timezone
 date_default_timezone_set('America/Sao_Paulo');
 
+
 try {
     // String de conexão DSN
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;

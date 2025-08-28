@@ -1,6 +1,7 @@
 <?php
 require_once '../PHP/conexao.php';
 
+
   if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   }

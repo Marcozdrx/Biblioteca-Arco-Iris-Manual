@@ -1,5 +1,46 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
+
+
+if($_SESSION['is_admin'] != 1){
+    echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
+}else{
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $titulo = $_POST['titulo'];
+        $capa = $_FILES['capa'];
+        $nomeCapa = $_FILES['capa']['name'];
+        $estoque = $_POST['estoque'];
+        $autor = $_POST['autor'];
+        $dataPublicacao = $_POST['dataPublicacao'];
+        $numeroPaginas = $_POST['numeroPaginas'];
+        $categoria = $_POST['categoria'];
+        $descricao = $_POST['descricao'];
+        $editora = $_POST['editora'];
+
+        $sql = "INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, estoque, editora, idioma, ativo) 
+        VALUE (:nome, :autor, :categoria, :isbn, :dataPublicacao, numeroPagina, descricao, capa, estoque, editora, idioma, TRUE)";
+
+        $stmt = pdo->prepare($sql);
+        $stmt->bindParam(':titulo', $titulo)
+        $stmt->bindParam(':autor', $autor)
+        $stmt->bindParam(':categoria', $categoria)
+        $stmt->bindParam(':isbn', $isbn)
+        $stmt->bindParam(':dataPublicacao', $dataPublicacao)
+        $stmt->bindParam(':numeroPagina', $numeroPagina)
+        $stmt->bindParam(':descricao', $descricao)
+        $stmt->bindParam(':capa', $capa, PDO::PARAM_LOB)
+        $stmt->bindParam(':estoque', $estoque)
+        $stmt->bindParam(':editora', $editora)
+        $stmt->bindParam(':idioma', $idioma)
+
+        if($stmt->execute()){
+            echo "Livro cadastrado com sucesso"
+        }else{
+            echo "Erro ao cadastrar livro"
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -74,14 +115,33 @@ require_once '../PHP/conexao.php';
             <h2 id="modalTitle">Adicionar Novo Livro</h2>
             <form id="bookForm" class="modal-form">
                 <input type="hidden" id="bookId">
-                <input type="text" id="bookTitle" placeholder="Título do livro" required>
-                <input type="text" id="bookImage" placeholder="URL da imagem" required>
-                <input type="number" id="bookEstoque" placeholder="Quantidade em estoque" min="0" required>
-                <input type="text" id="bookAutor" placeholder="Autor do livro" required>
-                <input type="number" id="bookAno" placeholder="Ano de publicação" min="1000" max="2024" required>
-                <input type="number" id="bookPaginas" placeholder="Número de páginas" min="1" required>
-                <input type="text" id="bookCategoria" placeholder="Categoria do livro" required>
-                <textarea id="bookDescription" placeholder="Sinopse do livro" rows="4" required></textarea>
+                <input type="File" id="capa" name="capa" required>
+                <input type="text" id="titulo" name="titulo" placeholder="Título do livro" required>
+                <input type="number" id="estoque" nome="estoque" placeholder="Quantidade em estoque" min="0" required>
+                <input type="text" id="autor" nome="autor" placeholder="Autor do livro" required>
+                <input type="number" id="datapublicacao" nome="dataPublicacao" placeholder="Ano de publicação" min="1000" max="2024" required>
+                <input type="number" id="numeroPaginas" nome="numeroPaginas" placeholder="Número de páginas" min="1" required>
+                <input type="text" id="editora" nome="editora" placeholder="Editora" required>
+                <input type="text" id="isbn" nome="isbn" placeholder="International Standard Book Number (ISBN)" required>
+                <input type="text" id="idioma" nome="idioma" placeholder="Idioma" value="Português" required>
+                <select name="categoria" id="categoria" required>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="1">Ficção Científica</option>
+                    <option value="2">Estratégia</option>
+                    <option value="3">Ficção</option>
+                    <option value="4">Romance</option>
+                    <option value="5">Drama</option>
+                    <option value="6">Fábula Política</option>
+                    <option value="7">Fantasia</option>
+                    <option value="8">Literatura Brasileira</option>
+                    <option value="9">Realismo Mágico</option>
+                    <option value="10">Biografia</option>
+                    <option value="11">Suspense</option>
+                    <option value="12">Política</option>
+                    <option value="13">Fantasia Jovem</option>
+                    <option value="14">Literatura Infantil</option>
+                </select>
+                <textarea id="descricao" nome="descricao" placeholder="Sinopse do livro" rows="4" required></textarea>
                 <button type="submit">Salvar</button>
             </form>
         </div>
