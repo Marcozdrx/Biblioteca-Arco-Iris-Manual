@@ -169,4 +169,5 @@ require_once '../PHP/conexao.php';
     </form>
     <script type="text/javascript" src="../JS/cadastrofornecedor.js"></script>
 </body>
-</html>
+</html></html>         
+
