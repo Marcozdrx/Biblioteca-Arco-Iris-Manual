@@ -385,8 +385,10 @@ body {
 
 .modal-content {
     position: relative;
+    -ms-flex-align: center;
     background: white;
-    margin: 15% auto;
+    margin-top: 50% auto;
+    margin-left: 450px;
     padding: 20px;
     width: 90%;
     max-width: 500px;

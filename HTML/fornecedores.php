@@ -17,7 +17,7 @@ require_once '../PHP/conexao.php';
     
     <header class="header">
         <div class="header-title">
-            <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+            <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Gestão de Fornecedores</span>
         </div>
     </header>
@@ -25,7 +25,7 @@ require_once '../PHP/conexao.php';
     <div class="container">
         <div class="page-header">
             <h1>Gestão de Fornecedores</h1>
-            <button class="add-supplier-btn" onclick="abrirModalAdicionar()">
+            <button class="add-supplier-btn" onclick="window.location.href='cadastrar-fornecedores.php'">
                 <span>+</span> Adicionar Fornecedor
             </button>
         </div>

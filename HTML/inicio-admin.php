@@ -51,15 +51,16 @@ if($_SESSION['is_admin'] != 1){
     <link rel="stylesheet" href="../CSS/inicioadmin.css">
 </head>
 <body>
+    
     <div>
         <a class="voltar" href="index.php">Voltar</a>
-      </div>
+    </div>
     <header class="header">
         <div>
             <a class="voltar" href="index.php">Voltar</a>
           </div>
-        <div class="header-title">
-            <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+        <div class="header-title"
+            img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Painel Administrativo</span>
         </div>
         <div class="header-buttons">
@@ -67,8 +68,7 @@ if($_SESSION['is_admin'] != 1){
                 <a href="fornecedores.php" class="header-btn dropdown-trigger">Fornecedores ▼</a>
                 <div class="dropdown-content">
                     <a href="fornecedores.php" class="dropdown-item">👥 Ver Fornecedores</a>
-                    <a href="cadastrar-fornecedores.php" class="dropdown-item">➕ Cadastrar Fornecedor</a>
-                </div>
+                    <a href="cadastrar-fornecedores.php" class="dropdown-item">➕ Cadastrar Fornecedor</a></div>
             </div>
             
             <a href="graficos.php" style="text-decoration: none;">
