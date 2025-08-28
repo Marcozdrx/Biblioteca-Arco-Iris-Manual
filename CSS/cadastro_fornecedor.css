@@ -102,3 +102,16 @@ address {
         width: 40px;
     }
 }
+.voltar{
+    position: fixed;
+    top: 18px;
+    left: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: bold;
+    background: #ffaa33;
+    transform: translateY(-2px);
+    border-radius: 25px;
+    padding: 4px 8px;
+    }
