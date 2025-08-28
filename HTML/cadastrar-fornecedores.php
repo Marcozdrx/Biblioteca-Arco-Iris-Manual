@@ -3,10 +3,9 @@ require_once '../PHP/conexao.php';
   try{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
-        $nome = $_POST['nome'];
+      $nome = $_POST['nome'];
       $cpfCnpj = $_POST['cpfCnpj'];
       $telefone = $_POST['telefone'];
-      $senha = $_POST['senha'];
       $email = $_POST['email'];
       $cep = $_POST['cep'];
       $numCasa = $_POST['numCasa'];
@@ -14,19 +13,18 @@ require_once '../PHP/conexao.php';
       $bairro = $_POST['bairro'];
       $cidade = $_POST['cidade'];
       $estado = $_POST['estado'];
-      $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-      $sql = "INSERT INTO usuarios (nome, cpfCnpj, telefone, email, cep, numCasa, complemento, bairro, cidade, estado) VALUES (:nome, :cpfCnpj, :telefone, :email, :cep, :numCasa, :complemento, :bairro, :cidade, :estado)";
+      // Construir o endereço completo
+      $endereco = $numCasa . " - " . $complemento . " - " . $bairro;
+
+      $sql = "INSERT INTO fornecedores (nome, cpf_cnpj, telefone, email, cep, endereco, cidade, estado) VALUES (:nome, :cpf_cnpj, :telefone, :email, :cep, :endereco, :cidade, :estado)";
       $stmt = $pdo->prepare($sql);
       $stmt->bindParam(":nome", $nome);
-      $stmt->bindParam(":cpfCnpj", $cpfCnpj);
+      $stmt->bindParam(":cpf_cnpj", $cpfCnpj);
       $stmt->bindParam(":telefone", $telefone);
-      $stmt->bindParam(":senha", $senha_hash);
       $stmt->bindParam(":email", $email);
       $stmt->bindParam(":cep", $cep);
-      $stmt->bindParam(":numCasa", $numCasa);
-      $stmt->bindParam(":complemento", $complemento);
-      $stmt->bindParam(":bairro", $bairro);
+      $stmt->bindParam(":endereco", $endereco);
       $stmt->bindParam(":cidade", $cidade);
       $stmt->bindParam(":estado", $estado);
       
@@ -51,22 +49,32 @@ require_once '../PHP/conexao.php';
     <title>Cadastro Fornecedor</title>
     <link rel="stylesheet" href="../CSS/cadastro_fornecedor.css" />
 </head>
-<body style="background-image: url(IMG/fundo.png);
+<body style="background-image: url(../IMG/fundo.png);
              background-size: cover;
              background-position: center;
              background-repeat: no-repeat;
-            ">
-   <!-- <form id="meuForm" method="post" name="meuForm" action="PHP/cadastrofornecedor.php">
-   -->        
-   <form id="meuForm" method="post" name="meuForm" action="inicio-admin.php"> 
+            ">      
+   <form id="meuForm" method="POST" name="meuForm" action="cadastrar-fornecedores.php"> 
    <table align="center">
             <tr>
-                <td><center><img src="IMG/logo.png" alt="Logo"></center></td>
-                <th colspan="3">Cadastro de Fornecedor</th>
+                <td><center><img src="../IMG/logo.png" alt="Logo"></center></td>
+                <th colspan="6">Cadastro de Fornecedor</th>
             </tr>
             <tr>
                 <td><center>Nome:</center></td>
-                <td class="a" colspan="3"><input type="text" id="nome" name="nome" /></td>
+                <td colspan="5"><input type="text" id="nome" name="nome" required /></td>
+            </tr>
+            <tr>
+                <td><center>CPF/CNPJ:</center></td>
+                <td colspan="5"><input type="text" id="cpfCnpj" name="cpfCnpj" required /></td>
+            </tr>
+            <tr>
+                <td><center>Telefone:</center></td>
+                <td colspan="5"><input type="text" id="telefone" name="telefone" required /></td>
+            </tr>
+            <tr>
+                <td><center>E-mail:</center></td>
+                <td colspan="5"><input type="email" id="email" name="email" /></td>
             </tr>
             <tr>
                 <td><center>CEP:</center></td>
@@ -75,30 +83,20 @@ require_once '../PHP/conexao.php';
                 <td><input type="text" id="numCasa" name="numCasa" /></td>
                 <td>Complemento:</td>
                 <td><input type="text" id="complemento" name="complemento" /></td>
-                <td>Bairro:</td>
+            </tr>
+            <tr>
+                <td><center>Bairro:</center></td>
                 <td><input type="text" id="bairro" name="bairro" /></td>
                 <td>Cidade:</td>
                 <td><input type="text" id="cidade" name="cidade" /></td>
                 <td>Estado:</td>
-                <td><input type="text" id="estado" name="estado" /></td>
+                <td><input type="text" id="estado" name="estado" maxlength="2" /></td>
             </tr>
             <tr>
-                <td><center>CPF/CNPJ:</center></td>
-                <td colspan="3"><input type="text" id="cpfCnpj" name="cpfCnpj" /></td>
-            </tr>
-            <tr>
-                <td><center>Telefone:</center></td>
-                <td colspan="3"><input type="text" id="telefone" name="telefone" /></td>
-            </tr>
-            <tr>
-                <td><center>E-mail:</center></td>
-                <td colspan="3"><input type="email" id="email" name="email" /></td>
-            </tr>
-            <tr>
-                <td colspan="4"><center><a href="php/cadastrofornecedor.php"><button type="submit">Salvar</button></a></center></td>
+                <td colspan="6"><center><button type="submit">Salvar</button></center></td>
             </tr>
         </table>
     </form>
-    <script type="text/javascript" src="JS/cadastrofornecedor.js"></script>
+    <script type="text/javascript" src="../JS/cadastrofornecedor.js"></script>
 </body>
-</html>
+</html
