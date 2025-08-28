@@ -9,7 +9,7 @@ require_once '../PHP/conexao.php';
       $email = $_POST['email'];
       $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-      $sql = "INSERT INTO usuarios (nome, cpf, telefone, senha, email, is_admin) VALUES (:nome, :cpf, :telefone, :senha, :email, 0)";
+      $sql = "INSERT INTO usuarios (nome, cpf, telefone, senha, email, is_admin) VALUES (:nome, :cpf, :telefone, :senha, :email, TRUE)";
       $stmt = $pdo->prepare($sql);
       $stmt->bindParam(":nome", $nome);
       $stmt->bindParam(":cpf", $cpf);
