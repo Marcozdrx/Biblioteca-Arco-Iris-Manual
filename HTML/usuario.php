@@ -1,5 +1,10 @@
 <?php
 require_once '../PHP/conexao.php';
+
+  if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -77,7 +82,7 @@ require_once '../PHP/conexao.php';
   </div>
 
   <div class="books-container" id="booksContainer">
-    <!-- Os cards de livros serão inseridos aqui pelo JS -->
+    <!-- Os cards de livros serão inseridos aqui pelo JS -->  
   </div>
 </body>
 </html> 
