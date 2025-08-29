@@ -14,6 +14,11 @@ $stmt = $pdo->prepare($sqlBuscaAutor);
 $stmt->execute();
 $autores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$livros = [];
+$sqlApresentaLivros = "SELECT * FROM livros";
+$stmt = $pdo->prepare($sqlApresentaLivros);
+$stmt->execute();
+$livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
@@ -121,7 +126,7 @@ if($_SESSION['is_admin'] != 1){
                 <button class="action-btn" onclick="showAddBookModal()">+ Adicionar Novo Livro</button>
             </div>
             <div class="books-grid" id="booksGrid">
-                <!-- Os livros serão inseridos aqui via JavaScript -->
+                
             </div>
         </div>
     </div>
