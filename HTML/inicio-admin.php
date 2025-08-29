@@ -22,22 +22,22 @@ if($_SESSION['is_admin'] != 1){
         VALUE (:nome, :autor, :categoria, :isbn, :dataPublicacao, numeroPagina, descricao, capa, estoque, editora, idioma, TRUE)";
 
         $stmt = pdo->prepare($sql);
-        $stmt->bindParam(':titulo', $titulo)
-        $stmt->bindParam(':autor', $autor)
-        $stmt->bindParam(':categoria', $categoria)
-        $stmt->bindParam(':isbn', $isbn)
-        $stmt->bindParam(':dataPublicacao', $dataPublicacao)
-        $stmt->bindParam(':numeroPagina', $numeroPagina)
-        $stmt->bindParam(':descricao', $descricao)
-        $stmt->bindParam(':capa', $capa, PDO::PARAM_LOB)
-        $stmt->bindParam(':estoque', $estoque)
-        $stmt->bindParam(':editora', $editora)
-        $stmt->bindParam(':idioma', $idioma)
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':autor', $autor);
+        $stmt->bindParam(':categoria', $categoria);
+        $stmt->bindParam(':isbn', $isbn);
+        $stmt->bindParam(':dataPublicacao', $dataPublicacao);
+        $stmt->bindParam(':numeroPagina', $numeroPagina);
+        $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':capa', $capa, PDO::PARAM_LOB);
+        $stmt->bindParam(':estoque', $estoque);
+        $stmt->bindParam(':editora', $editora);
+        $stmt->bindParam(':idioma', $idioma);
 
         if($stmt->execute()){
-            echo "Livro cadastrado com sucesso"
+            echo "Livro cadastrado com sucesso";
         }else{
-            echo "Erro ao cadastrar livro"
+            echo "Erro ao cadastrar livro";
         }
     }
 }
