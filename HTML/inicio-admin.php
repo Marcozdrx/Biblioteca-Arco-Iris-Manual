@@ -2,10 +2,18 @@
 session_start();
 require_once '../PHP/conexao.php';
 
+$categorias = [];
+$sqlBuscaCategoria = "SELECT nome, id FROM categorias ORDER BY nome ASC";
+$stmt = $pdo->prepare($sqlBuscaCategoria);
+$stmt->execute();
+$categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+livros = [];
+$sqlApresentaLivros 
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
 }else{
+
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $titulo = $_POST['titulo'];
         $capa = $_FILES['capa'];
@@ -18,7 +26,7 @@ if($_SESSION['is_admin'] != 1){
         $descricao = $_POST['descricao'];
         $editora = $_POST['editora'];
 
-        $sql = "INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, estoque, editora, idioma, ativo) 
+        $sqlInsereLivro = "INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, estoque, editora, idioma, ativo) 
         VALUE (:nome, :autor, :categoria, :isbn, :dataPublicacao, numeroPagina, descricao, capa, estoque, editora, idioma, TRUE)";
 
         $stmt = pdo->prepare($sql);
@@ -33,6 +41,8 @@ if($_SESSION['is_admin'] != 1){
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':editora', $editora);
         $stmt->bindParam(':idioma', $idioma);
+
+        
 
         if($stmt->execute()){
             echo "Livro cadastrado com sucesso";
@@ -126,24 +136,14 @@ if($_SESSION['is_admin'] != 1){
                 <input type="text" id="isbn" nome="isbn" placeholder="International Standard Book Number (ISBN)" required>
                 <input type="text" id="idioma" nome="idioma" placeholder="Idioma" value="Português" required>
                 <input list="listaCategorias" id="categoria" name="categoria" placeholder="Pesquise a categoria" required>
+            
 
             <datalist id="listaCategorias">
-                <option value="Ficção Científica">
-                <option value="Estratégia">
-                <option value="Ficção">
-                <option value="Romance">
-                <option value="Drama">
-                <option value="Fábula Política">
-                <option value="Fantasia">
-                <option value="Literatura Brasileira">
-                <option value="Realismo Mágico">
-                <option value="Biografia">
-                <option value="Suspense">
-                <option value="Política">
-                <option value="Fantasia Jovem">
-                <option value="Literatura Infantil">
+            <?php foreach ($categorias as $categoria): ?>
+                <option value="<?=$categoria['id']?>"><?= htmlspecialchars($categoria['nome']) ?></option>
+                <?php endforeach; ?>
             </datalist>
-
+            
                 <textarea id="descricao" nome="descricao" placeholder="Sinopse do livro" rows="4" required></textarea>
                 <button type="submit">Salvar</button>
             </form>
