@@ -1,5 +1,13 @@
 <?php
 require_once '../PHP/conexao.php';
+
+$relatorio = "Relatório de Usuários\n\n1 - João\n2 - Maria\n3 - Ana";
+
+header('Content-Type: text/plain');
+header('Content-Disposition: attachment; filename="relatorio.txt"');
+echo $relatorio;
+exit;
+
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +26,7 @@ require_once '../PHP/conexao.php';
     
     <header class="header">
         <div class="header-title">
-            <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+            <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Gestão de Agendamentos</span>
         </div>
     </header>
@@ -27,11 +35,9 @@ require_once '../PHP/conexao.php';
         <div class="page-header">
             <h1>Gestão de Agendamentos</h1>
             <div class="header-actions">
-                <button class="btn-export" onclick="exportarAgendamentos()">
+                <button class="btn-export" download="relatorio.pdf">
+                    <a href="">
                     📊 Exportar Relatório
-                </button>
-                <button class="btn-refresh" onclick="carregarAgendamentos()">
-                    🔄 Atualizar
                 </button>
             </div>
         </div>
