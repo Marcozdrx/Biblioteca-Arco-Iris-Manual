@@ -8,7 +8,6 @@ $stmt = $pdo->prepare($sqlBuscaCategoria);
 $stmt->execute();
 $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$sqlApresentaLivros 
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
 }else{
