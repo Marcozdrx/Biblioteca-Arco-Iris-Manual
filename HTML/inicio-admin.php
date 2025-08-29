@@ -14,6 +14,7 @@ $stmt = $pdo->prepare($sqlBuscaAutor);
 $stmt->execute();
 $autores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
 }else{
@@ -52,6 +53,7 @@ if($_SESSION['is_admin'] != 1){
 
         if($stmt->execute()){
             echo "<script>alert('Livro cadastrado com sucesso')</script>";
+            header("Location: inicio-admin.php");
         }else{
             echo "<script>alert('Erro ao cadastrar livro')</script>";
         }
