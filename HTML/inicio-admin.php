@@ -8,13 +8,19 @@ $stmt = $pdo->prepare($sqlBuscaCategoria);
 $stmt->execute();
 $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$autores = [];
+$sqlBuscaAutor = "SELECT nome, id FROM autores ORDER BY nome ASC";
+$stmt = $pdo->prepare($sqlBuscaAutor);
+$stmt->execute();
+$autores = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
 }else{
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $titulo = $_POST['titulo'];
-        $capa = $_FILES['capa'];
+        $capa = file_get_contents($_FILES['capa']['tmp_name']);
         $nomeCapa = $_FILES['capa']['name'];
         $estoque = $_POST['estoque'];
         $autor = $_POST['autor'];
@@ -23,17 +29,19 @@ if($_SESSION['is_admin'] != 1){
         $categoria = $_POST['categoria'];
         $descricao = $_POST['descricao'];
         $editora = $_POST['editora'];
+        $isbn = $_POST['isbn'];
+        $idioma = $_POST['idioma'];
 
         $sqlInsereLivro = "INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, estoque, editora, idioma, ativo) 
-        VALUE (:nome, :autor, :categoria, :isbn, :dataPublicacao, numeroPagina, descricao, capa, estoque, editora, idioma, TRUE)";
+        VALUES (:titulo, :autor, :categoria, :isbn, :dataPublicacao, :numeroPaginas, :descricao, :capa, :estoque, :editora, :idioma, TRUE)";
 
-        $stmt = pdo->prepare($sql);
+        $stmt = $pdo->prepare($sqlInsereLivro);
         $stmt->bindParam(':titulo', $titulo);
         $stmt->bindParam(':autor', $autor);
         $stmt->bindParam(':categoria', $categoria);
         $stmt->bindParam(':isbn', $isbn);
         $stmt->bindParam(':dataPublicacao', $dataPublicacao);
-        $stmt->bindParam(':numeroPagina', $numeroPagina);
+        $stmt->bindParam(':numeroPaginas', $numeroPaginas);
         $stmt->bindParam(':descricao', $descricao);
         $stmt->bindParam(':capa', $capa, PDO::PARAM_LOB);
         $stmt->bindParam(':estoque', $estoque);
@@ -43,9 +51,9 @@ if($_SESSION['is_admin'] != 1){
         
 
         if($stmt->execute()){
-            echo "Livro cadastrado com sucesso";
+            echo "<script>alert('Livro cadastrado com sucesso')</script>";
         }else{
-            echo "Erro ao cadastrar livro";
+            echo "<script>alert('Erro ao cadastrar livro')</script>";
         }
     }
 }
@@ -122,17 +130,22 @@ if($_SESSION['is_admin'] != 1){
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle">Adicionar Novo Livro</h2>
-            <form id="bookForm" class="modal-form">
+            <form id="bookForm" class="modal-form" method="POST" enctype="multipart/form-data">
                 <input type="hidden" id="bookId">
                 <input type="File" id="capa" name="capa" required>
                 <input type="text" id="titulo" name="titulo" placeholder="Título do livro" required>
-                <input type="number" id="estoque" nome="estoque" placeholder="Quantidade em estoque" min="0" required>
-                <input type="text" id="autor" nome="autor" placeholder="Autor do livro" required>
-                <input type="number" id="datapublicacao" nome="dataPublicacao" placeholder="Ano de publicação" min="1000" max="2024" required>
-                <input type="number" id="numeroPaginas" nome="numeroPaginas" placeholder="Número de páginas" min="1" required>
-                <input type="text" id="editora" nome="editora" placeholder="Editora" required>
-                <input type="text" id="isbn" nome="isbn" placeholder="International Standard Book Number (ISBN)" required>
-                <input type="text" id="idioma" nome="idioma" placeholder="Idioma" value="Português" required>
+                <input type="number" id="estoque" name="estoque" placeholder="Quantidade em estoque" min="0" required>
+                <input list="listaAutores" id="autor" name="autor" placeholder="Autor do livro" required>
+                <datalist id="listaAutores">
+                    <?php foreach ($autores as $autor):?>
+                        <option value="<?=$autor['id']?>"><?= htmlspecialchars($autor['nome']) ?></option>
+                    <?php endforeach; ?>
+                </datalist>
+                <input type="number" id="dataPublicacao" name="dataPublicacao" placeholder="Ano de publicação" min="1000" max="2024" required>
+                <input type="number" id="numeroPaginas" name="numeroPaginas" placeholder="Número de páginas" min="1" required>
+                <input type="text" id="editora" name="editora" placeholder="Editora" required>
+                <input type="text" id="isbn" name="isbn" placeholder="International Standard Book Number (ISBN)" required>
+                <input type="text" id="idioma" name="idioma" placeholder="Idioma" value="Português" required>
                 <input list="listaCategorias" id="categoria" name="categoria" placeholder="Pesquise a categoria" required>
             
 
@@ -142,7 +155,7 @@ if($_SESSION['is_admin'] != 1){
                 <?php endforeach; ?>
             </datalist>
             
-                <textarea id="descricao" nome="descricao" placeholder="Sinopse do livro" rows="4" required></textarea>
+                <textarea id="descricao" name="descricao" placeholder="Sinopse do livro" rows="4" required></textarea>
                 <button type="submit">Salvar</button>
             </form>
         </div>
