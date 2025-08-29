@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <br>
         <span>A</span><span>R</span><span>C</span><span>O</span><span>-</span><span>Í</span><span>R</span><span>I</span><span>S</span>
       </div>
-      <form class="form-box" id="registroForm" method="POST" action="../HTML/usuarios.php">
+      <form class="form-box" id="registroForm" method="POST" action="">
         <div class="input-group">
 
           <span class="icon">👤</span>
