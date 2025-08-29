@@ -124,23 +124,25 @@ if($_SESSION['is_admin'] != 1){
                 <input type="text" id="editora" nome="editora" placeholder="Editora" required>
                 <input type="text" id="isbn" nome="isbn" placeholder="International Standard Book Number (ISBN)" required>
                 <input type="text" id="idioma" nome="idioma" placeholder="Idioma" value="Português" required>
-                <select name="categoria" id="categoria" required>
-                    <option value="">Selecione uma categoria</option>
-                    <option value="1">Ficção Científica</option>
-                    <option value="2">Estratégia</option>
-                    <option value="3">Ficção</option>
-                    <option value="4">Romance</option>
-                    <option value="5">Drama</option>
-                    <option value="6">Fábula Política</option>
-                    <option value="7">Fantasia</option>
-                    <option value="8">Literatura Brasileira</option>
-                    <option value="9">Realismo Mágico</option>
-                    <option value="10">Biografia</option>
-                    <option value="11">Suspense</option>
-                    <option value="12">Política</option>
-                    <option value="13">Fantasia Jovem</option>
-                    <option value="14">Literatura Infantil</option>
-                </select>
+                <input list="listaCategorias" id="categoria" name="categoria" placeholder="Pesquise a categoria" required>
+
+            <datalist id="listaCategorias">
+                <option value="Ficção Científica">
+                <option value="Estratégia">
+                <option value="Ficção">
+                <option value="Romance">
+                <option value="Drama">
+                <option value="Fábula Política">
+                <option value="Fantasia">
+                <option value="Literatura Brasileira">
+                <option value="Realismo Mágico">
+                <option value="Biografia">
+                <option value="Suspense">
+                <option value="Política">
+                <option value="Fantasia Jovem">
+                <option value="Literatura Infantil">
+            </datalist>
+
                 <textarea id="descricao" nome="descricao" placeholder="Sinopse do livro" rows="4" required></textarea>
                 <button type="submit">Salvar</button>
             </form>
