@@ -17,7 +17,7 @@ require_once '../PHP/conexao.php';
     
     <header class="header">
         <div class="header-title">
-            <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+            <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Gestão de Usuários</span>
         </div>
     </header>
@@ -25,8 +25,8 @@ require_once '../PHP/conexao.php';
     <div class="container">
         <div class="page-header">
             <h1>Gestão de Usuários</h1>
-            <button class="add-user-btn" onclick="abrirModalAdicionar()">
-                <span>+</span> Adicionar Usuário
+            <button class="add-user-btn">
+                <a href="inserir_usuario.php">Adicionar Usuario</a>
             </button>
         </div>
 
@@ -97,7 +97,6 @@ require_once '../PHP/conexao.php';
     <!-- Modal para adicionar/editar usuário -->
     <div id="userModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="fecharModal()">&times;</span>
             <h2 id="modalTitle">Adicionar Usuário</h2>
             <form id="userForm">
                 <div class="form-group">
