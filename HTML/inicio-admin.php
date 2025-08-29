@@ -109,7 +109,8 @@ if($_SESSION['is_admin'] != 1){
     </div>
 
     <!-- Modal para adicionar/editar livro -->
-    <div id="bookModal" class="modal">
+    <div id="bookModal" class="modal" tabindex="-1" 
+    data-backdrop="static" data-keyboard="false">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle">Adicionar Novo Livro</h2>
@@ -185,10 +186,6 @@ if($_SESSION['is_admin'] != 1){
             document.getElementById('bookModal').style.display = 'block';
         }
 
-        // Função para fechar modal
-        function closeModal() {
-            document.getElementById('bookModal').style.display = 'none';
-        }
 
         // Função para alternar painel de doações
         function toggleDonationsPanel() {
@@ -242,20 +239,22 @@ if($_SESSION['is_admin'] != 1){
             }
         }
 
-        // Fechar modal ao clicar fora dele
-        window.onclick = function(event) {
-            const modal = document.getElementById('bookModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
 
-        // Fechar modal ao pressionar ESC
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        });
+       // Fechar modal ao pressionar ESC
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+function openModal() {
+    document.getElementById("bookModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("bookModal").style.display = "none";
+}
+
     </script>
 </body>
 </html> 
