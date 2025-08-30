@@ -15,7 +15,7 @@ $stmt->execute();
 $autores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $livros = [];
-$sqlApresentaLivros = "SELECT * FROM livros";
+$sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as nome_autor FROM livros l LEFT JOIN autores a ON l.autor_id = a.id WHERE l.ativo = TRUE";
 $stmt = $pdo->prepare($sqlApresentaLivros);
 $stmt->execute();
 $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -28,6 +28,11 @@ if($_SESSION['is_admin'] != 1){
         $titulo = $_POST['titulo'];
         $capa = file_get_contents($_FILES['capa']['tmp_name']);
         $nomeCapa = $_FILES['capa']['name'];
+        
+        // DEBUG: Verificar tamanho do arquivo
+        echo "<script>console.log('Tamanho do arquivo: " . strlen($capa) . " bytes');</script>";
+        echo "<script>console.log('Nome do arquivo: " . $nomeCapa . "');</script>";
+        
         $estoque = $_POST['estoque'];
         $autor = $_POST['autor'];
         $dataPublicacao = $_POST['dataPublicacao'];
@@ -37,10 +42,10 @@ if($_SESSION['is_admin'] != 1){
         $editora = $_POST['editora'];
         $isbn = $_POST['isbn'];
         $idioma = $_POST['idioma'];
-
+    
         $sqlInsereLivro = "INSERT INTO livros (titulo, autor_id, categoria_id, isbn, ano_publicacao, numero_paginas, descricao, imagem_capa, estoque, editora, idioma, ativo) 
         VALUES (:titulo, :autor, :categoria, :isbn, :dataPublicacao, :numeroPaginas, :descricao, :capa, :estoque, :editora, :idioma, TRUE)";
-
+    
         $stmt = $pdo->prepare($sqlInsereLivro);
         $stmt->bindParam(':titulo', $titulo);
         $stmt->bindParam(':autor', $autor);
@@ -53,9 +58,7 @@ if($_SESSION['is_admin'] != 1){
         $stmt->bindParam(':estoque', $estoque);
         $stmt->bindParam(':editora', $editora);
         $stmt->bindParam(':idioma', $idioma);
-
-        
-
+    
         if($stmt->execute()){
             echo "<script>alert('Livro cadastrado com sucesso')</script>";
             header("Location: inicio-admin.php");
@@ -63,6 +66,7 @@ if($_SESSION['is_admin'] != 1){
             echo "<script>alert('Erro ao cadastrar livro')</script>";
         }
     }
+
 }
 ?>
 <!DOCTYPE html>
@@ -126,7 +130,34 @@ if($_SESSION['is_admin'] != 1){
                 <button class="action-btn" onclick="showAddBookModal()">+ Adicionar Novo Livro</button>
             </div>
             <div class="books-grid" id="booksGrid">
-                
+                <?php foreach ($livros as $livro): ?>
+                    <div class="book-card">
+                        <?php if(!empty($livro['imagem_capa'])): ?>
+                            <?php
+                                $imagemData = $livro['imagem_capa'];
+                                // Verificar se é WebP (começa com RIFF)
+                                if (substr($imagemData, 0, 4) === 'RIFF') {
+                                    $mimeType = 'image/webp';
+                                } else {
+                                    // Usar finfo para outros formatos
+                                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                    $mimeType = finfo_buffer($finfo, $imagemData);
+                                    finfo_close($finfo);
+                                }
+                                
+                                // Verificar se o MIME foi detectado corretamente
+                                if (!$mimeType || $mimeType === 'application/octet-stream') {
+                                    $mimeType = 'image/webp'; // Fallback para WebP
+                                }
+                            ?>
+                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
+                        <?php else: ?>
+                            <img src="../IMG/default-avatar.svg" alt="capa do livro">
+                        <?php endif; ?>
+                        <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
+                        <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
