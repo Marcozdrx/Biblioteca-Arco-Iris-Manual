@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
 //  aqui é pra redicionar devollta pra pagina de usuarios
-        header("Location: ../HTML/usuarios.php");
+        header("Location: usuarios.php");
         exit;
     } else {
         echo "Erro ao cadastrar usuário!";

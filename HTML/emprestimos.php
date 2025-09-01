@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +20,12 @@ require_once '../PHP/conexao.php';
 <body>
   <header class="header">
     <div class="header-title">
-      <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+      <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
       <span>Biblioteca Arco-Íris</span>
     </div>
     <div class="header-buttons">
       <a href="usuario.php" class="header-btn">Voltar</a>
-      <a href="index.php" class="header-btn">Sair</a>
+      <a href="logout.php" class="header-btn">Sair</a>
     </div>
   </header>
   <div class="emprestimos-container" id="emprestimosContainer">
@@ -33,19 +40,19 @@ require_once '../PHP/conexao.php';
       <div id="multaInfo"></div>
       <div class="payment-options">
         <div class="payment-option" data-method="pix">
-          <img src="IMG/pix.png" alt="Pix">
+          <img src="../IMG/pix.png" alt="Pix">
           <span>Pix</span>
         </div>
         <div class="payment-option" data-method="boleto">
-          <img src="IMG/boleto.png" alt="Boleto">
+          <img src="../IMG/boleto.png" alt="Boleto">
           <span>Boleto</span>
         </div>
         <div class="payment-option" data-method="card">
-          <img src="IMG/card.png" alt="Cartão">
+          <img src="../IMG/card.png" alt="Cartão">
           <span>Cartão</span>
         </div>
         <div class="payment-option" data-method="doacao">
-          <img src="IMG/doacao.png" alt="Doação">
+          <img src="../IMG/doacao.png" alt="Doação">
           <span>Doação</span>
         </div>
       </div>
@@ -53,7 +60,7 @@ require_once '../PHP/conexao.php';
       <button class="btn-cancelar" id="cancelarPagamento">Cancelar</button>
       <div class="qrcode-container" id="qrcodeContainer" style="display:none;">
         <h3>Escaneie o QR Code</h3>
-        <img src="IMG/qrcode.png" alt="QR Code" class="qrcode-image">
+        <img src="../IMG/qrcode.png" alt="QR Code" class="qrcode-image">
         <p>Após o pagamento, clique em "Confirmar Pagamento".</p>
         <button class="btn-close-qrcode" id="closeQrcode">Fechar</button>
       </div>

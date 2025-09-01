@@ -227,5 +227,6 @@ require_once '../PHP/conexao.php';
     </div>
   </div>
   
+  <script src="../JS/common.js"></script>
 </body>
 </html> 

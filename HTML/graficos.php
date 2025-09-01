@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
+
+// Verificar se o usuário está logado e é admin
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -18,7 +25,7 @@ require_once '../PHP/conexao.php';
     
     <header class="header">
         <div class="header-title">
-            <img src="IMG/logo.png" alt="Logo" style="height: 30px;">
+            <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Análise de Dados</span>
         </div>
     </header>

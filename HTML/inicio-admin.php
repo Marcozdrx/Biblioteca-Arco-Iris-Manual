@@ -18,8 +18,8 @@ require_once '../PHP/PHPincioAdmin.php';
         <div>
             <a class="voltar" href="index.php">Voltar</a>
           </div>
-        <div class="header-title"
-            img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
+        <div class="header-title">
+            <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Painel Administrativo</span>
         </div>
         <div class="header-buttons">
@@ -51,7 +51,7 @@ require_once '../PHP/PHPincioAdmin.php';
                     </button>
                 </div>
             </div>
-            <a href="index.php" class="header-btn">Sair</a>
+            <a href="logout.php" class="header-btn">Sair</a>
         </div>
     </header>
 
@@ -88,6 +88,11 @@ require_once '../PHP/PHPincioAdmin.php';
                         <?php endif; ?>
                         <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
                         <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
+                        <p>Estoque: <?= htmlspecialchars($livro['estoque']) ?></p>
+                        <div class="book-actions">
+                            <button class="btn-edit" onclick="editBook(<?= $livro['id'] ?>)">✏️ Editar</button>
+                            <button class="btn-delete" onclick="deleteBook(<?= $livro['id'] ?>)">🗑️ Excluir</button>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -101,8 +106,9 @@ require_once '../PHP/PHPincioAdmin.php';
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle">Adicionar Novo Livro</h2>
             <form id="bookForm" class="modal-form" method="POST" enctype="multipart/form-data">
-                <input type="hidden" id="bookId">
-                <input type="File" id="capa" name="capa" required>
+                <input type="hidden" id="bookId" name="bookId">
+                <input type="hidden" id="action" name="action" value="add">
+                <input type="File" id="capa" name="capa" accept="image/*">
                 <input type="text" id="titulo" name="titulo" placeholder="Título do livro" required>
                 <input type="number" id="estoque" name="estoque" placeholder="Quantidade em estoque" min="0" required>
                 <input list="listaAutores" id="autor" name="autor" placeholder="Autor do livro" required>
@@ -128,6 +134,18 @@ require_once '../PHP/PHPincioAdmin.php';
                 <textarea id="descricao" name="descricao" placeholder="Sinopse do livro" rows="4" required></textarea>
                 <button type="submit">Salvar</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação para exclusão -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h2>Confirmar Exclusão</h2>
+            <p>Tem certeza que deseja excluir este livro? Esta ação não pode ser desfeita.</p>
+            <div class="modal-actions">
+                <button class="btn-confirm" onclick="confirmDelete()">Sim, Excluir</button>
+                <button class="btn-cancel" onclick="closeDeleteModal()">Cancelar</button>
+            </div>
         </div>
     </div>
 

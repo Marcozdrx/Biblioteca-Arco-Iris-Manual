@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,12 +19,12 @@ require_once '../PHP/conexao.php';
 <body>
   <header class="header">
     <div class="header-title">
-      <img src="IMG/logo.png" alt="Logo" style="width: 30px; height: 30px;">
+      <img src="../IMG/logo.png" alt="Logo" style="width: 30px; height: 30px;">
       <span>Biblioteca Arco-Íris</span>
     </div>
     <div class="header-buttons">
       <a href="usuario.php" class="header-btn">Voltar</a>
-      <a href="index.php" class="header-btn">Sair</a>
+      <a href="logout.php" class="header-btn">Sair</a>
     </div>
   </header>
 
@@ -31,7 +38,7 @@ require_once '../PHP/conexao.php';
       <div class="profile-content">
         <div class="profile-photo-section">
           <div class="photo-container">
-            <img id="profilePhoto" src="IMG/default-avatar.svg" alt="Foto do Perfil" class="profile-photo">
+            <img id="profilePhoto" src="../IMG/default-avatar.svg" alt="Foto do Perfil" class="profile-photo">
             <div class="photo-overlay">
               <label for="photoInput" class="photo-upload-btn">
                 <span>📷</span>
