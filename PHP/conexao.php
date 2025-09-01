@@ -3,7 +3,6 @@
  * ARQUIVO DE CONEXÃO COM BANCO DE DADOS
  * Biblioteca Arco-Íris
  */
-
 // Configurações do banco de dados
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'biblioteca_arco_iris');

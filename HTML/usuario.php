@@ -1,10 +1,16 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
 
+// Verificar se o usuário está logado
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-  if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +22,7 @@ require_once '../PHP/conexao.php';
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="../CSS/usuario.css">
 </head>
-<body style="background-image: url(IMG/fundo.png);
+<body style="background-image: url(../IMG/fundo.png);
              background-size: cover;
              background-position: center;
              background-repeat: no-repeat;" >
@@ -31,7 +37,7 @@ require_once '../PHP/conexao.php';
     <div class="header-buttons">
       <a href="emprestimos.php" class="header-btn">Meus Empréstimos</a>
       <a href="perfil.php" class="header-btn">Perfil</a>
-      <a href="index.php" class="header-btn">Sair</a>
+      <a href="logout.php" class="header-btn">Sair</a>
     </div>
   </header>
 
@@ -85,5 +91,7 @@ require_once '../PHP/conexao.php';
   <div class="books-container" id="booksContainer">
     <!-- Os cards de livros serão inseridos aqui pelo JS -->  
   </div>
+  
+  <script src="../JS/common.js"></script>
 </body>
 </html> 
