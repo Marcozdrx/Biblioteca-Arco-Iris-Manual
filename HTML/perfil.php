@@ -2,6 +2,17 @@
 session_start();
 require_once '../PHP/conexao.php';
 
+$sqlPerfilUsuario = "SELECT nome, cpf, telefone, foto_usuario FROM usuarios WHERE id = :id";
+$stmt = $pdo->prepare($sqlPerfilUsuario);
+$stmt->bindParam(':id', $_SESSION['id']);
+$stmt->execute();
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$_SESSION['nome_usuario'] = $usuario['nome'];
+$_SESSION['cpf_usuario'] = $usuario['cpf'];
+$_SESSION['telefone_usuario'] = $usuario['telefone'];
+$_SESSION['foto_usuario'] = $usuario['foto_usuario'];
+
 // Verificar se o usuário está logado
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
@@ -38,7 +49,28 @@ if (!isset($_SESSION['id'])) {
       <div class="profile-content">
         <div class="profile-photo-section">
           <div class="photo-container">
-            <img id="profilePhoto" src="../IMG/default-avatar.svg" alt="Foto do Perfil" class="profile-photo">
+          <?php if(!empty($usuario['foto_usuario'])): ?>
+                <?php
+                    $imagemUsuario = $usuario['foto_usuario'];
+                    // Verificar se é WebP 
+                    if (substr($imagemUsuario, 0, 4) === 'RIFF') {
+                        $mimeType = 'image/webp';
+                    } else {
+                        // Usar finfo para outros formatos
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        $mimeType = finfo_buffer($finfo, $imagemUsuario);
+                        finfo_close($finfo);
+                    }
+                    
+                    // Verificar se o MIME foi detectado corretamente
+                    if (!$mimeType || $mimeType === 'application/octet-stream') {
+                        $mimeType = 'image/webp'; // Fallback para WebP
+                    }
+                ?>
+            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemUsuario) ?>" class="profile-photo">
+            <?php else: ?>
+                <img src="../IMG/default-avatar.svg" class="profile-photo">
+            <?php endif; ?>
             <div class="photo-overlay">
               <label for="photoInput" class="photo-upload-btn">
                 <span>📷</span>
@@ -51,20 +83,20 @@ if (!isset($_SESSION['id'])) {
         </div>
 
         <div class="profile-info">
-          <form id="profileForm" class="profile-form">
+          <form id="profileForm" class="profile-form" action="atulizar_usuario.php" method="POST">
             <div class="form-group">
               <label for="nome">Nome Completo</label>
-              <input type="text" id="nome" name="nome" required>
+              <input type="text" id="nome" name="nome" value="<?= $_SESSION['nome_usuario'] ?>" required>
             </div>
 
             <div class="form-group">
               <label for="cpf">CPF</label>
-              <input type="text" id="cpf" name="cpf" maxlength="14" required>
+              <input type="text" id="cpf" name="cpf" maxlength="14" value="<?= $_SESSION['cpf_usuario'] ?>" required>
             </div>
 
                          <div class="form-group">
                <label for="telefone">Telefone</label>
-               <input type="text" id="telefone" name="telefone" maxlength="15" required>
+               <input type="text" id="telefone" name="telefone" value="<?= $_SESSION['telefone_usuario'] ?>" required>
              </div>
 
             <div class="form-actions">
