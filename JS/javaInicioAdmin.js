@@ -4,47 +4,14 @@ function showAddBookModal() {
     document.getElementById('modalTitle').textContent = 'Adicionar Novo Livro';
     document.getElementById('bookForm').reset();
     document.getElementById('bookId').value = '';
-    document.getElementById('action').value = 'add';
     document.getElementById('capa').required = true; // Tornar campo de imagem obrigatório
     document.getElementById('bookModal').style.display = 'block';
 }
 
-// Função para editar livro
-function editBook(bookId) {
-    // Buscar dados do livro
-    fetch(`../PHP/get_book.php?id=${bookId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert('Erro ao carregar dados do livro: ' + data.error);
-                return;
-            }
-            
-            // Preencher o formulário com os dados do livro
-            document.getElementById('modalTitle').textContent = 'Editar Livro';
-            document.getElementById('action').value = 'edit';
-            document.getElementById('bookId').value = data.id;
-            document.getElementById('titulo').value = data.titulo;
-            document.getElementById('estoque').value = data.estoque;
-            document.getElementById('autor').value = data.autor_id;
-            document.getElementById('dataPublicacao').value = data.ano_publicacao;
-            document.getElementById('numeroPaginas').value = data.numero_paginas;
-            document.getElementById('editora').value = data.editora;
-            document.getElementById('isbn').value = data.isbn;
-            document.getElementById('idioma').value = data.idioma;
-            document.getElementById('categoria').value = data.categoria_id;
-            document.getElementById('descricao').value = data.descricao;
-            
-            // Tornar o campo de imagem opcional na edição
-            document.getElementById('capa').required = false;
-            
-            // Mostrar o modal
-            document.getElementById('bookModal').style.display = 'block';
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao carregar dados do livro');
-        });
+function showEditBookModal() {
+    document.getElementById('modalTitle').textContent = 'Editar Livro';
+    document.getElementById('capa').required = true; // Tornar campo de imagem obrigatório
+    document.getElementById('editModal').style.display = 'block';
 }
 
 
@@ -154,6 +121,9 @@ function openModal() {
 document.getElementById("bookModal").style.display = "flex";
 }
 
-function closeModal() {
+function closeBookModal() {
 document.getElementById("bookModal").style.display = "none";
 }
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+    }
