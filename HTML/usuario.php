@@ -95,7 +95,30 @@ if($_SESSION['is_admin'] != 0){
 
   <div class="carousel-container">
     <div class="carousel">
+    <?php foreach ($livros as $livro): ?>
+      <?php if(!empty($livro['imagem_capa'])): ?>
+    <?php
+      $imagemData = $livro['imagem_capa'];
+      // Verificar se é WebP 
+      if (substr($imagemData, 0, 4) === 'RIFF') {
+          $mimeType = 'image/webp';
+      } else {
+          // Usar finfo para outros formatos
+          $finfo = finfo_open(FILEINFO_MIME_TYPE);
+          $mimeType = finfo_buffer($finfo, $imagemData);
+          finfo_close($finfo);
+      }
+      
+      // Verificar se o MIME foi detectado corretamente
+      if (!$mimeType || $mimeType === 'application/octet-stream') {
+          $mimeType = 'image/webp'; // Fallback para WebP
+      }
+  ?>
     <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Banner">
+    <?php else: ?>
+      <img src="../IMG/default-avatar.svg" alt="capa do livro">
+  <?php endif; ?>
+    <?php endforeach; ?>
       <img src="../IMG/ohobbit.jpg" alt="Banner 2">
      
     </div>
@@ -103,35 +126,35 @@ if($_SESSION['is_admin'] != 0){
 
   <div >
   <div class="books-grid" id="booksGrid">
-                <?php foreach ($livros as $livro): ?>
-                    <div class="book-card">
-                        <?php if(!empty($livro['imagem_capa'])): ?>
-                            <?php
-                                $imagemData = $livro['imagem_capa'];
-                                // Verificar se é WebP 
-                                if (substr($imagemData, 0, 4) === 'RIFF') {
-                                    $mimeType = 'image/webp';
-                                } else {
-                                    // Usar finfo para outros formatos
-                                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                                    $mimeType = finfo_buffer($finfo, $imagemData);
-                                    finfo_close($finfo);
-                                }
-                                
-                                // Verificar se o MIME foi detectado corretamente
-                                if (!$mimeType || $mimeType === 'application/octet-stream') {
-                                    $mimeType = 'image/webp'; // Fallback para WebP
-                                }
-                            ?>
-                        <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
-                        <?php else: ?>
-                            <img src="../IMG/default-avatar.svg" alt="capa do livro">
-                        <?php endif; ?>
-                        <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
-                        <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+    <?php foreach ($livros as $livro): ?>
+        <div class="book-card">
+            <?php if(!empty($livro['imagem_capa'])): ?>
+                <?php
+                    $imagemData = $livro['imagem_capa'];
+                    // Verificar se é WebP 
+                    if (substr($imagemData, 0, 4) === 'RIFF') {
+                        $mimeType = 'image/webp';
+                    } else {
+                        // Usar finfo para outros formatos
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        $mimeType = finfo_buffer($finfo, $imagemData);
+                        finfo_close($finfo);
+                    }
+                    
+                    // Verificar se o MIME foi detectado corretamente
+                    if (!$mimeType || $mimeType === 'application/octet-stream') {
+                        $mimeType = 'image/webp'; // Fallback para WebP
+                    }
+                ?>
+            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
+            <?php else: ?>
+                <img src="../IMG/default-avatar.svg" alt="capa do livro">
+            <?php endif; ?>
+            <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
+            <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
+        </div>
+    <?php endforeach; ?>
+    </div>
   </div>
   
   <script src="../JS/common.js"></script>
