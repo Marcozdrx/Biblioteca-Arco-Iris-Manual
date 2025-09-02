@@ -90,8 +90,10 @@ require_once '../PHP/PHPincioAdmin.php';
                         <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
                         <p>Estoque: <?= htmlspecialchars($livro['estoque']) ?></p>
                         <div class="book-actions">
+                            <form action="../PHP/delete_book.php" method="POST">
                             <button class="btn-edit" onclick="editBook(<?= $livro['id'] ?>)">✏️ Editar</button>
-                            <button class="btn-delete" onclick="deleteBook(<?= $livro['id'] ?>)">🗑️ Excluir</button>
+                            <button class="btn-delete">🗑️ Excluir</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach; ?>
