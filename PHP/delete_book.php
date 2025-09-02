@@ -12,12 +12,6 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bookId = $_POST['bookId'] ?? null;
     
-    if (!$bookId) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID do livro não fornecido']);
-        exit();
-    }
-    
     try {
         // Verificar se o livro existe
         $sqlCheck = "SELECT id FROM livros WHERE id = :id AND ativo = TRUE";
@@ -44,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
         
-        // Marcar o livro como inativo (soft delete)
-        $sqlDelete = "UPDATE livros SET ativo = FALSE WHERE id = :id";
+        // Deleta o livro
+        $sqlDelete = "DELETE FROM livros WHERE id = :id";
         $stmtDelete = $pdo->prepare($sqlDelete);
         $stmtDelete->bindParam(':id', $bookId);
         
