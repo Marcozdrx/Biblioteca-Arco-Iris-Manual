@@ -89,19 +89,15 @@ require_once '../PHP/PHPincioAdmin.php';
                         <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
                         <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
                         <p>Estoque: <?= htmlspecialchars($livro['estoque']) ?></p>
-                        <div class="book-actions">
-                            <form action="../PHP/delete_book.php" method="POST">
-                            <button class="btn-edit" onclick="editBook(<?= $livro['id'] ?>)">✏️ Editar</button>
-                            <button class="btn-delete">🗑️ Excluir</button>
-                            </form>
-                        </div>
+                        <form method="POST" class="book-actions" action="../PHP/Deletar_Livro.php" onsubmit="return confirm('Quer mesmo deletar esse livro?')">
+                            <input type="hidden" name="id" value="<?= $livro['id'] ?>">
+                            <button type="button" class="btn-edit" onclick="editBook(<?= $livro['id'] ?>)">✏️ Editar</button>
+                            <button type="submit" class="btn-delete">🗑️ Excluir</button>
+                        </form>
                     </div>
                 <?php endforeach; ?>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal para adicionar/editar livro -->
+ <!-- Modal para adicionar/editar livro -->
     <div id="bookModal" class="modal" tabindex="-1" 
     data-backdrop="static" data-keyboard="false">
         <div class="modal-content">
