@@ -21,7 +21,7 @@ if($_SESSION['is_admin'] != 0){
 }else{
 
   if($_SERVER['REQUEST_METHOD'] == 'POST'){
-      $titulo = $_POST['titulo'];
+      $titulo = $_POST['titulo'] ?? '';
       $capa = file_get_contents($_FILES['capa']['tmp_name']);
       $nomeCapa = $_FILES['capa']['name'];
       
@@ -84,7 +84,7 @@ if($_SESSION['is_admin'] != 0){
       <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
       <span>Biblioteca Arco-Íris</span>
     </div>
-    <form style="display: flex; align-items: center; gap: 8px;" onsubmit="event.preventDefault();">
+    <form style="display: flex; align-items: center; gap: 8px;" action="../PHP/pesquisarLivros.php" method="POST">
       <input type="text" placeholder="Pesquisar livros..." style="padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; outline: none; width: 300px;" id="searchInput">
     </form>
     <div class="header-buttons">
@@ -154,7 +154,7 @@ if($_SESSION['is_admin'] != 0){
             <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
             <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
 
-              <a class="botao-emprestar" href="emprestimos.php">Emprestar</a>
+              <a class="botao-emprestar" href="emprestimos.php?livro_id=<?= $livro['id'] ?> &usuario_id=<?= $_SESSION['id'] ?>">Emprestar</a>
         </div>
     <?php endforeach; ?>
     </div>
