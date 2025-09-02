@@ -46,7 +46,7 @@ require_once '../PHP/conexao.php';
         <br>
         <span>A</span><span>R</span><span>C</span><span>O</span><span>-</span><span>Í</span><span>R</span><span>I</span><span>S</span>
       </div>
-      <form class="form-box" id="registroForm" method="POST" action="../HTML/registro.php">
+      <form class="form-box" id="registroForm" method="POST" action="registro.php">
         <div class="input-group">
 
           <span class="icon">👤</span>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
 session_start();
 
@@ -73,7 +74,7 @@ if($_SESSION['is_admin'] != 0){
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="../CSS/usuario.css">
 </head>
-<body style="background-image: url(IMG/fundo.png);
+<body style="background-image: url(../IMG/fundo.png);
              background-size: cover;
              background-position: center;
              background-repeat: no-repeat;" >
@@ -88,7 +89,7 @@ if($_SESSION['is_admin'] != 0){
     <div class="header-buttons">
       <a href="emprestimos.php" class="header-btn">Meus Empréstimos</a>
       <a href="perfil.php" class="header-btn">Perfil</a>
-      <a href="index.php" class="header-btn">Sair</a>
+      <a href="logout.php" class="header-btn">Sair</a>
     </div>
   </header>
 
@@ -132,5 +133,7 @@ if($_SESSION['is_admin'] != 0){
                 <?php endforeach; ?>
             </div>
   </div>
+  
+  <script src="../JS/common.js"></script>
 </body>
 </html> 

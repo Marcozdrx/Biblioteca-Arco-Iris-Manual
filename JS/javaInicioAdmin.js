@@ -4,15 +4,47 @@ function showAddBookModal() {
     document.getElementById('modalTitle').textContent = 'Adicionar Novo Livro';
     document.getElementById('bookForm').reset();
     document.getElementById('bookId').value = '';
+    document.getElementById('action').value = 'add';
+    document.getElementById('capa').required = true; // Tornar campo de imagem obrigatório
     document.getElementById('bookModal').style.display = 'block';
 }
 
-// Função para mostrar modal de editar livro
-function showEditBookModal(bookId) {
-    // Esta função será chamada quando o PHP gerar os botões de editar
-    // O PHP deve preencher os campos do formulário antes de chamar esta função
-    document.getElementById('modalTitle').textContent = 'Editar Livro';
-    document.getElementById('bookModal').style.display = 'block';
+// Função para editar livro
+function editBook(bookId) {
+    // Buscar dados do livro
+    fetch(`../PHP/get_book.php?id=${bookId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Erro ao carregar dados do livro: ' + data.error);
+                return;
+            }
+            
+            // Preencher o formulário com os dados do livro
+            document.getElementById('modalTitle').textContent = 'Editar Livro';
+            document.getElementById('action').value = 'edit';
+            document.getElementById('bookId').value = data.id;
+            document.getElementById('titulo').value = data.titulo;
+            document.getElementById('estoque').value = data.estoque;
+            document.getElementById('autor').value = data.autor_id;
+            document.getElementById('dataPublicacao').value = data.ano_publicacao;
+            document.getElementById('numeroPaginas').value = data.numero_paginas;
+            document.getElementById('editora').value = data.editora;
+            document.getElementById('isbn').value = data.isbn;
+            document.getElementById('idioma').value = data.idioma;
+            document.getElementById('categoria').value = data.categoria_id;
+            document.getElementById('descricao').value = data.descricao;
+            
+            // Tornar o campo de imagem opcional na edição
+            document.getElementById('capa').required = false;
+            
+            // Mostrar o modal
+            document.getElementById('bookModal').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao carregar dados do livro');
+        });
 }
 
 
@@ -36,12 +68,54 @@ function toggleDevolucoesPanel() {
     }
 }
 
-// Função para deletar livro (será chamada pelo PHP)
+// Função para deletar livro
 function deleteBook(bookId) {
-    if (confirm('Tem certeza que deseja excluir este livro?')) {
-        // Redirecionar para uma página PHP que fará a exclusão
-        window.location.href = `delete_book.php?id=${bookId}`;
+    // Armazenar o ID do livro para confirmação
+    window.currentBookId = bookId;
+    
+    // Mostrar modal de confirmação
+    document.getElementById('deleteModal').style.display = 'block';
+}
+
+// Função para confirmar exclusão
+function confirmDelete() {
+    const bookId = window.currentBookId;
+    
+    if (!bookId) {
+        alert('Erro: ID do livro não encontrado');
+        return;
     }
+    
+    // Fazer requisição AJAX para excluir o livro
+    const formData = new FormData();
+    formData.append('bookId', bookId);
+    
+    fetch('../PHP/delete_book.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Livro excluído com sucesso!');
+            location.reload(); // Recarregar a página para atualizar a lista
+        } else {
+            alert('Erro ao excluir livro: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao excluir livro');
+    })
+    .finally(() => {
+        closeDeleteModal();
+    });
+}
+
+// Função para fechar modal de exclusão
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    window.currentBookId = null;
 }
 
 // Função para aceitar doação (será chamada pelo PHP)

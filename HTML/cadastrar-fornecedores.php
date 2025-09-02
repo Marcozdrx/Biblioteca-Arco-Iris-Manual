@@ -1,5 +1,12 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
+
+// Verificar se o usuário está logado e é admin
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    header("Location: login.php");
+    exit();
+}
   try{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         

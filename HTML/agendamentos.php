@@ -1,13 +1,12 @@
 <?php
+session_start();
 require_once '../PHP/conexao.php';
 
-$relatorio = "Relatório de Usuários\n\n1 - João\n2 - Maria\n3 - Ana";
-
-header('Content-Type: text/plain');
-header('Content-Disposition: attachment; filename="relatorio.txt"');
-echo $relatorio;
-exit;
-
+// Verificar se o usuário está logado e é admin
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
