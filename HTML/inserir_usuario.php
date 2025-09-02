@@ -74,11 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <input type="password" name="senha" placeholder="Senha" required>
           <button type="button" class="toggle-password" onclick="togglePassword(this)">👁️</button>  
         </div>
-        <div class="input-group" style="display: flex; align-items: center; gap: 10px;">
+        <div class="input-group admin-checkbox-group">
           <span class="icon">👑</span>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-            <input type="checkbox" name="is_admin" style="width: auto; margin: 0;">
-            <span>Usuário Administrador</span>
+          <label class="admin-checkbox-label">
+            <input type="checkbox" name="is_admin" class="admin-checkbox">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">Usuário Administrador</span>
           </label>
         </div>
         <button type="submit" class="btn">REGISTRAR</button>
