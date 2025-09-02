@@ -153,6 +153,8 @@ if($_SESSION['is_admin'] != 0){
             <?php endif; ?>
             <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
             <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
+
+              <a class="botao-emprestar" href="emprestimos.php">Emprestar</a>
         </div>
     <?php endforeach; ?>
     </div>
