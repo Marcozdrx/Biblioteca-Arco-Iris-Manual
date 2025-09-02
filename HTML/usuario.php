@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once '../PHP/conexao.php';
-session_start();
 
 $autores = [];
 $sqlBuscaAutor = "SELECT nome, id FROM autores ORDER BY nome ASC";
@@ -14,6 +13,8 @@ $sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as n
 $stmt = $pdo->prepare($sqlApresentaLivros);
 $stmt->execute();
 $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 if($_SESSION['is_admin'] != 0){
   echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
