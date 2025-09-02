@@ -31,9 +31,7 @@ if($_SESSION['is_admin'] != 1){
 }else{
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $action = $_POST['action'] ?? 'add';
         
-        if($action == 'add') {
             // Adicionar novo livro
             $titulo = $_POST['titulo'];
             $capa = file_get_contents($_FILES['capa']['tmp_name']);
@@ -75,51 +73,6 @@ if($_SESSION['is_admin'] != 1){
             }else{
                 echo "<script>alert('Erro ao cadastrar livro')</script>";
             }
-        } elseif($action == 'edit') {
-            // Editar livro existente
-            $bookId = $_POST['bookId'];
-            $titulo = $_POST['titulo'];
-            $estoque = $_POST['estoque'];
-            $autor = $_POST['autor'];
-            $dataPublicacao = $_POST['dataPublicacao'];
-            $numeroPaginas = $_POST['numeroPaginas'];
-            $categoria = $_POST['categoria'];
-            $descricao = $_POST['descricao'];
-            $editora = $_POST['editora'];
-            $isbn = $_POST['isbn'];
-            $idioma = $_POST['idioma'];
-            
-            // Verificar se uma nova imagem foi enviada
-            if(isset($_FILES['capa']) && $_FILES['capa']['error'] == 0) {
-                $capa = file_get_contents($_FILES['capa']['tmp_name']);
-                $sqlUpdate = "UPDATE livros SET titulo=:titulo, autor_id=:autor, categoria_id=:categoria, isbn=:isbn, ano_publicacao=:dataPublicacao, numero_paginas=:numeroPaginas, descricao=:descricao, imagem_capa=:capa, estoque=:estoque, editora=:editora, idioma=:idioma WHERE id=:id";
-                $stmt = $pdo->prepare($sqlUpdate);
-                $stmt->bindParam(':capa', $capa, PDO::PARAM_LOB);
-            } else {
-                $sqlUpdate = "UPDATE livros SET titulo=:titulo, autor_id=:autor, categoria_id=:categoria, isbn=:isbn, ano_publicacao=:dataPublicacao, numero_paginas=:numeroPaginas, descricao=:descricao, estoque=:estoque, editora=:editora, idioma=:idioma WHERE id=:id";
-                $stmt = $pdo->prepare($sqlUpdate);
-            }
-            
-            $stmt->bindParam(':id', $bookId);
-            $stmt->bindParam(':titulo', $titulo);
-            $stmt->bindParam(':autor', $autor);
-            $stmt->bindParam(':categoria', $categoria);
-            $stmt->bindParam(':isbn', $isbn);
-            $stmt->bindParam(':dataPublicacao', $dataPublicacao);
-            $stmt->bindParam(':numeroPaginas', $numeroPaginas);
-            $stmt->bindParam(':descricao', $descricao);
-            $stmt->bindParam(':estoque', $estoque);
-            $stmt->bindParam(':editora', $editora);
-            $stmt->bindParam(':idioma', $idioma);
-            
-            if($stmt->execute()){
-                echo "<script>alert('Livro atualizado com sucesso')</script>";
-                header("Location: inicio-admin.php");
-            }else{
-                echo "<script>alert('Erro ao atualizar livro')</script>";
-            }
         }
     }
-
-}
 ?>
