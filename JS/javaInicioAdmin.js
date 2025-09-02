@@ -10,7 +10,7 @@ function showAddBookModal() {
 
 function showEditBookModal() {
     document.getElementById('modalTitle').textContent = 'Editar Livro';
-    document.getElementById('capa').required = true; // Tornar campo de imagem obrigatório
+    document.getElementById('capaEdit').required = true; // Tornar campo de imagem obrigatório
     document.getElementById('editModal').style.display = 'block';
 }
 
