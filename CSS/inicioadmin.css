@@ -387,13 +387,15 @@ body {
     position: relative;
     -ms-flex-align: center;
     background: white;
-    margin-top: 50% auto;
+    margin-top: 60px;
     margin-left: 450px;
     padding: 20px;
-    width: 90%;
+    width: 70%;
     max-width: 500px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    height: 530px;
+    max-height: 600px;
 }
 
 .close-modal {
@@ -413,7 +415,7 @@ body {
 .modal-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 .modal-form input,

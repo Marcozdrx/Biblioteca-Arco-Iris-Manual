@@ -344,16 +344,17 @@ tbody tr:hover {
 .action-btn {
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     padding: 8px;
     border-radius: 8px;
     transition: all 0.3s ease;
-    width: 40px;
-    height: 40px;
-    display: flex;
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin: 0 2px;
 }
 
 .action-btn:hover {
@@ -850,4 +851,62 @@ tbody tr:hover {
     padding: 20px;
     background: #f8f9fa;
     border-radius: 10px;
+}
+
+/* Badges de status */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 1px solid #4caf50;
+}
+
+.status-badge.inactive {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #f44336;
+}
+
+/* Badge de administrador */
+.admin-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 8px;
+    border: 1px solid #ffc107;
+    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+}
+
+/* Estilos para botões de ação específicos */
+.action-btn.edit-btn:hover {
+    background: #2196F3;
+    color: white;
+}
+
+.action-btn.block-btn:hover {
+    background: #FF5722;
+    color: white;
+}
+
+.action-btn.unblock-btn:hover {
+    background: #4CAF50;
+    color: white;
+}
+
+.action-btn.delete-btn:hover {
+    background: #F44336;
+    color: white;
 }

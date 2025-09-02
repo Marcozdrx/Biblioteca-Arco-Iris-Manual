@@ -243,8 +243,25 @@ body::before {
 .book-card {
   padding: 10px;
   min-height: 240px;
-}
+  max-width: 220px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 220px;
 
+}
+.botao-emprestar {
+  background: white;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  width: 82%;
+}
 
 .book-card {
     background: #ff9000;
