@@ -91,8 +91,22 @@ require_once '../PHP/PHPincioAdmin.php';
                         <p>Estoque: <?= htmlspecialchars($livro['estoque']) ?></p>
                         <form method="POST" class="book-actions" action="../PHP/DeletarLivros.php" onsubmit="return confirm('Quer mesmo deletar esse livro?')">
                             <input type="hidden" name="id" value="<?= $livro['id'] ?>">
-                            <button type="button" class="action-btn" onclick="showEditBookModal()" <?= $livro['id']?>>✏️ Editar</button>
-                            <button type="submit" class="btn-delete" <?= $livro['id']?> >🗑️ Excluir</button>
+                            <button type="button" class="action-btn" 
+                                data-livro-id="<?= $livro['id'] ?>"
+                                data-titulo="<?= htmlspecialchars($livro['titulo']) ?>"
+                                data-estoque="<?= $livro['estoque'] ?>"
+                                data-autor="<?= $livro['autor_id'] ?>"
+                                data-ano="<?= $livro['ano_publicacao'] ?>"
+                                data-paginas="<?= $livro['numero_paginas'] ?>"
+                                data-editora="<?= htmlspecialchars($livro['editora']) ?>"
+                                data-isbn="<?= htmlspecialchars($livro['isbn']) ?>"
+                                data-idioma="<?= htmlspecialchars($livro['idioma']) ?>"
+                                data-categoria="<?= $livro['categoria_id'] ?>"
+                                data-descricao="<?= htmlspecialchars($livro['descricao']) ?>"
+                                onclick="showEditBookModal(this)">
+                                ✏️ Editar
+                            </button>
+                            <button type="submit" class="btn-delete" >🗑️ Excluir</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -133,7 +147,7 @@ require_once '../PHP/PHPincioAdmin.php';
             </form>
         </div>
     </div>
-
+    <!-- Modal para editar livro -->
     <div id="editModal" class="modal" tabindex="-1" 
     data-backdrop="static" data-keyboard="false">
         <div class="modal-content">
