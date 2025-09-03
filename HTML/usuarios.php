@@ -2,11 +2,42 @@
 session_start();
 require_once '../PHP/conexao.php';
 
+$usuarios = [];
+$sql = "SELECT * FROM usuarios ORDER BY nome ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $sql_stats = "SELECT 
+    COUNT(*) as total_usuarios,
+    SUM(CASE WHEN ativo = 1 THEN 1 ELSE 0 END) as usuarios_ativos,
+    SUM(CASE WHEN ativo = 0 THEN 1 ELSE 0 END) as usuarios_bloqueados,
+    SUM(CASE WHEN is_admin = 1 THEN 1 ELSE 0 END) as usuarios_admin
+    FROM usuarios";
+
+    $stmt_stats = $pdo->prepare($sql_stats);
+    $stmt_stats->execute();
+    $stats = $stmt_stats->fetch();
+    
+    // Buscar empréstimos ativos por usuário
+    $sql_emprestimos = "SELECT 
+        u.id,
+        COUNT(e.id) as emprestimos_ativos
+        FROM usuarios u
+        LEFT JOIN emprestimos e ON u.id = e.usuario_id 
+        AND e.data_devolucao_real IS NULL
+        GROUP BY u.id";
+    
+    $stmt_emprestimos = $pdo->prepare($sql_emprestimos);    
+    $stmt_emprestimos->execute();
+    $emprestimos_por_usuario = $stmt_emprestimos->fetchAll(PDO::FETCH_KEY_PAIR);
+
 // Verificar se o usuário está logado e é admin
 if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     header("Location: login.php");
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -21,14 +52,12 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     <div>
         <a class="voltar" href="inicio-admin.php">Voltar</a>
     </div>
-    
     <header class="header">
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Gestão de Usuários</span>
         </div>
     </header>
-
     <div class="container">
         <div class="page-header">
             <h1>Gestão de Usuários</h1>
@@ -84,19 +113,58 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
         <div class="users-table-container">
             <div class="table-wrapper">
                 <table id="usersTable">
-                <thead>
-                    <tr>
+                    <thead>
+                        <tr>
                             <th>ID</th>
                             <th>Nome</th>
-                        <th>Status</th>
+                            <th>Status</th>
                             <th>Empréstimos Ativos</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                        <!-- Usuários serão inseridos aqui pelo JavaScript -->
-                </tbody>
-            </table>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <?php foreach($usuarios as $usuario): ?>
+                            <?php if(!empty($usuario['id'])): ?>
+                                <tr>
+                                    <td><?=htmlspecialchars($usuario['id'])?></td>
+                                    <td><?=htmlspecialchars($usuario['nome'])?></td>
+                                    <td>
+                                        <span class="status-badge <?= $usuario['ativo']?> 'active' : 'inactive'}">
+                                            <?= htmlspecialchars($usuario['ativo']) ?>
+                                        </span>
+                                        <?php if($usuario['is_admin'] == 1): ?>
+                                            <span class="admin-badge">👑 Admin</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?= htmlspecialchars($emprestimos_por_usuario[$usuario['id']]) ?></td>
+                                    <td>
+                                        <button class="action-btn edit-btn" onclick="editarUsuario(<?=$usuario['id']?>)" title="Editar">
+                                            ✏️
+                                        </button>
+                                        <?php if($usuario['ativo'] == 0): ?>
+                                            <button class="action-btn unblock-btn" 
+                                                onclick="desbloquearUsuario(<?=$usuario['ativo']?>)" 
+                                                title="'Desbloquear'">
+                                                ✅
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="action-btn  block-btn" 
+                                                onclick="bloquearUsuario(<?=$usuario['ativo']?>)" 
+                                                title="Bloquea'">
+                                                🚫
+                                            </button>
+                                        <?php endif; ?>
+                                        <button class="action-btn delete-btn" onclick="excluirUsuario(<?=$usuario['id']?>)" title="Excluir">
+                                            🗑️
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <tr><td colspan="5" style="text-align: center; padding: 20px;">Nenhum usuário encontrado</td></tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -171,7 +239,6 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
 
         // Carregar usuários ao inicializar a página
         document.addEventListener('DOMContentLoaded', function() {
-            carregarUsuarios();
             configurarEventos();
         });
 
@@ -201,46 +268,6 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                 console.error('Erro na requisição:', error);
                 alert('Erro ao conectar com o servidor');
             }
-        }
-
-        // Função para exibir usuários na tabela
-        function exibirUsuarios(listaUsuarios) {
-            const tbody = document.getElementById('usersTableBody');
-            tbody.innerHTML = '';
-            
-            if (listaUsuarios.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">Nenhum usuário encontrado</td></tr>';
-                return;
-            }
-            
-            listaUsuarios.forEach(usuario => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${usuario.id}</td>
-                    <td>${usuario.nome}</td>
-                    <td>
-                        <span class="status-badge ${usuario.ativo ? 'active' : 'inactive'}">
-                            ${usuario.ativo ? 'Ativo' : 'Bloqueado'}
-                        </span>
-                        ${usuario.is_admin ? '<span class="admin-badge">👑 Admin</span>' : ''}
-                    </td>
-                    <td>${usuario.emprestimos_ativos || 0}</td>
-                    <td>
-                        <button class="action-btn edit-btn" onclick="editarUsuario(${usuario.id})" title="Editar">
-                            ✏️
-                        </button>
-                        <button class="action-btn ${usuario.ativo ? 'block-btn' : 'unblock-btn'}" 
-                                onclick="${usuario.ativo ? 'bloquearUsuario' : 'desbloquearUsuario'}(${usuario.id})" 
-                                title="${usuario.ativo ? 'Bloquear' : 'Desbloquear'}">
-                            ${usuario.ativo ? '🚫' : '✅'}
-                        </button>
-                        <button class="action-btn delete-btn" onclick="excluirUsuario(${usuario.id})" title="Excluir">
-                            🗑️
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
         }
 
         // Função para configurar eventos
@@ -302,170 +329,15 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
         }
 
         // Função para editar usuário
-        function editarUsuario(id) {
-            const usuario = usuarios.find(u => u.id === id);
-            if (usuario) {
-                // Preencher modal com dados do usuário
-                document.getElementById('modalTitle').textContent = 'Editar Usuário';
-                document.getElementById('userName').value = usuario.nome;
-                document.getElementById('userPassword').value = ''; // Limpar senha
-                document.getElementById('userStatus').value = usuario.ativo ? 'ativo' : 'bloqueado';
-                
-                // Configurar campo de senha para edição
-                document.getElementById('passwordGroup').style.display = 'block';
-                document.getElementById('userPassword').required = false;
-                document.getElementById('userPassword').placeholder = 'Deixe em branco para manter a senha atual';
-                
-                // Mostrar modal
-                document.getElementById('userModal').style.display = 'block';
-                
-                // Armazenar ID para edição
-                document.getElementById('userForm').setAttribute('data-edit-id', id);
-            }
-        }
-
-        // Função para bloquear usuário
-        function bloquearUsuario(id) {
-            const usuario = usuarios.find(u => u.id === id);
-            if (usuario) {
-                document.getElementById('confirmTitle').textContent = 'Confirmar Bloqueio';
-                document.getElementById('confirmMessage').textContent = 
-                    `Tem certeza que deseja bloquear o usuário "${usuario.nome}"?`;
-                
-                acaoConfirmada = async () => {
-                    try {
-                        const response = await fetch('../PHP/alterarStatusUsuario.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ id: id, ativo: 0 })
-                        });
-                        
-                        const result = await response.json();
-                        
-                        if (result.success) {
-                            alert('Usuário bloqueado com sucesso!');
-                            fecharConfirmModal();
-                            carregarUsuarios();
-                        } else {
-                            alert('Erro: ' + result.error);
-                            fecharConfirmModal();
-                        }
-                    } catch (error) {
-                        console.error('Erro na requisição:', error);
-                        alert('Erro ao conectar com o servidor');
-                        fecharConfirmModal();
-                    }
-                };
-                
-                document.getElementById('confirmModal').style.display = 'block';
-            }
-        }
-
-        // Função para desbloquear usuário
-        function desbloquearUsuario(id) {
-            const usuario = usuarios.find(u => u.id === id);
-            if (usuario) {
-                document.getElementById('confirmTitle').textContent = 'Confirmar Desbloqueio';
-                document.getElementById('confirmMessage').textContent = 
-                    `Tem certeza que deseja desbloquear o usuário "${usuario.nome}"?`;
-                
-                acaoConfirmada = async () => {
-                    try {
-                        const response = await fetch('../PHP/alterarStatusUsuario.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ id: id, ativo: 1 })
-                        });
-                        
-                        const result = await response.json();
-                        
-                        if (result.success) {
-                            alert('Usuário desbloqueado com sucesso!');
-                            fecharConfirmModal();
-                            carregarUsuarios();
-                        } else {
-                            alert('Erro: ' + result.error);
-                            fecharConfirmModal();
-                        }
-                    } catch (error) {
-                        console.error('Erro na requisição:', error);
-                        alert('Erro ao conectar com o servidor');
-                        fecharConfirmModal();
-                    }
-                };
-                
-                document.getElementById('confirmModal').style.display = 'block';
-            }
-        }
-
-        // Função para excluir usuário
-        function excluirUsuario(id) {
-            const usuario = usuarios.find(u => u.id === id);
-            if (usuario) {
-                document.getElementById('confirmTitle').textContent = 'Confirmar Exclusão';
-                document.getElementById('confirmMessage').textContent = 
-                    `Tem certeza que deseja excluir o usuário "${usuario.nome}"?\n\nEsta ação não pode ser desfeita.`;
-                
-                acaoConfirmada = async () => {
-                    try {
-                        const response = await fetch('../PHP/excluirUsuario.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ id: id })
-                        });
-                        
-                        const result = await response.json();
-                        
-                        if (result.success) {
-                            alert('Usuário excluído com sucesso!');
-                            fecharConfirmModal();
-                            carregarUsuarios();
-                        } else {
-                            alert('Erro: ' + result.error);
-                            fecharConfirmModal();
-                        }
-                    } catch (error) {
-                        console.error('Erro na requisição:', error);
-                        alert('Erro ao conectar com o servidor');
-                        fecharConfirmModal();
-                    }
-                };
-                
-                document.getElementById('confirmModal').style.display = 'block';
-            }
-        }
-
+        
         // Função para fechar modal
         function fecharModal() {
             document.getElementById('userModal').style.display = 'none';
             document.getElementById('userForm').reset();
             document.getElementById('userForm').removeAttribute('data-edit-id');
             document.getElementById('modalTitle').textContent = 'Adicionar Usuário';
-            
-            // Configurar campo de senha para novo usuário
-            document.getElementById('passwordGroup').style.display = 'block';
-            document.getElementById('userPassword').required = true;
-            document.getElementById('userPassword').placeholder = 'Digite a senha';
         }
 
-        // Função para fechar modal de confirmação
-        function fecharConfirmModal() {
-            document.getElementById('confirmModal').style.display = 'none';
-            acaoConfirmada = null;
-        }
-
-        // Função para confirmar ação
-        function confirmarAcao() {
-            if (acaoConfirmada) {
-                acaoConfirmada();
-            }
-        }
 
         // Fechar modais ao clicar fora
         window.onclick = function(event) {
