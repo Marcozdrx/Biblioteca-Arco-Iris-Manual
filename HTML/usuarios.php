@@ -123,8 +123,10 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
+                        
                         <?php foreach($usuarios as $usuario): ?>
                             <?php if(!empty($usuario['id'])): ?>
+                                
                                 <tr>
                                     <td><?=htmlspecialchars($usuario['id'])?></td>
                                     <td><?=htmlspecialchars($usuario['nome'])?></td>
@@ -137,32 +139,45 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($emprestimos_por_usuario[$usuario['id']]) ?></td>
+                                    
                                     <td>
-                                        <button class="action-btn edit-btn" onclick="editarUsuario(<?=$usuario['id']?>)" title="Editar">
-                                            ✏️
-                                        </button>
+                                    <button class="action-btn edit-btn" 
+                                    data-usuario-id="<?=$usuario['id']?>"
+                                    data-usuario-nome="<?=htmlspecialchars($usuario['nome'])?>"
+                                    data-usuario-status="<?=$usuario['ativo']?>"
+                                    onclick="abrirModalEdicao(this)" 
+                                    title="Editar">
+                                        ✏️
+                                    </button>
+                                        <form method="POST" action="processarAcoes.php">
                                         <?php if($usuario['ativo'] == 0): ?>
                                             <button class="action-btn unblock-btn" 
-                                                onclick="desbloquearUsuario(<?=$usuario['ativo']?>)" 
+                                                onclick="desbloquearUsuario(<?=$usuario['id']?>)" 
                                                 title="'Desbloquear'">
                                                 ✅
                                             </button>
                                         <?php else: ?>
+                                            
                                             <button class="action-btn  block-btn" 
-                                                onclick="bloquearUsuario(<?=$usuario['ativo']?>)" 
+                                                onclick="bloquearUsuario(<?=$usuario['id']?>)" 
                                                 title="Bloquea'">
                                                 🚫
                                             </button>
+                                            
                                         <?php endif; ?>
+                                        </form>
                                         <button class="action-btn delete-btn" onclick="excluirUsuario(<?=$usuario['id']?>)" title="Excluir">
                                             🗑️
                                         </button>
                                     </td>
+                                    
                                 </tr>
+                                
                             <?php else: ?>
                                 <tr><td colspan="5" style="text-align: center; padding: 20px;">Nenhum usuário encontrado</td></tr>
                             <?php endif; ?>
                         <?php endforeach; ?>
+                            
                     </tbody>
                 </table>
             </div>
@@ -176,23 +191,25 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
             <form id="userForm">
                 <div class="form-group">
                     <label for="userName">Nome Completo:</label>
-                    <input type="text" id="userName" required>
+                    <input type="text" id="userName"  required>
                 </div>
                 <div class="form-group" id="passwordGroup">
                     <label for="userPassword">Senha:</label>
+                    <small>Deixe em branco para deixar a senha antiga</small>
                     <input type="password" id="userPassword" placeholder="Digite a senha" required>
                 </div>
                 <div class="form-group">
                     <label for="userStatus">Status:</label>
                     <select id="userStatus">
-                        <option value="ativo">Ativo</option>
-                        <option value="bloqueado">Bloqueado</option>
+                        <option value="1">Ativo</option>
+                        <option value="0">Bloqueado</option>
                     </select>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
                     <button type="submit" class="btn-save">Salvar</button>
                 </div>
+                
             </form>
         </div>
     </div>
@@ -203,7 +220,7 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
             <h3 id="confirmTitle">Confirmar Ação</h3>
             <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
             <div class="confirm-actions">
-                <button class="btn-cancel" onclick="fecharConfirmModal()">Cancelar</button>
+            <button class="btn-cancel" onclick="fecharConfirmModal()">Cancelar</button>
                 <button class="btn-confirm" onclick="confirmarAcao()">Confirmar</button>
             </div>
         </div>
@@ -226,140 +243,48 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                 </div>
             </div>
             <div class="form-actions">
-                <button type="button" class="btn-cancel" onclick="fecharModalMulta()">Fechar</button>
+            <button type="button" class="btn-cancel" onclick="fecharModalMulta()">Fechar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Variáveis globais
-        let usuarios = [];
-        let usuariosFiltrados = [];
-        let acaoConfirmada = null;
+function abrirModalEdicao(botao) {
+    // Pegar os dados do botão
+    const usuarioId = botao.getAttribute('data-usuario-id');
+    const nomeUsuario = botao.getAttribute('data-usuario-nome');
+    const statusUsuario = botao.getAttribute('data-usuario-status');
+    
+    // Mostrar o modal
+    document.getElementById('userModal').style.display = 'block';
+    
+    // Preencher os campos
+    document.getElementById('userName').value = nomeUsuario;
+    document.getElementById('userStatus').value = statusUsuario;
+    
+    // Alterar o título do modal
+    document.getElementById('modalTitle').textContent = 'Editar Usuário';
+    
+    // Marcar que é uma edição
+    document.getElementById('userForm').setAttribute('data-edit-id', usuarioId);
+}
 
-        // Carregar usuários ao inicializar a página
-        document.addEventListener('DOMContentLoaded', function() {
-            configurarEventos();
-        });
+function fecharModal() {  // ← ADICIONAR "function" AQUI
+    document.getElementById('userModal').style.display = 'none';
+    document.getElementById('userForm').reset();
+    document.getElementById('userForm').removeAttribute('data-edit-id');
+    document.getElementById('modalTitle').textContent = 'Adicionar Usuário';
+}
 
-        // Função para carregar usuários do banco
-        async function carregarUsuarios() {
-            try {
-                const response = await fetch('../PHP/buscarUsuarios.php');
-                const data = await response.json();
-                
-                if (data.success) {
-                    usuarios = data.usuarios;
-                    usuariosFiltrados = [...usuarios];
-                    
-                    // Atualizar estatísticas
-                    document.getElementById('totalUsuarios').textContent = data.stats.total_usuarios || 0;
-                    document.getElementById('usuariosAtivos').textContent = data.stats.usuarios_ativos || 0;
-                    document.getElementById('usuariosBloqueados').textContent = data.stats.usuarios_bloqueados || 0;
-                    document.getElementById('mediaEmprestimos').textContent = data.stats.media_emprestimos || 0;
-                    
-                    // Exibir usuários na tabela
-                    exibirUsuarios(usuariosFiltrados);
-                } else {
-                    console.error('Erro ao carregar usuários:', data.error);
-                    alert('Erro ao carregar usuários: ' + data.error);
-                }
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                alert('Erro ao conectar com o servidor');
-            }
-        }
+// Função para fechar o modal de confirmação
+function fecharConfirmModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+}
 
-        // Função para configurar eventos
-        function configurarEventos() {
-            // Busca
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.querySelector('.search-btn');
-            
-            searchInput.addEventListener('input', filtrarUsuarios);
-            searchBtn.addEventListener('click', filtrarUsuarios);
-            
-            // Filtros
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // Remover classe active de todos os botões
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    // Adicionar classe active ao botão clicado
-                    this.classList.add('active');
-                    
-                    const filtro = this.getAttribute('data-filter');
-                    aplicarFiltro(filtro);
-                });
-            });
-        }
-
-        // Função para filtrar usuários
-        function filtrarUsuarios() {
-            const termo = document.getElementById('searchInput').value.toLowerCase();
-            
-            usuariosFiltrados = usuarios.filter(usuario => 
-                usuario.nome.toLowerCase().includes(termo) ||
-                usuario.cpf.includes(termo) ||
-                usuario.email.toLowerCase().includes(termo) ||
-                usuario.telefone.includes(termo)
-            );
-            
-            exibirUsuarios(usuariosFiltrados);
-        }
-
-        // Função para aplicar filtros
-        function aplicarFiltro(filtro) {
-            switch(filtro) {
-                case 'todos':
-                    usuariosFiltrados = [...usuarios];
-                    break;
-                case 'ativos':
-                    usuariosFiltrados = usuarios.filter(u => u.ativo == 1);
-                    break;
-                case 'bloqueados':
-                    usuariosFiltrados = usuarios.filter(u => u.ativo == 0);
-                    break;
-                case 'com-emprestimos':
-                    usuariosFiltrados = usuarios.filter(u => u.emprestimos_ativos > 0);
-                    break;
-            }
-            
-            exibirUsuarios(usuariosFiltrados);
-        }
-
-        // Função para editar usuário
-        
-        // Função para fechar modal
-        function fecharModal() {
-            document.getElementById('userModal').style.display = 'none';
-            document.getElementById('userForm').reset();
-            document.getElementById('userForm').removeAttribute('data-edit-id');
-            document.getElementById('modalTitle').textContent = 'Adicionar Usuário';
-        }
-
-
-        // Fechar modais ao clicar fora
-        window.onclick = function(event) {
-            const userModal = document.getElementById('userModal');
-            const confirmModal = document.getElementById('confirmModal');
-            const multaModal = document.getElementById('multaModal');
-            
-            if (event.target === userModal) {
-                fecharModal();
-            }
-            if (event.target === confirmModal) {
-                fecharConfirmModal();
-            }
-            if (event.target === multaModal) {
-                fecharModalMulta();
-            }
-        }
-
-        // Função para fechar modal de multa
-        function fecharModalMulta() {
-            document.getElementById('multaModal').style.display = 'none';
-        }
+// Função para fechar o modal de multa
+function fecharModalMulta() {
+    document.getElementById('multaModal').style.display = 'none';
+}
     </script>
 </body>
 </html> 
