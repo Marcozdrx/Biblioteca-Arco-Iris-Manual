@@ -8,9 +8,42 @@ function showAddBookModal() {
     document.getElementById('bookModal').style.display = 'block';
 }
 
-function showEditBookModal() {
-    document.getElementById('modalTitle').textContent = 'Editar Livro';
-    document.getElementById('capaEdit').required = true; // Tornar campo de imagem obrigatório
+function showEditBookModal(button) {
+    // Pegar os dados do botão clicado
+    const livroData = {
+        id: button.dataset.livroId,
+        titulo: button.dataset.titulo,
+        estoque: button.dataset.estoque,
+        autor: button.dataset.autor,
+        ano: button.dataset.ano,
+        paginas: button.dataset.paginas,
+        editora: button.dataset.editora,
+        isbn: button.dataset.isbn,
+        idioma: button.dataset.idioma,
+        categoria: button.dataset.categoria,
+        descricao: button.dataset.descricao,
+        imagemCapa: button.dataset.imagemCapa // Adicionar este campo
+    };
+    
+    // Popular o formulário
+    document.getElementById('idLivroEdit').value = livroData.id;
+    document.getElementById('tituloEdit').value = livroData.titulo;
+    document.getElementById('estoqueEdit').value = livroData.estoque;
+    document.getElementById('autorEdit').value = livroData.autor;
+    document.getElementById('dataPublicacaoEdit').value = livroData.ano;
+    document.getElementById('numeroPaginasEdit').value = livroData.paginas;
+    document.getElementById('editoraEdit').value = livroData.editora;
+    document.getElementById('isbnEdit').value = livroData.isbn;
+    document.getElementById('idiomaEdit').value = livroData.idioma;
+    document.getElementById('categoriaEdit').value = livroData.categoria;
+    document.getElementById('descricaoEdit').value = livroData.descricao;
+    
+    // Mostrar a imagem atual
+    if (livroData.imagemCapa && livroData.mimeType) {
+        document.getElementById('imagemAtual').value = `data:${livroData.mimeType};base64,${livroData.imagemCapa}`;
+    }
+    
+    // Mostrar o modal
     document.getElementById('editModal').style.display = 'block';
 }
 
@@ -113,7 +146,8 @@ function confirmarDevolucao(devolucaoId) {
 // Fechar modal ao pressionar ESC
 document.addEventListener('keydown', function(event) {
 if (event.key === 'Escape') {
-closeModal();
+closeBookModal();
+closeEditModal();
 }
 });
 
