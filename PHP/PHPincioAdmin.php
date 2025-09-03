@@ -69,7 +69,7 @@ if($_SESSION['is_admin'] != 1){
         
             if($stmt->execute()){
                 echo "<script>alert('Livro cadastrado com sucesso')</script>";
-                header("Location: inicio-admin.php");
+                header("Location: ../HTML/inicio-admin.php");
             }else{
                 echo "<script>alert('Erro ao cadastrar livro')</script>";
             }
