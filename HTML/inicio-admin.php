@@ -139,32 +139,35 @@ require_once '../PHP/PHPincioAdmin.php';
         <div class="modal-content">
             <span class="close-modal" onclick="closeEditModal()">&times;</span>
             <h2 id="modalTitle">Editar Livro</h2>
-            <form id="editForm" class="modal-form" method="POST" enctype="multipart/form-data" action="editarLivro.php">
-                <input type="hidden" id="idLivroEdit" name="idLivro" value="<?= htmlspecialchars($livro['id']) ?>">
-                <input type="File" id="capaEdit" name="capa" accept="image/*" value="<?= htmlspecialchars($livro['imagem_capa']) ?>">
-                <input type="text" id="tituloEdit" name="titulo" placeholder="Título do livro" value="<?= htmlspecialchars($livro['titulo']) ?>" required>
-                <input type="number" id="estoqueEdit" name="estoque" placeholder="Quantidade em estoque" min="0" value="<?= htmlspecialchars($livro['estoque']) ?>" required>
-                <input list="listaAutores" id="autorEdit" name="autor" placeholder="Autor do livro" value="<?= htmlspecialchars($livro['autor_id']) ?>" required>
+            <form id="editForm" class="modal-form" method="POST" enctype="multipart/form-data" action="../PHP/editarLivros.php">
+                <input type="hidden" id="idLivroEdit" name="idLivroEdit" value="<?= htmlspecialchars($livro['id']) ?>">
+                <input type="hidden" id="imagemAtual" name="imagemAtual" value="">
+                <input type="File" id="capaEdit" name="capaEdit" accept="image/*">
+                <small>Deixe em branco para manter a imagem atual</small>
+                <input type="text" id="tituloEdit" name="tituloEdit" placeholder="Título do livro" value="<?= htmlspecialchars($livro['titulo']) ?>" required>
+                <input type="number" id="estoqueEdit" name="estoqueEdit" placeholder="Quantidade em estoque" min="0" value="<?= htmlspecialchars($livro['estoque']) ?>" required>
+                <input list="listaAutoresEdit" id="autorEdit" name="autorEdit" placeholder="Autor do livro" value="<?= htmlspecialchars($livro['autor_id']) ?>" required>
                 <datalist id="listaAutoresEdit">
                     <?php foreach ($autores as $autor):?>
                         <option value="<?=$autor['id']?>"><?= htmlspecialchars($autor['nome']) ?></option>
                     <?php endforeach; ?>
                 </datalist>
-                <input type="number" id="dataPublicacaoEdit" name="dataPublicacao" placeholder="Ano de publicação" min="1000" max="2024" value="<?= htmlspecialchars($livro['ano_publicacao']) ?> required>
-                <input type="number" id="numeroPaginasEdit" name="numeroPaginas" placeholder="Número de páginas" min="1" value="<?= htmlspecialchars($livro['numero_paginas']) ?>" required>
-                <input type="text" id="editoraEdit" name="editora" placeholder="Editora" value="<?= htmlspecialchars($livro['editora']) ?>" required>
-                <input type="text" id="isbnEdit" name="isbn" placeholder="International Standard Book Number (ISBN)" value="<?= htmlspecialchars($livro['isbn']) ?>" required>
-                <input type="text" id="idiomaEdit" name="idioma" placeholder="Idioma" value="Português" value="<?= htmlspecialchars($livro['idioma']) ?>" required>
-                <input list="listaCategorias" id="categoriaEdit" name="categoria" placeholder="Pesquise a categoria" value="<?= htmlspecialchars($livro['categoria']) ?>" required>
+                <input type="number" id="dataPublicacaoEdit" name="dataPublicacaoEdit" placeholder="Ano de publicação" min="1000" max="2024" value="<?= htmlspecialchars($livro['ano_publicacao']) ?>" required>
+                <input type="number" id="numeroPaginasEdit" name="numeroPaginasEdit" placeholder="Número de páginas" min="1" value="<?= htmlspecialchars($livro['numero_paginas']) ?>" required>
+                <input type="text" id="editoraEdit" name="editoraEdit" placeholder="Editora" value="<?= htmlspecialchars($livro['editora']) ?>" required>
+                <input type="text" id="isbnEdit" name="isbnEdit" placeholder="International Standard Book Number (ISBN)" value="<?= htmlspecialchars($livro['isbn']) ?>" required>
+                <input type="text" id="idiomaEdit" name="idiomaEdit" placeholder="Idioma" value="<?= htmlspecialchars($livro['idioma']) ?>" required>
+                
+                <input list="listaCategoriasEdit" id="categoriaEdit" name="categoriaEdit" placeholder="Pesquise a categoria" value="<?= htmlspecialchars($livro['categoria_id']) ?>" required>
             
-
-            <datalist id="listaCategorias">
-            <?php foreach ($categorias as $categoria): ?>
-                <option value="<?=$categoria['id']?>"><?= htmlspecialchars($categoria['nome']) ?></option>
-                <?php endforeach; ?>
-            </datalist>
+                
+                <datalist id="listaCategoriasEdit">
+                    <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?=$categoria['id']?>"><?= htmlspecialchars($categoria['nome']) ?></option>
+                    <?php endforeach; ?>
+                </datalist>
             
-                <textarea id="descricao" name="descricao" placeholder="Sinopse do livro" rows="4" required> <?= htmlspecialchars($livro['descricao']) ?> </textarea>
+                <textarea id="descricaoEdit" name="descricaoEdit" placeholder="Sinopse do livro" rows="4" required><?= htmlspecialchars($livro['descricao']) ?></textarea>
                 <button type="submit">Salvar</button>
             </form>
         </div>
