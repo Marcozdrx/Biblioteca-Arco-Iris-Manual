@@ -34,11 +34,11 @@ try {
     
     // Buscar estatísticas
     $sql_stats = "SELECT 
-                    COUNT(*) as total_usuarios,
-                    SUM(CASE WHEN ativo = 1 THEN 1 ELSE 0 END) as usuarios_ativos,
-                    SUM(CASE WHEN ativo = 0 THEN 1 ELSE 0 END) as usuarios_bloqueados,
-                    SUM(CASE WHEN is_admin = 1 THEN 1 ELSE 0 END) as usuarios_admin
-                  FROM usuarios";
+        COUNT(*) as total_usuarios,
+        SUM(CASE WHEN ativo = 1 THEN 1 ELSE 0 END) as usuarios_ativos,
+        SUM(CASE WHEN ativo = 0 THEN 1 ELSE 0 END) as usuarios_bloqueados,
+        SUM(CASE WHEN is_admin = 1 THEN 1 ELSE 0 END) as usuarios_admin
+        FROM usuarios";
     
     $stmt_stats = $pdo->prepare($sql_stats);
     $stmt_stats->execute();
@@ -46,12 +46,12 @@ try {
     
     // Buscar empréstimos ativos por usuário
     $sql_emprestimos = "SELECT 
-                          u.id,
-                          COUNT(e.id) as emprestimos_ativos
-                        FROM usuarios u
-                        LEFT JOIN emprestimos e ON u.id = e.usuario_id 
-                          AND e.data_devolucao_real IS NULL
-                        GROUP BY u.id";
+        u.id,
+        COUNT(e.id) as emprestimos_ativos
+        FROM usuarios u
+        LEFT JOIN emprestimos e ON u.id = e.usuario_id 
+        AND e.data_devolucao_real IS NULL
+        GROUP BY u.id";
     
     $stmt_emprestimos = $pdo->prepare($sql_emprestimos);
     $stmt_emprestimos->execute();
