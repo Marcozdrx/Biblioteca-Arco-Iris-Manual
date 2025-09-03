@@ -103,6 +103,7 @@ require_once '../PHP/PHPincioAdmin.php';
                                 data-idioma="<?= htmlspecialchars($livro['idioma']) ?>"
                                 data-categoria="<?= $livro['categoria_id'] ?>"
                                 data-descricao="<?= htmlspecialchars($livro['descricao']) ?>"
+                                data-imagem-capa="<?= htmlspecialchars($livro['imagem_capa'])?>"
                                 onclick="showEditBookModal(this)">
                                 ✏️ Editar
                             </button>
