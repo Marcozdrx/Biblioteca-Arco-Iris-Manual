@@ -1,0 +1,354 @@
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('../IMG/fundo.png') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: #333;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 0;
+}
+
+/* Botão voltar */
+.voltar {
+    position: fixed;
+    top: 14px;
+    left: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    background: #ffaa33;
+    border-radius: 25px;
+    padding: 8px 15px;
+    z-index: 1001;
+    transition: all 0.3s ease;
+}
+
+.voltar:hover {
+    background: #fa9108;
+    transform: translateY(-1px);
+}
+
+/* Header */
+.header {
+    background: #333;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-left: 80px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header-btn {
+    background: #f3a53f;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.header-btn:hover {
+    background: #fa9108;
+}
+
+/* Container principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 20px 40px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Container de detalhes do livro */
+.book-details-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Capa do livro */
+.book-cover {
+    text-align: center;
+}
+
+.book-cover img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.book-cover img:hover {
+    transform: scale(1.02);
+}
+
+/* Informações do livro */
+.book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.book-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+/* Metadados do livro */
+.book-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: #666;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-value {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.meta-value.available {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.meta-value.unavailable {
+    color: #f44336;
+    font-weight: 600;
+}
+
+/* Descrição do livro */
+.book-description {
+    background: rgba(255, 170, 51, 0.1);
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 4px solid #ffaa33;
+}
+
+.book-description h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.book-description p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Ações do livro */
+.book-actions {
+    margin-top: 20px;
+}
+
+.btn-emprestar {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-emprestar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* Estados especiais */
+.already-borrowed {
+    background: rgba(76, 175, 80, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 4px solid #4CAF50;
+    text-align: center;
+}
+
+.already-borrowed p {
+    font-size: 16px;
+    color: #4CAF50;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.unavailable {
+    background: rgba(244, 67, 54, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 4px solid #f44336;
+    text-align: center;
+}
+
+.unavailable p {
+    font-size: 16px;
+    color: #f44336;
+    font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 100px 15px 30px;
+    }
+    
+    .book-details-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 25px;
+    }
+    
+    .book-cover {
+        order: 1;
+    }
+    
+    .book-info {
+        order: 2;
+    }
+    
+    .book-title {
+        font-size: 24px;
+        text-align: center;
+    }
+    
+    .book-meta {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .header-title {
+        margin-left: 0;
+        font-size: 16px;
+    }
+    
+    .header {
+        padding: 10px 15px;
+    }
+    
+    .header-buttons {
+        gap: 5px;
+    }
+    
+    .header-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-details-container {
+        padding: 20px;
+    }
+    
+    .book-title {
+        font-size: 20px;
+    }
+    
+    .btn-emprestar {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+    
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
