@@ -37,6 +37,7 @@ require_once '../PHP/conexao.php';
   <title>Registro - Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="../CSS/styles.css">
+  <script src="../JS/mascaras.js"></script>
 </head>
 <body>
   <div class="container">
@@ -54,11 +55,11 @@ require_once '../PHP/conexao.php';
           </div>
           <div class="input-group">
           <span class="icon">📚</span>
-          <input type="text" name="cpf" placeholder="CPF (somente números)" pattern="\d*" maxlength="11" required>
+          <input type="text" name="cpf" placeholder="CPF (000.000.000-00)" data-mascara="cpf" maxlength="14" required>
           </div>
           <div class="input-group">
           <span class="icon">📞</span>
-          <input type="tel" name="telefone" placeholder="Telefone" maxlength="11" required>
+          <input type="tel" name="telefone" placeholder="Telefone ((00) 00000-0000)" data-mascara="telefone" maxlength="15" required>
           </div>
           <div class="input-group">
           <span class="icon">✉️</span>
