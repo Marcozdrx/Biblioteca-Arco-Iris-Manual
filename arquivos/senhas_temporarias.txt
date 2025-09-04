@@ -1,0 +1,17 @@
+# Arquivo de Senhas Temporárias - Biblioteca Arco-Íris
+# Este arquivo contém as senhas temporárias geradas para recuperação de senha
+# 
+# Formato:
+# Email: [email do usuário]
+# Senha Temporária: [senha gerada]
+# Data/Hora: [data e hora da geração]
+# Usuário: [nome do usuário]
+# ---
+#
+# IMPORTANTE: Este arquivo deve ser mantido seguro e as senhas devem ser usadas apenas uma vez.
+#
+Email: loca@loca
+Senha Temporária: pMGXY1jV
+Data/Hora: 04/09/2025 15:17:49
+Usuário: teste
+---
