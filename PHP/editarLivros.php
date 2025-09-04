@@ -91,7 +91,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     if($stmt->execute()){
         echo "<script>alert('Livro atualizado com sucesso')</script>";
-        header('Location: ../HTML/inicio-admin.php')
+        header('Location: ../HTML/inicio-admin.php');
         
     }else{
         echo "<script>alert('Erro ao atualizar livro')</script>"; 
