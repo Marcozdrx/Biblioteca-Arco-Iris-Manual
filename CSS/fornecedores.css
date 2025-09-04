@@ -106,6 +106,34 @@ body::before {
     margin: 0;
 }
 
+/* Header buttons container */
+.header-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Botão de relatório */
+.report-btn {
+    background: #f3a53f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.report-btn:hover {
+    background: #fa9108;
+}
+
 .add-supplier-btn {
     background: #ffaa33;
     color: white;
@@ -612,6 +640,17 @@ body::before {
     
     .page-header h1 {
         font-size: 24px;
+    }
+    
+    .header-buttons {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .report-btn, .add-supplier-btn {
+        width: 100%;
+        justify-content: center;
     }
     
     .stats-overview {
