@@ -101,7 +101,7 @@ require_once '../PHP/PHPincioAdmin.php';
                         <p>Estoque: <?= htmlspecialchars($livro['estoque']) ?></p>
                         <form method="POST" class="book-actions" action="../PHP/DeletarLivros.php" onsubmit="return confirm('Quer mesmo deletar esse livro?')">
                             <input type="hidden" name="id" value="<?= $livro['id'] ?>">
-                            <button type="button" class="action-btn" 
+                            <button type="button" class="book-btn btn-edit" 
                                 data-livro-id="<?= $livro['id'] ?>"
                                 data-titulo="<?= htmlspecialchars($livro['titulo']) ?>"
                                 data-estoque="<?= $livro['estoque'] ?>"
@@ -116,7 +116,7 @@ require_once '../PHP/PHPincioAdmin.php';
                                 onclick="showEditBookModal(this)">
                                 ✏️ Editar
                             </button>
-                            <button type="submit" class="btn-delete" >🗑️ Excluir</button>
+                            <button type="submit" class="book-btn btn-delete">🗑️ Excluir</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
