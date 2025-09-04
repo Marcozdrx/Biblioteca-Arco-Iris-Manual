@@ -4,9 +4,93 @@ function showAddBookModal() {
     document.getElementById('modalTitle').textContent = 'Adicionar Novo Livro';
     document.getElementById('bookForm').reset();
     document.getElementById('bookId').value = '';
-    document.getElementById('capa').required = true; // Tornar campo de imagem obrigatório
+    document.getElementById('capa').required = true;
     document.getElementById('bookModal').style.display = 'block';
 }
+
+// Exemplo de dados de devoluções pendentes
+const devolucoesPendentes = [];
+  
+  // Atualiza o contador (você pode chamar isso ao carregar a página)
+  function atualizarContadorDevolucoes() {
+    const contador = document.getElementById("devolucoesCount");
+    contador.textContent = devolucoesPendentes.length;
+  }
+  
+  // Mostra o modal com a lista
+  function showDevolucoes() {
+    const modal = document.getElementById("modalDevolucoes");
+    const lista = document.getElementById("listaDevolucoes");
+  
+    // Limpa e preenche a lista
+    lista.innerHTML = "";
+    devolucoesPendentes.forEach(dev => {
+      const item = document.createElement("li");
+      item.textContent = `${dev.produto} - ${dev.motivo} (Data: ${dev.data})`;
+      lista.appendChild(item);
+    });
+  
+    modal.style.display = "block";
+  }
+  
+  // Fecha o modal
+  function fecharModal() {
+    document.getElementById("modalDevolucoes").style.display = "none";
+  }
+  
+  // Fecha ao clicar fora
+  window.onclick = function(event) {
+    const modal = document.getElementById("modalDevolucoes");
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  
+  // Chamar ao carregar a página
+  document.addEventListener("DOMContentLoaded", atualizarContadorDevolucoes);
+  
+
+// Exemplo de doações pendentes
+const doacoesPendentes = [];
+  
+  // Atualiza o contador de doações pendentes
+  function atualizarContadorDoacoes() {
+    const contador = document.getElementById("donationsCount");
+    contador.textContent = doacoesPendentes.length;
+  }
+  
+  // Mostra o modal de doações
+  function showAddBookModal() {
+    const modal = document.getElementById("modalDoacoes");
+    const lista = document.getElementById("listaDoacoes");
+  
+    // Limpa e preenche a lista de doações
+    lista.innerHTML = "";
+    doacoesPendentes.forEach(doacao => {
+      const item = document.createElement("li");
+      item.textContent = `${doacao.livro} - Doador: ${doacao.doador} (Data: ${doacao.data})`;
+      lista.appendChild(item);
+    });
+  
+    modal.style.display = "block";
+  }
+  
+  // Fecha o modal
+  function fecharModalDoacoes() {
+    document.getElementById("modalDoacoes").style.display = "none";
+  }
+  
+  // Fecha clicando fora do modal
+  window.onclick = function(event) {
+    const modal = document.getElementById("modalDoacoes");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+  
+  // Atualiza o contador ao carregar a página
+  document.addEventListener("DOMContentLoaded", atualizarContadorDoacoes);
+  
 
 function showEditBookModal(button) {
     // Pegar os dados do botão clicado
