@@ -124,15 +124,37 @@ function createBookCard(book) {
         <div class="book-title">${book.titulo}</div>
         <div class="book-author">${book.nome_autor || 'Autor não informado'}</div>
         <div class="book-stock">Estoque: ${book.estoque || 0}</div>
-        <button class="ver-mais-btn" onclick="viewBook(${book.id})">Ver mais</button>
+        <div class="book-buttons">
+            <button class="ver-mais-btn" onclick="viewBook(${book.id})">Ver mais</button>
+            <button class="emprestar-btn" onclick="fazerEmprestimo(${book.id})" ${book.estoque <= 0 ? 'disabled' : ''}>
+                ${book.estoque <= 0 ? 'Indisponível' : 'Emprestar'}
+            </button>
+        </div>
     `;
     return card;
 }
 
 // Função para visualizar detalhes do livro
 function viewBook(bookId) {
-    // Implementar modal ou redirecionamento para detalhes do livro
-    console.log('Visualizar livro:', bookId);
+    window.location.href = `detalhes-livro.php?id=${bookId}`;
+}
+
+// Função para fazer empréstimo
+function fazerEmprestimo(bookId) {
+    // Verificar limite antes de fazer empréstimo
+    fetch('../PHP/verificarLimiteEmprestimos.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.pode_emprestar) {
+                window.location.href = `../PHP/registrarEmprestimo.php?livro_id=${bookId}`;
+            } else {
+                alert(data.mensagem);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar limite:', error);
+            alert('Erro ao verificar disponibilidade para empréstimo');
+        });
 }
 
 // Função para pesquisar livros
@@ -150,6 +172,89 @@ function searchBooks(query) {
         }
     });
 }
+
+// Adicionar estilos CSS para os novos elementos
+const additionalStyles = document.createElement('style');
+additionalStyles.textContent = `
+    .book-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .ver-mais-btn, .emprestar-btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .ver-mais-btn {
+        background: #2196F3;
+        color: white;
+    }
+    
+    .ver-mais-btn:hover {
+        background: #1976D2;
+    }
+    
+    .emprestar-btn {
+        background: #4CAF50;
+        color: white;
+    }
+    
+    .emprestar-btn:hover:not(:disabled) {
+        background: #388E3C;
+    }
+    
+    .emprestar-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .book-card {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .book-card:hover {
+        transform: translateY(-2px);
+    }
+    
+    .book-cover {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .book-title {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    
+    .book-author {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .book-stock {
+        color: #4CAF50;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+`;
+
+document.head.appendChild(additionalStyles);
 
 // Inicialização quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function() {
