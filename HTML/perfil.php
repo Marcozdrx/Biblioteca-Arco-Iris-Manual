@@ -18,6 +18,14 @@ if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
 }
+
+// Verificar se há mensagens de retorno
+$mensagem = '';
+$tipo_mensagem = '';
+if (isset($_GET['mensagem']) && isset($_GET['tipo'])) {
+    $mensagem = $_GET['mensagem'];
+    $tipo_mensagem = $_GET['tipo'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -45,6 +53,12 @@ if (!isset($_SESSION['id'])) {
       <div class="profile-header">
         <h1>Meu Perfil</h1>
         <p>Gerencie suas informações pessoais</p>
+        
+        <?php if ($mensagem): ?>
+          <div class="mensagem <?= $tipo_mensagem ?>" style="margin-top: 15px;">
+            <?= htmlspecialchars($mensagem) ?>
+          </div>
+        <?php endif; ?>
       </div>
 
       <div class="profile-content">
@@ -84,7 +98,7 @@ if (!isset($_SESSION['id'])) {
         </div>
 
         <div class="profile-info">
-          <form id="profileForm" class="profile-form" action="atulizar_usuario.php" method="POST">
+          <form id="profileForm" class="profile-form" action="atualizar_usuario.php" method="POST">
             <div class="form-group">
               <label for="nome">Nome Completo</label>
               <input type="text" id="nome" name="nome" value="<?= $_SESSION['nome_usuario'] ?>" required>
