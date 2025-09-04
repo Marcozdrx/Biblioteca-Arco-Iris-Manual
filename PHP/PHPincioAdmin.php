@@ -26,6 +26,87 @@ $stmt = $pdo->prepare($sqlApresentaLivros);
 $stmt->execute();
 $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Buscar doações pendentes
+$doacoesPendentes = [];
+$sqlDoacoes = "SELECT d.*, u.nome as nome_usuario, u.email as email_usuario 
+               FROM doacoes d 
+               INNER JOIN usuarios u ON d.usuario_id = u.id 
+               WHERE d.status = 'pendente' 
+               ORDER BY d.data_doacao DESC";
+$stmt = $pdo->prepare($sqlDoacoes);
+$stmt->execute();
+$doacoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Buscar devoluções pendentes
+$devolucoesPendentes = [];
+$sqlDevolucoes = "SELECT e.*, l.titulo as titulo_livro, u.nome as nome_usuario, u.email as email_usuario 
+                  FROM emprestimos e 
+                  INNER JOIN livros l ON e.livro_id = l.id 
+                  INNER JOIN usuarios u ON e.usuario_id = u.id 
+                  WHERE e.status = 'emprestado' AND e.data_devolucao_prevista < CURDATE() 
+                  ORDER BY e.data_devolucao_prevista ASC";
+$stmt = $pdo->prepare($sqlDevolucoes);
+$stmt->execute();
+$devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Estatísticas para gráficos
+$stats = [];
+
+// Total de livros
+$sql = "SELECT COUNT(*) as total FROM livros WHERE ativo = TRUE";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$stats['totalLivros'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Livros emprestados
+$sql = "SELECT COUNT(*) as total FROM emprestimos WHERE status = 'emprestado'";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$stats['livrosEmprestados'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Total de usuários ativos
+$sql = "SELECT COUNT(*) as total FROM usuarios WHERE ativo = TRUE";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$stats['totalUsuarios'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Taxa de empréstimo
+$stats['taxaEmprestimo'] = $stats['totalLivros'] > 0 ? round(($stats['livrosEmprestados'] / $stats['totalLivros']) * 100, 1) : 0;
+
+// Top 10 livros mais emprestados
+$sql = "SELECT l.titulo, a.nome as autor, COUNT(e.id) as total_emprestimos, l.estoque
+        FROM livros l 
+        LEFT JOIN autores a ON l.autor_id = a.id
+        LEFT JOIN emprestimos e ON l.id = e.livro_id
+        WHERE l.ativo = TRUE
+        GROUP BY l.id, l.titulo, a.nome, l.estoque
+        ORDER BY total_emprestimos DESC
+        LIMIT 10";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$topLivros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Empréstimos por mês (últimos 6 meses)
+$sql = "SELECT DATE_FORMAT(data_emprestimo, '%Y-%m') as mes, COUNT(*) as total
+        FROM emprestimos 
+        WHERE data_emprestimo >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+        GROUP BY DATE_FORMAT(data_emprestimo, '%Y-%m')
+        ORDER BY mes DESC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$emprestimosMensais = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Últimos empréstimos
+$sql = "SELECT e.data_emprestimo, l.titulo, u.nome as usuario, e.status
+        FROM emprestimos e
+        INNER JOIN livros l ON e.livro_id = l.id
+        INNER JOIN usuarios u ON e.usuario_id = u.id
+        ORDER BY e.data_emprestimo DESC
+        LIMIT 10";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$ultimosEmprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
 }else{
