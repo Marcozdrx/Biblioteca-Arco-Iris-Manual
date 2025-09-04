@@ -188,19 +188,20 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     <div id="userModal" class="modal">
         <div class="modal-content">
             <h2 id="modalTitle">Adicionar Usuário</h2>
-            <form id="userForm">
+            <form id="userForm" method="POST" action="../PHP/editarUsuarios.php">
                 <div class="form-group">
+                    <input type="text" id="idUser" name="idUsuarioEdit">
                     <label for="userName">Nome Completo:</label>
-                    <input type="text" id="userName"  required>
+                    <input type="text" id="userName" name="nomeEdit"  required>
                 </div>
                 <div class="form-group" id="passwordGroup">
                     <label for="userPassword">Senha:</label>
                     <small>Deixe em branco para deixar a senha antiga</small>
-                    <input type="password" id="userPassword" placeholder="Digite a senha" required>
+                    <input type="password" id="userPassword" name="senhaNova" placeholder="Digite a senha">
                 </div>
                 <div class="form-group">
                     <label for="userStatus">Status:</label>
-                    <select id="userStatus">
+                    <select id="userStatus" name="statusUsuario">
                         <option value="1">Ativo</option>
                         <option value="0">Bloqueado</option>
                     </select>
@@ -259,6 +260,7 @@ function abrirModalEdicao(botao) {
     document.getElementById('userModal').style.display = 'block';
     
     // Preencher os campos
+    document.getElementById('idUser').value = usuarioId;
     document.getElementById('userName').value = nomeUsuario;
     document.getElementById('userStatus').value = statusUsuario;
     
