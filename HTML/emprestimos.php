@@ -67,6 +67,6 @@ if (!isset($_SESSION['id'])) {
     </div>
   </div>
 
- 
+  <script src="../JS/emprestimos.js"></script>
 </body>
 </html> 
