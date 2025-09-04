@@ -149,26 +149,27 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                                     title="Editar">
                                         ✏️
                                     </button>
-                                        <form method="POST" action="processarAcoes.php">
+                                        <form method="POST" action="../PHP/processarAcoes.php">
+                                            <input type="hidden" name="idUsuarioAcao" value="<?=$usuario['id']?>">
+                                            
                                         <?php if($usuario['ativo'] == 0): ?>
-                                            <button class="action-btn unblock-btn" 
-                                                onclick="desbloquearUsuario(<?=$usuario['id']?>)" 
-                                                title="'Desbloquear'">
+                                            <button class="action-btn unblock-btn" name="botao" value="desbloquear"
+                                                title="Desbloquear">
                                                 ✅
                                             </button>
                                         <?php else: ?>
                                             
-                                            <button class="action-btn  block-btn" 
-                                                onclick="bloquearUsuario(<?=$usuario['id']?>)" 
-                                                title="Bloquea'">
+                                            <button class="action-btn  block-btn" name="botao" value="bloquear"
+                                                title="Bloquear">
                                                 🚫
                                             </button>
                                             
                                         <?php endif; ?>
-                                        </form>
-                                        <button class="action-btn delete-btn" onclick="excluirUsuario(<?=$usuario['id']?>)" title="Excluir">
+                                        
+                                        <button class="action-btn delete-btn" name="botao" value="excluir">
                                             🗑️
                                         </button>
+                                        </form>
                                     </td>
                                     
                                 </tr>
