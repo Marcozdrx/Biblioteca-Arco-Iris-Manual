@@ -154,7 +154,7 @@ if($_SESSION['is_admin'] != 0){
             <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
             <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
 
-              <a class="botao-emprestar" href="emprestimos.php?livro_id=<?= $livro['id'] ?> &usuario_id=<?= $_SESSION['id'] ?>">Emprestar</a>
+              <a class="botao-emprestar" href="detalhes-livro.php?id=<?= $livro['id'] ?>">Ver Livro</a>
         </div>
     <?php endforeach; ?>
     </div>
