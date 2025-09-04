@@ -15,14 +15,11 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
       $telefone = $_POST['telefone'];
       $email = $_POST['email'];
       $cep = $_POST['cep'];
-      $numCasa = $_POST['numCasa'];
-      $complemento = $_POST['complemento'];
-      $bairro = $_POST['bairro'];
       $cidade = $_POST['cidade'];
       $estado = $_POST['estado'];
 
       // Construir o endereço completo
-      $endereco = $numCasa . " - " . $complemento . " - " . $bairro;
+      $endereco = $cidade . " - " . $estado;
 
       $sql = "INSERT INTO fornecedores (nome, cpf_cnpj, telefone, email, cep, endereco, cidade, estado) VALUES (:nome, :cpf_cnpj, :telefone, :email, :cep, :endereco, :cidade, :estado)";
       $stmt = $pdo->prepare($sql);
@@ -61,8 +58,7 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
         function buscarCEP(cep) {
             cep = cep.replace(/\D/g, '');
             if (cep.length !== 8) {
-                alert("CEP inválido! Digite os 8 dígitos do CEP corretamente.");
-                return;
+                return; // Não mostra alerta, apenas retorna silenciosamente
             }
 
             fetch(`https://viacep.com.br/ws/${cep}/json/`)
@@ -79,10 +75,9 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                     // Preencher os campos automaticamente
                     document.querySelector('input[name="estado"]').value = data.uf || '';
                     document.querySelector('input[name="cidade"]').value = data.localidade || '';
-                    document.querySelector('input[name="bairro"]').value = data.bairro || '';
                     
-                    // Focar no campo número da casa após preencher
-                    document.querySelector('input[name="numCasa"]').focus();
+                    // Focar no campo cidade após preencher
+                    document.querySelector('input[name="cidade"]').focus();
                 })
                 .catch(error => {
                     alert("Erro ao buscar o CEP. Tente novamente.");
@@ -156,15 +151,7 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
             </tr>
             <tr>
                 <td><center>CEP:</center></td>
-                <td><input type="text" id="cep" name="cep" data-mascara="cep" placeholder="00000-000" maxlength="9" required/></td>
-                <td>Nº Casa:</td>
-                <td><input type="text" id="numCasa" name="numCasa" data-mascara="numero" maxlength="5" required/></td>
-                <td>Complemento:</td>
-                <td><input type="text" id="complemento" name="complemento" data-mascara="complemento" maxlength="100" required /></td>
-            </tr>
-            <tr>
-                <td><center>Bairro:</center></td>
-                <td><input type="text" id="bairro" name="bairro"  oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÿ\s]/g, '')" required /></td>
+                <td><input type="text" id="cep" name="cep" data-mascara="cep" placeholder="00000-000" maxlength="9" onblur="buscarCEP(this.value)" required/></td>
                 <td>Cidade:</td>
                 <td><input type="text" id="cidade" name="cidade"  oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÿ\s]/g, '')"  required/></td>
                 <td>Estado:</td>
