@@ -26,6 +26,7 @@ if (!isset($_SESSION['id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Perfil - Biblioteca Arco-Íris</title>
   <link rel="stylesheet" href="../CSS/perfil.css">
+  <script src="../JS/mascaras.js"></script>
 </head>
 <body>
   <header class="header">
@@ -91,12 +92,12 @@ if (!isset($_SESSION['id'])) {
 
             <div class="form-group">
               <label for="cpf">CPF</label>
-              <input type="text" id="cpf" name="cpf" maxlength="14" value="<?= $_SESSION['cpf_usuario'] ?>" required>
+              <input type="text" id="cpf" name="cpf" data-mascara="cpf" maxlength="14" value="<?= $_SESSION['cpf_usuario'] ?>" required>
             </div>
 
                          <div class="form-group">
                <label for="telefone">Telefone</label>
-               <input type="text" id="telefone" name="telefone" value="<?= $_SESSION['telefone_usuario'] ?>" required>
+               <input type="text" id="telefone" name="telefone" data-mascara="telefone" maxlength="15" value="<?= $_SESSION['telefone_usuario'] ?>" required>
              </div>
 
             <div class="form-actions">
