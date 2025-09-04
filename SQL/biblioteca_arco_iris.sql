@@ -6,6 +6,8 @@
 -- Tempo de geração: 04/09/2025 às 21:50
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
+CREATE DATABASE biblioteca_arco_iris;
+USE biblioteca_arco_iris;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
