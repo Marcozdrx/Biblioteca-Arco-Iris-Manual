@@ -8,6 +8,11 @@ function showAddBookModal() {
     document.getElementById('bookModal').style.display = 'block';
 }
 
+// Função para fechar modal de livro
+function closeBookModal() {
+    document.getElementById('bookModal').style.display = 'none';
+}
+
 // Exemplo de dados de devoluções pendentes
 const devolucoesPendentes = [];
   
@@ -44,6 +49,12 @@ const devolucoesPendentes = [];
     if (event.target == modal) {
       modal.style.display = "none";
     }
+    
+    // Também fecha o modal de livro ao clicar fora
+    const bookModal = document.getElementById("bookModal");
+    if (event.target == bookModal) {
+      bookModal.style.display = "none";
+    }
   }
   
   // Chamar ao carregar a página
@@ -59,8 +70,8 @@ const doacoesPendentes = [];
     contador.textContent = doacoesPendentes.length;
   }
   
-  // Mostra o modal de doações
-  function showAddBookModal() {
+  // Mostra o modal de doações (renomeada para evitar conflito)
+  function showDoacoesModal() {
     const modal = document.getElementById("modalDoacoes");
     const lista = document.getElementById("listaDoacoes");
   
@@ -371,9 +382,6 @@ function openModal() {
 document.getElementById("bookModal").style.display = "flex";
 }
 
-function closeBookModal() {
-document.getElementById("bookModal").style.display = "none";
-}
 function closeEditModal() {
     document.getElementById("editModal").style.display = "none";
     }
