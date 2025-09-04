@@ -43,11 +43,11 @@ require_once '../PHP/PHPincioAdmin.php';
                     <a href="agendamentos.php" class="dropdown-item">📅 Agendamentos</a>
                     <button class="dropdown-item-btn" onclick="toggleDonationsPanel()">
                         <span>🎁 Doações Pendentes</span>
-                        <span class="count-badge" id="donationsCount">0</span>
+                        <span class="count-badge" id="donationsCount"><?= count($doacoesPendentes) ?></span>
                     </button>
                     <button class="dropdown-item-btn" onclick="toggleDevolucoesPanel()">
                         <span>📚 Devoluções Pendentes</span>
-                        <span class="count-badge" id="devolucoesCount">0</span>
+                        <span class="count-badge" id="devolucoesCount"><?= count($devolucoesPendentes) ?></span>
                     </button>
                 </div>
             </div>
@@ -198,15 +198,39 @@ require_once '../PHP/PHPincioAdmin.php';
                 <button class="btn-cancel" onclick="closeDeleteModal()">Cancelar</button>
             </div>
         </div>
-    </div>
-
+        </div>
+    
+    <!-- Overlay para os painéis -->
+    <div class="panel-overlay" id="panelOverlay" onclick="closeAllPanels()"></div>
+    
     <div class="donations-panel" id="donationsPanel">
         <div class="donations-header">
             <h2 class="donations-title">Doações Pendentes</h2>
             <button class="close-donations" onclick="toggleDonationsPanel()">&times;</button>
         </div>
         <div id="donationsList">
-            <!-- As doações pendentes serão inseridas aqui via JavaScript -->
+            <?php if (empty($doacoesPendentes)): ?>
+                <p class="no-data">Nenhuma doação pendente</p>
+            <?php else: ?>
+                <?php foreach ($doacoesPendentes as $doacao): ?>
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <h4><?= htmlspecialchars($doacao['titulo_livro']) ?></h4>
+                            <p><strong>Doador:</strong> <?= htmlspecialchars($doacao['nome_usuario']) ?></p>
+                            <p><strong>Email:</strong> <?= htmlspecialchars($doacao['email_usuario']) ?></p>
+                            <p><strong>Data:</strong> <?= date('d/m/Y', strtotime($doacao['data_doacao'])) ?></p>
+                            <p><strong>Descrição:</strong> <?= htmlspecialchars($doacao['descricao']) ?></p>
+                        </div>
+                                                 <div class="donation-actions">
+                             <button class="btn-accept" onclick="aceitarDoacao(<?= $doacao['id'] ?>)">Aceitar</button>
+                             <button class="btn-reject" onclick="recusarDoacao(<?= $doacao['id'] ?>)">Recusar</button>
+                             <?php if ($doacao['status'] === 'recusada'): ?>
+                                 <button class="btn-delete" onclick="deletarDoacao(<?= $doacao['id'] ?>)">Deletar</button>
+                             <?php endif; ?>
+                         </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -216,7 +240,26 @@ require_once '../PHP/PHPincioAdmin.php';
             <button class="close-devolucoes" onclick="toggleDevolucoesPanel()">&times;</button>
         </div>
         <div id="devolucoesList">
-            <!-- As devoluções pendentes serão inseridas aqui via JavaScript -->
+            <?php if (empty($devolucoesPendentes)): ?>
+                <p class="no-data">Nenhuma devolução pendente</p>
+            <?php else: ?>
+                <?php foreach ($devolucoesPendentes as $devolucao): ?>
+                    <div class="devolucao-item">
+                        <div class="devolucao-info">
+                            <h4><?= htmlspecialchars($devolucao['titulo_livro']) ?></h4>
+                            <p><strong>Usuário:</strong> <?= htmlspecialchars($devolucao['nome_usuario']) ?></p>
+                            <p><strong>Email:</strong> <?= htmlspecialchars($devolucao['email_usuario']) ?></p>
+                            <p><strong>Data de Empréstimo:</strong> <?= date('d/m/Y', strtotime($devolucao['data_emprestimo'])) ?></p>
+                            <p><strong>Data Prevista:</strong> <?= date('d/m/Y', strtotime($devolucao['data_devolucao_prevista'])) ?></p>
+                            <p><strong>Dias em Atraso:</strong> <?= max(0, (strtotime('today') - strtotime($devolucao['data_devolucao_prevista'])) / (60*60*24)) ?> dias</p>
+                        </div>
+                        <div class="devolucao-actions">
+                            <button class="btn-confirm" onclick="confirmarDevolucao(<?= $devolucao['id'] ?>)">Confirmar Devolução</button>
+                            <button class="btn-remind" onclick="enviarLembrete(<?= $devolucao['id'] ?>)">Enviar Lembrete</button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
     <script src="../JS/javaInicioAdmin.js"></script>
