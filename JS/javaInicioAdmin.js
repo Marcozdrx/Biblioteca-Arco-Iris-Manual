@@ -51,21 +51,44 @@ function showEditBookModal(button) {
 // Função para alternar painel de doações
 function toggleDonationsPanel() {
     const panel = document.getElementById('donationsPanel');
-    if (panel.style.display === 'block') {
-        panel.style.display = 'none';
+    const overlay = document.getElementById('panelOverlay');
+    
+    if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        overlay.classList.remove('show');
     } else {
-        panel.style.display = 'block';
+        // Fechar outros painéis primeiro
+        closeAllPanels();
+        panel.classList.add('show');
+        overlay.classList.add('show');
     }
 }
 
 // Função para alternar painel de devoluções
 function toggleDevolucoesPanel() {
     const panel = document.getElementById('devolucoesPanel');
-    if (panel.style.display === 'block') {
-        panel.style.display = 'none';
+    const overlay = document.getElementById('panelOverlay');
+    
+    if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        overlay.classList.remove('show');
     } else {
-        panel.style.display = 'block';
+        // Fechar outros painéis primeiro
+        closeAllPanels();
+        panel.classList.add('show');
+        overlay.classList.add('show');
     }
+}
+
+// Função para fechar todos os painéis
+function closeAllPanels() {
+    const donationsPanel = document.getElementById('donationsPanel');
+    const devolucoesPanel = document.getElementById('devolucoesPanel');
+    const overlay = document.getElementById('panelOverlay');
+    
+    donationsPanel.classList.remove('show');
+    devolucoesPanel.classList.remove('show');
+    overlay.classList.remove('show');
 }
 
 // Função para deletar livro
@@ -118,27 +141,136 @@ function closeDeleteModal() {
     window.currentBookId = null;
 }
 
-// Função para aceitar doação (será chamada pelo PHP)
-function acceptDonation(donationId) {
+// Função para aceitar doação
+function aceitarDoacao(doacaoId) {
     if (confirm('Tem certeza que deseja aceitar esta doação?')) {
-        // Redirecionar para uma página PHP que fará a aceitação
-        window.location.href = `accept_donation.php?id=${donationId}`;
+        const formData = new FormData();
+        formData.append('doacao_id', doacaoId);
+        formData.append('acao', 'aceitar');
+        
+        fetch('../PHP/processarDoacao.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Doação aceita com sucesso!');
+                location.reload();
+            } else {
+                alert('Erro ao aceitar doação: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao processar doação');
+        });
     }
 }
 
-// Função para recusar doação (será chamada pelo PHP)
-function rejectDonation(donationId) {
+// Função para recusar doação
+function recusarDoacao(doacaoId) {
     if (confirm('Tem certeza que deseja recusar esta doação?')) {
-        // Redirecionar para uma página PHP que fará a recusa
-        window.location.href = `reject_donation.php?id=${donationId}`;
+        const formData = new FormData();
+        formData.append('doacao_id', doacaoId);
+        formData.append('acao', 'recusar');
+        
+        fetch('../PHP/processarDoacao.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Doação recusada com sucesso!');
+                location.reload();
+            } else {
+                alert('Erro ao recusar doação: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao processar doação');
+        });
     }
 }
 
-// Função para confirmar devolução (será chamada pelo PHP)
-function confirmarDevolucao(devolucaoId) {
+// Função para confirmar devolução
+function confirmarDevolucao(emprestimoId) {
     if (confirm('Tem certeza que deseja confirmar esta devolução?')) {
-        // Redirecionar para uma página PHP que fará a confirmação
-        window.location.href = `confirm_devolucao.php?id=${devolucaoId}`;
+        const formData = new FormData();
+        formData.append('emprestimo_id', emprestimoId);
+        formData.append('acao', 'confirmar');
+        
+        fetch('../PHP/processarDevolucao.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Devolução confirmada com sucesso!');
+                location.reload();
+            } else {
+                alert('Erro ao confirmar devolução: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao processar devolução');
+        });
+    }
+}
+
+// Função para deletar doação
+function deletarDoacao(doacaoId) {
+    if (confirm('Tem certeza que deseja deletar esta doação? Esta ação não pode ser desfeita.')) {
+        const formData = new FormData();
+        formData.append('doacao_id', doacaoId);
+        
+        fetch('../PHP/deletarDoacao.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Doação deletada com sucesso!');
+                location.reload();
+            } else {
+                alert('Erro ao deletar doação: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao deletar doação');
+        });
+    }
+}
+
+// Função para enviar lembrete
+function enviarLembrete(emprestimoId) {
+    if (confirm('Deseja enviar um lembrete para este usuário?')) {
+        const formData = new FormData();
+        formData.append('emprestimo_id', emprestimoId);
+        formData.append('acao', 'lembrete');
+        
+        fetch('../PHP/processarDevolucao.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Lembrete enviado com sucesso!');
+            } else {
+                alert('Erro ao enviar lembrete: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao enviar lembrete');
+        });
     }
 }
 
