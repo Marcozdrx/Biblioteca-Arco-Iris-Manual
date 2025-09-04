@@ -89,6 +89,13 @@ $ultimosEmprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </header>
 
     <div class="container">
+        <div class="page-header">
+            <h1>Análise de Dados</h1>
+            <button class="report-btn" onclick="gerarRelatorioGraficos()">
+                📊 Gerar Relatório
+            </button>
+        </div>
+        
         <div class="stats-overview">
             <div class="stat-card">
                 <div class="stat-icon">📚</div>
@@ -252,6 +259,11 @@ $ultimosEmprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
             }
         });
+        
+        // Função para gerar relatório de gráficos
+        function gerarRelatorioGraficos() {
+            window.location.href = '../PHP/relatorioGraficos.php';
+        }
     </script>
 </body>
 </html> 
