@@ -32,9 +32,14 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     <div class="container">
         <div class="page-header">
             <h1>Gestão de Fornecedores</h1>
-            <button class="add-supplier-btn" onclick="window.location.href='cadastrar-fornecedores.php'">
-                <span>+</span> Adicionar Fornecedor
-            </button>
+            <div class="header-buttons">
+                <button class="report-btn" onclick="gerarRelatorioFornecedores()">
+                    📊 Relatório
+                </button>
+                <button class="add-supplier-btn" onclick="window.location.href='cadastrar-fornecedores.php'">
+                    <span>+</span> Adicionar Fornecedor
+                </button>
+            </div>
         </div>
 
         <div class="stats-overview">
@@ -400,6 +405,11 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
             if (acaoConfirmada) {
                 acaoConfirmada();
             }
+        }
+
+        // Função para gerar relatório de fornecedores
+        function gerarRelatorioFornecedores() {
+            window.location.href = '../PHP/relatorioFornecedores.php';
         }
 
         // Fechar modais ao clicar fora
