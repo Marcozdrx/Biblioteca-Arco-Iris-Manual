@@ -13,7 +13,9 @@ $sql = "SELECT e.id as emprestimo_id, l.titulo as nome_livro, l.imagem_capa,
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute(); // Sem parâmetros
-$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
+$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
         
         
 ?>
