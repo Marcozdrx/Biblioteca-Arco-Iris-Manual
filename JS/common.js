@@ -96,38 +96,9 @@ function showSuccess(message) {
     }
 }
 
-// Função para carregar livros dinamicamente
-function loadBooks() {
-    fetch('../PHP/get_books.php')
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById('booksContainer');
-            if (container) {
-                container.innerHTML = '';
-                data.forEach(book => {
-                    const bookCard = createBookCard(book);
-                    container.appendChild(bookCard);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao carregar livros:', error);
-        });
-}
 
-// Função para criar card de livro
-function createBookCard(book) {
-    const card = document.createElement('div');
-    card.className = 'book-card';
-    card.innerHTML = `
-        <img src="${book.imagem_capa || '../IMG/default-avatar.svg'}" alt="${book.titulo}" class="book-cover">
-        <div class="book-title">${book.titulo}</div>
-        <div class="book-author">${book.nome_autor || 'Autor não informado'}</div>
-        <div class="book-stock">Estoque: ${book.estoque || 0}</div>
-        <button class="ver-mais-btn" onclick="viewBook(${book.id})">Ver mais</button>
-    `;
-    return card;
-}
+
+
 
 // Função para visualizar detalhes do livro
 function viewBook(bookId) {
