@@ -21,7 +21,7 @@ body::before {
 
 .container {
     width: 100%;
-    max-width: 1400px;
+    max-width: 100%;
     padding: 20px;
     position: relative;
     z-index: 1;
@@ -30,9 +30,9 @@ body::before {
 
 .header {
     background: rgba(51, 51, 51, 0.95);
-    padding: 15px 20px;
+    padding: 10px 15px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     position: fixed;
     top: 0;
@@ -41,36 +41,43 @@ body::before {
     z-index: 100;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     backdrop-filter: blur(10px);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .header-title {
     color: white;
     display: flex;
-    margin-right: 140px;
-    margin-left: 50px;
     align-items: center;
-    gap: 15px;
-    font-size: 18px;
+    gap: 10px;
+    font-size: 14px;
     font-weight: bold;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .header-buttons {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     align-items: center;
-    margin-left: auto;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 
 .header-btn {
     background: #f3a53f;
     color: white;
-    padding: 8px 15px;
+    padding: 5px 8px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 11px;
     transition: background-color 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .header-btn:hover {
@@ -133,19 +140,20 @@ body::before {
 
 .admin-container {
     display: flex;
-    gap: 20px;
-    padding: 30px;
-    margin-top: 80px;
-    max-width: 1400px;
+    gap: 15px;
+    padding: 20px;
+    margin-top: 70px;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .books-section {
     background: rgba(243, 165, 63, 0.95);
-    padding: 40px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     width: 100%;
@@ -153,41 +161,51 @@ body::before {
     position: relative;
     z-index: 1;
     backdrop-filter: blur(5px);
+    min-height: 400px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .books-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 10px;
     position: relative;
     z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .books-title {
     color: #333;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
     margin: 0;
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .books-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 80px 60px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px 15px;
     margin: 0 auto;
     justify-content: center;
-    padding: 40px 0;
-    max-width: 1600px;
+    padding: 20px 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .book-card {
     background: white;
     border-radius: 12px;
-    padding: 18px;
+    padding: 15px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -195,10 +213,11 @@ body::before {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 300px;
+    min-height: 280px;
     margin: 0 auto;
     width: 100%;
-    max-width: 200px;
+    max-width: 180px;
+    box-sizing: border-box;
 }
 
 .book-card:hover {
@@ -259,41 +278,53 @@ body::before {
 
 .book-actions {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
     margin-top: auto;
     padding-top: 15px;
+    align-items: center;
+    width: 100%;
 }
 
 .edit-btn, .delete-btn {
-    padding: 5px 8px;
+    padding: 8px 12px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: bold;
     transition: all 0.3s ease;
     color: white;
     flex: 1;
-    max-width: 60px;
+    max-width: 75px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .edit-btn {
     background: #28a745;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
 }
 
 .edit-btn:hover {
     background: #218838;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
 
 .delete-btn {
     background: #dc3545;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
 .delete-btn:hover {
     background: #c82333;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
 
 .book-btn {
@@ -337,17 +368,18 @@ body::before {
 .action-btn {
     background: #28a745;
     color: white;
-    padding: 12px 24px;
+    padding: 8px 16px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     transition: all 0.3s ease;
     white-space: nowrap;
     position: relative;
     z-index: 1;
     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    flex-shrink: 0;
 }
 
 .action-btn:hover {
@@ -456,9 +488,9 @@ body::before {
     position: relative;
     background: white;
     margin: 5% auto;
-    padding: 30px;
+    padding: 25px;
     width: 90%;
-    max-width: 600px;
+    max-width: 500px;
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     max-height: 80vh;
@@ -482,15 +514,15 @@ body::before {
 .modal-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .modal-form input,
 .modal-form textarea {
-    padding: 12px;
+    padding: 10px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
     width: 100%;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
@@ -505,11 +537,11 @@ body::before {
 .modal-form button {
     background: #f3a53f;
     color: white;
-    padding: 15px 30px;
+    padding: 12px 24px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     transition: all 0.3s ease;
     margin-top: 10px;
@@ -693,17 +725,19 @@ body::before {
 }
 .voltar{
     position: fixed;
-    top: 18px;
-    left: 8px;
+    top: 15px;
+    left: 5px;
     color: white;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     background: #f3a53f;
-    border-radius: 8px;
-    padding: 8px 16px;
+    border-radius: 6px;
+    padding: 5px 8px;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    z-index: 101;
 }
 
 .voltar:hover {
