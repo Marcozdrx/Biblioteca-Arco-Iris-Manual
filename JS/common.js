@@ -97,29 +97,8 @@ function showSuccess(message) {
 }
 
 
-<<<<<<< HEAD
 
 
-=======
-// Função para criar card de livro
-function createBookCard(book) {
-    const card = document.createElement('div');
-    card.className = 'book-card';
-    card.innerHTML = `
-        <img src="${book.imagem_capa || '../IMG/default-avatar.svg'}" alt="${book.titulo}" class="book-cover">
-        <div class="book-title">${book.titulo}</div>
-        <div class="book-author">${book.nome_autor || 'Autor não informado'}</div>
-        <div class="book-stock">Estoque: ${book.estoque || 0}</div>
-        <div class="book-buttons">
-            <button class="ver-mais-btn" onclick="viewBook(${book.id})">Ver mais</button>
-            <button class="emprestar-btn" onclick="fazerEmprestimo(${book.id})" ${book.estoque <= 0 ? 'disabled' : ''}>
-                ${book.estoque <= 0 ? 'Indisponível' : 'Emprestar'}
-            </button>
-        </div>
-    `;
-    return card;
-}
->>>>>>> 7a319c0e12a809cf69e3fa4abc3874f8194c96f1
 
 // Função para visualizar detalhes do livro
 function viewBook(bookId) {
