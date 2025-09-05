@@ -1,5 +1,21 @@
 <?php
 require_once '../PHP/PHPincioAdmin.php';
+
+
+
+$sql = "SELECT e.id as emprestimo_id, l.titulo as nome_livro, l.imagem_capa, 
+               u.nome as nome_usuario, u.email as email_usuario, 
+               e.data_devolucao_prevista, e.data_emprestimo, e.status
+        FROM emprestimos e
+        INNER JOIN livros l ON e.livro_id = l.id
+        INNER JOIN usuarios u ON e.usuario_id = u.id
+        WHERE e.status IN ('aguardando_devolucao')";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute(); // Sem parâmetros
+$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
+        
+        
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -225,7 +241,7 @@ require_once '../PHP/PHPincioAdmin.php';
             <button class="close-devolucoes" onclick="toggleDevolucoesPanel()">&times;</button>
         </div>
         <div id="devolucoesList">
-            <!-- As devoluções pendentes serão inseridas aqui via JavaScript -->
+            
         </div>
     </div>
     <script src="../JS/javaInicioAdmin.js"></script>

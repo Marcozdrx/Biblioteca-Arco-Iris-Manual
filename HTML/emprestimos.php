@@ -144,6 +144,6 @@ if(isset($_POST['devolver'])){
     </div>
   </div>
 
-  <script src="../JS/emprestimos.js"></script>
+
 </body>
 </html> 
