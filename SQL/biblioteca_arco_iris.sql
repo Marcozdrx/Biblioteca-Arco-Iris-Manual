@@ -9,6 +9,9 @@
 CREATE DATABASE biblioteca_arco_iris;
 USE biblioteca_arco_iris;
 
+CREATE DATABASE biblioteca_arco_iris;
+USE biblioteca_arco_iris;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
