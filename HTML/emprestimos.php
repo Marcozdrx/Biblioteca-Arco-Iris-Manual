@@ -7,6 +7,23 @@ if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
 }
+
+$idusuario = $_SESSION['id'];
+
+$emprestimos = [];
+$sql = "SELECT emprestimos.*, livros.titulo, livros.imagem_capa FROM emprestimos 
+        INNER JOIN livros ON emprestimos.livro_id = livros.id 
+        WHERE emprestimos.usuario_id = ? AND emprestimos.status IN ('emprestado', 'atrasado')";   
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idusuario]);
+$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if(isset($_POST['renovacao'])){
+  $sql = "UPDATE emprestimos SET data_devolucao_prevista = DATE_ADD(data_devolucao_prevista, INTERVAL 7 DAY), renovado = TRUE WHERE id = :id";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([':id' => $_POST['id']]);
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +46,57 @@ if (!isset($_SESSION['id'])) {
     </div>
   </header>
   <div class="emprestimos-container" id="emprestimosContainer">
-    <!-- Empréstimos serão carregados via JS -->
+    <?php if(!empty($emprestimos)): ?>
+      <?php foreach ($emprestimos as $emprestimo): ?>
+        <div class='emprestimo-card'>
+          <?php if(!empty($emprestimo['imagem_capa'])): ?>
+            <?php
+                $imagemData = $emprestimo['imagem_capa'];
+                // Verificar se é WebP 
+                if (substr($imagemData, 0, 4) === 'RIFF') {
+                    $mimeType = 'image/webp';
+                } else {
+                    // Usar finfo para outros formatos
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $mimeType = finfo_buffer($finfo, $imagemData);
+                    finfo_close($finfo);
+                }
+                
+                // Verificar se o MIME foi detectado corretamente
+                if (!$mimeType || $mimeType === 'application/octet-stream') {
+                    $mimeType = 'image/webp'; // Fallback para WebP
+                }
+            ?>
+            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
+          <?php else: ?>
+            <img src="../IMG/default-avatar.svg" alt="capa do livro">
+          <?php endif; ?>
+          <div class='emprestimo-info'>
+            <h3><?=htmlspecialchars($emprestimo['titulo'])?></h3>
+            <p><span class='status'><?=htmlspecialchars($emprestimo['status'])?></span></p>
+            <p>Data do Empréstimo: <?=date('d/m/Y', strtotime($emprestimo['data_emprestimo']))?></p>
+            <p>Data de Devolução: <?=date('d/m/Y', strtotime($emprestimo['data_devolucao_prevista']))?></p>
+            <?php if($emprestimo['multa_valor'] > 0): ?>
+              <p>Multa: R$ <?=number_format($emprestimo['multa_valor'], 2, ',', '.')?></p>
+            <?php endif; ?>
+          </div>
+          <div class='emprestimo-actions'>
+            <form method="POST" action="emprestimos.php">
+              <input type="hidden" name="id" value="<?= htmlspecialchars($emprestimo['id'])?>">
+              <?php if($emprestimo['renovado'] == 1): ?>
+                  <button disabled>Já renovado</button>
+              <?php else: ?>
+                  <button name="renovacao">Renovar livro</button>
+              <?php endif; ?>
+            </form>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <div class='emprestimo-card'>
+        <h3>Nenhum empréstimo encontrado</h3>
+      </div>
+    <?php endif; ?>
   </div>
 
   <!-- Modal de Pagamento de Multa -->
