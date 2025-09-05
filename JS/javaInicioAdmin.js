@@ -13,13 +13,12 @@ function closeBookModal() {
     document.getElementById('bookModal').style.display = 'none';
 }
 
-// Exemplo de dados de devoluções pendentes
-const devolucoesPendentes = [];
-  
-  // Atualiza o contador (você pode chamar isso ao carregar a página)
+// Atualiza o contador (você pode chamar isso ao carregar a página)
   function atualizarContadorDevolucoes() {
     const contador = document.getElementById("devolucoesCount");
-    contador.textContent = devolucoesPendentes.length;
+    if (contador && typeof devolucoesPendentes !== 'undefined') {
+      contador.textContent = devolucoesPendentes.length;
+    }
   }
   
   // Mostra o modal com a lista
@@ -27,27 +26,53 @@ const devolucoesPendentes = [];
     const modal = document.getElementById("modalDevolucoes");
     const lista = document.getElementById("listaDevolucoes");
   
+    if (!modal || !lista) {
+      console.error("Modal ou lista não encontrados");
+      return;
+    }
+  
     // Limpa e preenche a lista
     lista.innerHTML = "";
-    devolucoesPendentes.forEach(dev => {
+    
+    if (typeof devolucoesPendentes !== 'undefined' && devolucoesPendentes.length > 0) {
+      devolucoesPendentes.forEach(dev => {
+        const item = document.createElement("li");
+        item.innerHTML = `
+          <strong>${dev.titulo_livro}</strong><br>
+          Usuário: ${dev.nome_usuario}<br>
+          Data prevista: ${dev.data_devolucao_prevista}<br>
+          Email: ${dev.email_usuario}
+        `;
+        item.style.marginBottom = "10px";
+        item.style.padding = "10px";
+        item.style.backgroundColor = "#f0f0f0";
+        item.style.borderRadius = "5px";
+        lista.appendChild(item);
+      });
+    } else {
       const item = document.createElement("li");
-      item.textContent = `${dev.produto} - ${dev.motivo} (Data: ${dev.data})`;
+      item.textContent = "Nenhuma devolução pendente";
+      item.style.textAlign = "center";
+      item.style.fontStyle = "italic";
+      item.style.color = "#666";
       lista.appendChild(item);
-    });
+    }
   
-    modal.style.display = "block";
+    // Usar classe em vez de style
+    modal.classList.add("show");
   }
   
   // Fecha o modal
   function fecharModal() {
-    document.getElementById("modalDevolucoes").style.display = "none";
+    const modal = document.getElementById("modalDevolucoes");
+    modal.classList.remove("show");
   }
   
   // Fecha ao clicar fora
   window.onclick = function(event) {
     const modal = document.getElementById("modalDevolucoes");
     if (event.target == modal) {
-      modal.style.display = "none";
+      modal.classList.remove("show");
     }
     
     // Também fecha o modal de livro ao clicar fora
