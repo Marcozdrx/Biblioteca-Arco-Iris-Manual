@@ -36,7 +36,7 @@ require_once '../PHP/PHPincioAdmin.php';
                 </button>
             </a>
             
-            <div class="dropdown-menu">
+            <div class="dropdown-menu dropdown-usuarios">
                 <a href="usuarios.php" class="header-btn dropdown-trigger">Usuários ▼</a>
                 <div class="dropdown-content">
                     <a href="usuarios.php" class="dropdown-item">👥 Gerenciar Usuários</a>
