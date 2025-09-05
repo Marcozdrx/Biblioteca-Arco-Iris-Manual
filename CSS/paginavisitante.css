@@ -161,7 +161,7 @@ body::before {
 }
 
 .book-title {
-    color: white;
+    color: rgb(0, 0, 0);
     font-size: 14px;
     text-align: center;
     margin: 10px 0;
@@ -173,8 +173,8 @@ body::before {
 }
 
 .ver-mais-btn {
-    background: white;
-    color: #333;
+    background: #ff9000;
+    color: #ff9000;
     padding: 8px 20px;
     border: none;
     border-radius: 5px;

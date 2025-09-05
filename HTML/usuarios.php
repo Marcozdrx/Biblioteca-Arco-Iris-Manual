@@ -70,29 +70,22 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
             <div class="stat-card">
                 <div class="stat-icon">👥</div>
                 <div class="stat-content">
-                    <h3 id="totalUsuarios">0</h3>
+                    <h3 id="totalUsuarios">23</h3>
                     <p>Total de Usuários</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">📚</div>
                 <div class="stat-content">
-                    <h3 id="usuariosAtivos">0</h3>
+                    <h3 id="usuariosAtivos">22</h3>
                     <p>Usuários Ativos</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">⚠️</div>
                 <div class="stat-content">
-                    <h3 id="usuariosBloqueados">0</h3>
+                    <h3 id="usuariosBloqueados">1</h3>
                     <p>Usuários Bloqueados</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-content">
-                    <h3 id="mediaEmprestimos">0</h3>
-                    <p>Média de Empréstimos</p>
                 </div>
             </div>
         </div>
