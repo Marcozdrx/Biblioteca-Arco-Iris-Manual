@@ -130,7 +130,7 @@ class TesteFornecedor:
         
         return dados
     
-    def acessar_pagina_fornecedor(self, url_base="http://localhost/Biblioteca-Arco-Iris-Manual/HTML/cadastrar-fornecedor-publico.php"):
+    def acessar_pagina_fornecedor(self, url_base="http://localhost:8080/Biblioteca-Arco-Iris-Manual/HTML/cadastrar-fornecedor-publico.php"):
         """Acessa a página de cadastro de fornecedor"""
         try:
             print(f"🌐 Acessando: {url_base}")

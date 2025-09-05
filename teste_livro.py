@@ -149,7 +149,7 @@ class TesteLivro:
         
         return dados
     
-    def acessar_pagina_admin(self, url_base="http://localhost/Biblioteca-Arco-Iris-Manual/HTML/admin-publico.php"):
+    def acessar_pagina_admin(self, url_base="http://localhost:8080/Biblioteca-Arco-Iris-Manual/HTML/admin-publico.php"):
         """Acessa a página de administração"""
         try:
             print(f"🌐 Acessando: {url_base}")
