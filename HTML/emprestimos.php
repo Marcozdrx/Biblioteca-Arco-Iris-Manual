@@ -13,16 +13,21 @@ $idusuario = $_SESSION['id'];
 $emprestimos = [];
 $sql = "SELECT emprestimos.*, livros.titulo, livros.imagem_capa FROM emprestimos 
         INNER JOIN livros ON emprestimos.livro_id = livros.id 
-        WHERE emprestimos.usuario_id = ? AND emprestimos.status IN ('emprestado', 'atrasado')";   
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$idusuario]);
-$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        WHERE emprestimos.usuario_id = ? AND emprestimos.status IN ('emprestado', 'atrasado', 'aguardando_devolucao')";   
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idusuario]);
+        $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['renovacao'])){
   $sql = "UPDATE emprestimos SET data_devolucao_prevista = DATE_ADD(data_devolucao_prevista, INTERVAL 7 DAY), renovado = TRUE WHERE id = :id";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([':id' => $_POST['id']]);
 
+}
+if(isset($_POST['devolver'])){
+  $sql = "UPDATE emprestimos SET `status` = 'aguardando_devolucao' WHERE id = :id";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([':id' => $_POST['id']]);
 }
 ?>
 
@@ -87,6 +92,11 @@ if(isset($_POST['renovacao'])){
                   <button disabled>Já renovado</button>
               <?php else: ?>
                   <button name="renovacao">Renovar livro</button>
+              <?php endif; ?>
+              <?php if($emprestimo['status'] == 'aguardando_devolucao'): ?>
+              <button disabled>Aguardando devolução</button>
+              <?php else: ?>
+              <button name="devolver">Devolver</button>
               <?php endif; ?>
             </form>
           </div>
