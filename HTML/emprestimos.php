@@ -100,8 +100,6 @@ if(isset($_POST['deletarEmprestimo'])){
           <div class='emprestimo-actions'>
             <form method="POST" action="emprestimos.php">
               <input type="hidden" name="id" value="<?= htmlspecialchars($emprestimo['id'])?>">
-              <?php if($emprestimo['renovado'] == 1): ?>
-                  <button disabled>Já renovado</button>
               <?php if($emprestimo['status'] == 'devolvido'): ?>
                 <button name="deletarEmprestimo">Deletar Emprestimo</button>
               <?php else: ?>
