@@ -27,6 +27,34 @@ try {
         header('Location: ../HTML/emprestimos.php');
         exit();
     }
+    
+    // Verificar limite de empréstimos
+    $sql = "SELECT valor FROM configuracoes WHERE chave = 'limite_emprestimos_usuario'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $config = $stmt->fetch(PDO::FETCH_ASSOC);
+    $limiteEmprestimos = $config ? (int) $config['valor'] : 5;
+    
+    $sql = "SELECT COUNT(*) AS total FROM emprestimos WHERE usuario_id = :usuario_id AND status = 'emprestado'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':usuario_id' => $usuarioId]);
+    $emprestimosAtivos = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    
+    if ($emprestimosAtivos >= $limiteEmprestimos) {
+        header('Location: ../HTML/emprestimos.php');
+        exit();
+    }
+    
+    // Verificar se tem multas não pagas
+    $sql = "SELECT COUNT(*) AS total FROM emprestimos WHERE usuario_id = :usuario_id AND status = 'emprestado' AND multa_valor > 0 AND multa_paga = 0";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':usuario_id' => $usuarioId]);
+    $temDebito = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'] > 0;
+    
+    if ($temDebito) {
+        header('Location: ../HTML/emprestimos.php');
+        exit();
+    }
 
     // Verificar estoque
     $sql = "SELECT estoque FROM livros WHERE id = :livro_id AND ativo = TRUE";
@@ -44,12 +72,20 @@ try {
         exit();
     }
 
-    // Criar empréstimo: data prevista = hoje + 14 dias
-    $sql = "INSERT INTO emprestimos (usuario_id, livro_id, data_emprestimo, data_devolucao_prevista, status) VALUES (:usuario_id, :livro_id, NOW(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), 'emprestado')";
+    // Buscar prazo de empréstimo das configurações
+    $sql = "SELECT valor FROM configuracoes WHERE chave = 'prazo_emprestimo_dias'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $config = $stmt->fetch(PDO::FETCH_ASSOC);
+    $prazoDias = $config ? (int) $config['valor'] : 7; // Padrão 7 dias se não configurado
+    
+    // Criar empréstimo com prazo das configurações
+    $sql = "INSERT INTO emprestimos (usuario_id, livro_id, data_emprestimo, data_devolucao_prevista, status) VALUES (:usuario_id, :livro_id, NOW(), DATE_ADD(CURDATE(), INTERVAL :prazo_dias DAY), 'emprestado')";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':usuario_id' => $usuarioId,
-        ':livro_id' => $livroId
+        ':livro_id' => $livroId,
+        ':prazo_dias' => $prazoDias
     ]);
 
     // Decrementar estoque
