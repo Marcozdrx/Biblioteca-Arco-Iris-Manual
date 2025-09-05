@@ -6,8 +6,8 @@
         $stmt = $pdo->prepare($sql);
         
         if($stmt->execute([':id' => $_POST['IdEmprestimo']])){
-            echo "Devolução aceita"
-            header('Location: ../HTML/inicio-admin.php')
+            echo "Devolução aceita";
+            header('Location: ../HTML/inicio-admin.php');
         }
     }
     
