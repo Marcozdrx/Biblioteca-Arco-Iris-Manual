@@ -37,8 +37,6 @@ function loadEmprestimos() {
             });
         })
         .catch(error => {
-            console.error('Erro ao carregar empréstimos:', error);
-            showMessage('Erro ao carregar empréstimos', 'error');
         });
 }
 
