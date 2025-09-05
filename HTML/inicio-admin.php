@@ -92,7 +92,6 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
             <a href="logout.php" class="header-btn">Sair</a>
@@ -243,36 +242,8 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
         </div>
     </div>
 
-    <div class="donations-panel" id="donationsPanel">
-        <div class="donations-header">
-            <h2 class="donations-title">Doações Pendentes</h2>
-            <button class="close-donations" onclick="toggleDonationsPanel()">&times;</button>
-        </div>
-        <div id="donationsList">
-            <!-- As doações pendentes serão inseridas aqui via JavaScript -->
-        </div>
-    </div>
 
-    <div class="devolucoes-panel" id="devolucoesPanel">
-        <div class="devolucoes-header">
-            <h2 class="devolucoes-title">Devoluções Pendentes</h2>
-            <button class="close-devolucoes" onclick="toggleDevolucoesPanel()">&times;</button>
-        </div>
-        <div id="devolucoesList">
-            
-        </div>
-    </div>
-    
-    <script>
-        // Passar dados de devoluções pendentes para o JavaScript
-        const devolucoesPendentes = <?php echo json_encode($devolucoesPendentes); ?>;
-        
-        // Atualizar o contador quando a página carregar
-        document.addEventListener('DOMContentLoaded', function() {
-            atualizarContadorDevolucoes();
-        });
-    </script>
-    
+
     <script src="../JS/javaInicioAdmin.js"></script>
 </body>
 </html> 
