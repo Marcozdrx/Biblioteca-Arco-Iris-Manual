@@ -7,6 +7,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   min-height: 100vh;
+  overflow-x: hidden; /* Evita scroll horizontal */
 }
 
 body::before {
@@ -89,9 +90,7 @@ body::before {
 .carousel-container {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
-  margin-top: 80px;
-  margin-bottom: 30px;
+  margin: 80px auto 30px auto;
   overflow: hidden;
   position: relative;
   background: linear-gradient(135deg, #ff9000 0%, #ffaa33 50%, #ff7b00 100%);
@@ -235,14 +234,14 @@ body::before {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 50px;
-  margin: 30px auto;
-  justify-content: space-between;
+  margin: 30px auto 30px 0px;
+  justify-content: flex-start;
   padding: 20px;
-  max-width: 1400px;
+  max-width: 1200px;
 }
 .book-card {
   padding: 10px;
-  min-height: 240px;
+  min-height: 200px;
   max-width: 220px;
   margin: 0 auto;
   width: 100%;
@@ -274,7 +273,7 @@ body::before {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 280px;
+    min-height: 220px;
     margin: 0 auto;
     width: 100%;
     max-width: 220px;
@@ -282,6 +281,25 @@ body::before {
 
 .book-card:hover {
   transform: translateY(-5px);
+}
+
+/* Melhorias para dispositivos móveis */
+@media (hover: none) and (pointer: coarse) {
+  .book-card:hover {
+    transform: none;
+  }
+  
+  .book-card:active {
+    transform: scale(0.95);
+  }
+  
+  .header-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .botao-emprestar:active {
+    transform: scale(0.95);
+  }
 }
 
 .book-cover {
@@ -321,15 +339,282 @@ body::before {
   background: #f0f0f0;
 }
 
+/* Melhorias de acessibilidade */
+.header-btn:focus,
+.botao-emprestar:focus,
+.ver-mais-btn:focus {
+  outline: 2px solid #ff9000;
+  outline-offset: 2px;
+}
+
+/* Melhor contraste para textos */
+.book-title {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.book-card p {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Media Queries para Responsividade */
+
+/* Tablets grandes e desktops pequenos */
 @media (max-width: 1200px) {
-  .books-container {
-    grid-template-columns: repeat(4, 1fr);
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+  }
+  
+  .carousel-container {
+    max-width: 800px;
+    padding: 20px;
+  }
+  
+  .carousel img {
+    width: 100px;
+    height: 140px;
   }
 }
 
+/* Tablets */
 @media (max-width: 768px) {
-  .books-container {
-    grid-template-columns: repeat(2, 1fr);
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 15px;
+  }
+  
+  .header-title {
+    margin-left: 0;
+    font-size: 18px;
+  }
+  
+  .header form {
+    order: 2;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .header form input {
+    width: 100% !important;
+    max-width: 300px;
+  }
+  
+  .header-buttons {
+    order: 3;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .header-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .carousel-container {
+    margin-top: 120px;
+    max-width: 100%;
+    padding: 15px;
+  }
+  
+  .carousel {
+    gap: 15px;
+  }
+  
+  .carousel img {
+    width: 80px;
+    height: 120px;
+  }
+  
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 15px;
+    margin: 30px auto 30px 0px;
+  }
+  
+  .book-card {
+    max-width: 180px;
+    min-height: 200px;
+    padding: 12px;
+  }
+  
+  .book-cover {
+    width: 100px;
+    height: 140px;
+  }
+  
+  .book-title {
+    font-size: 12px;
+    min-height: 35px;
+  }
+  
+  .botao-emprestar {
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+}
+
+/* Smartphones grandes */
+@media (max-width: 480px) {
+  .header {
     padding: 10px;
+  }
+  
+  .header-title {
+    font-size: 16px;
+  }
+  
+  .header-title img {
+    height: 25px;
+  }
+  
+  .header form input {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  
+  .header form button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .carousel-container {
+    margin-top: 140px;
+    padding: 10px;
+  }
+  
+  .carousel {
+    gap: 10px;
+  }
+  
+  .carousel img {
+    width: 60px;
+    height: 90px;
+  }
+  
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    padding: 10px;
+    margin: 30px auto 30px 0px;
+  }
+  
+  .book-card {
+    max-width: 140px;
+    min-height: 180px;
+    padding: 10px;
+  }
+  
+  .book-cover {
+    width: 80px;
+    height: 110px;
+  }
+  
+  .book-title {
+    font-size: 11px;
+    min-height: 30px;
+    margin: 8px 0;
+  }
+  
+  .book-card p {
+    font-size: 10px;
+    margin: 5px 0;
+  }
+  
+  .botao-emprestar {
+    font-size: 10px;
+    padding: 6px 12px;
+    width: 90%;
+  }
+  
+  .voltar {
+    top: 15px;
+    left: 5px;
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 360px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  
+  .book-card {
+    max-width: 120px;
+    min-height: 160px;
+    padding: 8px;
+  }
+  
+  .book-cover {
+    width: 70px;
+    height: 100px;
+  }
+  
+  .book-title {
+    font-size: 10px;
+    min-height: 25px;
+  }
+  
+  .book-card p {
+    font-size: 9px;
+  }
+  
+  .botao-emprestar {
+    font-size: 9px;
+    padding: 5px 10px;
+  }
+}
+
+/* Landscape orientation para tablets */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .carousel-container {
+    margin-top: 60px;
+  }
+  
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 320px) {
+  .header {
+    padding: 8px;
+  }
+  
+  .header-title {
+    font-size: 14px;
+  }
+  
+  .header form input {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  
+  .header form button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  
+  .books-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .book-card {
+    max-width: 100%;
+    min-height: 180px;
   }
 }
