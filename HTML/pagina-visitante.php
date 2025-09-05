@@ -17,7 +17,7 @@ require_once '../PHP/conexao.php';
       <span>Biblioteca Arco-Íris - Acervo</span>
     </div>
     <div>
-      <a class="voltar" href="index.php">Voltar</a>
+      <a class="voltar" href="../index.php">Voltar</a>
     </div>
     <div class="header-buttons">
       <a href="registro.php" class="header-btn">Registrar</a>

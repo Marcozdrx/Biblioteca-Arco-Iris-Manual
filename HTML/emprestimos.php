@@ -23,6 +23,7 @@ if(isset($_POST['renovacao'])){
   $stmt = $pdo->prepare($sql);
   if($stmt->execute([':id' => $_POST['id']])){
     echo "<script>alert('Livro renovado com suceso')</script>";
+    header('Location: emprestimos.php');
   }
 
 }
@@ -31,6 +32,7 @@ if(isset($_POST['devolver'])){
   $stmt = $pdo->prepare($sql);
   if($stmt->execute([':id' => $_POST['id']])){
     echo "<script>alert('Livro enviado para o admin aceitar')</script>";
+    header('Location: emprestimos.php');
   }
 }
 if(isset($_POST['deletarEmprestimo'])){
@@ -38,6 +40,7 @@ if(isset($_POST['deletarEmprestimo'])){
   $stmt = $pdo->prepare($sql);
   if($stmt->execute([':id' => $_POST['id']])){
     echo "<script>alert('Emprestimo deletado com sucesso')</script>";
+    header('Location: emprestimos.php');
   }
 
 }

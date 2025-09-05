@@ -68,7 +68,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   </div>
   
   <div>
-    <a class="voltar" href="index.php">Voltar</a>
+    <a class="voltar" href="../index.php">Voltar</a>
   </div>
   
   <div class="container">

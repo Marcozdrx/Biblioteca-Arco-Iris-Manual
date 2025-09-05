@@ -4,7 +4,7 @@ require_once 'conexao.php';
 
 if($_SESSION['is_admin'] != 1){
     echo "Acesso negado";
-    header('Location: ../HTML/index.php');
+    header('Location: ../index.php');
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $botaoAcao = $_POST['botao'];

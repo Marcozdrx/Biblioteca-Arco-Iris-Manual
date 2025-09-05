@@ -50,7 +50,7 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     <header class="header">
         <div>
-            <a class="voltar" href="index.php">Voltar</a>
+            <a class="voltar" href="../index.php">Voltar</a>
         </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">

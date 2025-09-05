@@ -1,5 +1,5 @@
 <?php
-require_once '../PHP/conexao.php';
+require_once 'PHP/conexao.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -7,7 +7,7 @@ require_once '../PHP/conexao.php';
   <meta charset="UTF-8">
   <title>Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
-  <link rel="stylesheet" href="../CSS/styles.css">
+  <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body>
   <div class="container landing-page">
@@ -20,9 +20,9 @@ require_once '../PHP/conexao.php';
       </div>
       <p class="subtitle">Já possui cadastro em nossa biblioteca?</p>
       <div class="buttons-container">
-        <a href="login.php" class="btn glow">ENTRAR</a>
-        <a href="pagina-visitante.php" class="btn glow">ENTRAR COMO<br>VISITANTE</a>
-        <a href="registro.php" class="btn glow">REGISTRAR</a>
+        <a href="HTML/login.php" class="btn glow">ENTRAR</a>
+        <a href="HTML/pagina-visitante.php" class="btn glow">ENTRAR COMO<br>VISITANTE</a>
+        <a href="HTML/registro.php" class="btn glow">REGISTRAR</a>
       </div>
     </div>
   </div>

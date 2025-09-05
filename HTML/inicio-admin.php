@@ -30,11 +30,11 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     
     <div>
-        <a class="voltar" href="index.php">Voltar</a>
+        <a class="voltar" href="../index.php">Voltar</a>
     </div>
     <header class="header">
         <div>
-            <a class="voltar" href="index.php">Voltar</a>
+            <a class="voltar" href="../index.php">Voltar</a>
           </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
