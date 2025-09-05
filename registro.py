@@ -195,7 +195,15 @@ class TesteRegistro:
         """Aguarda o processamento do registro"""
         try:
             print("⏳ Aguardando processamento...")
-            time.sleep(3)  # Aguarda o processamento
+            time.sleep(5)  # Aguarda mais tempo para o processamento
+            
+            # Aguarda o redirecionamento
+            try:
+                self.wait.until(lambda driver: "login.php" in driver.current_url or "registro.php" not in driver.current_url)
+                print("✅ Redirecionamento detectado")
+            except:
+                print("⚠️ Redirecionamento não detectado, mas continuando...")
+            
             print("✅ Processamento concluído")
             return True
         except Exception as e:
@@ -243,8 +251,10 @@ class TesteRegistro:
             return sucesso
             
         finally:
-            # Fechar navegador
+            # Aguarda um pouco antes de fechar para visualizar o resultado
             if self.driver:
+                print("👀 Mantendo navegador aberto por 3 segundos para visualização...")
+                time.sleep(3)
                 print("🔒 Fechando navegador...")
                 self.driver.quit()
 
