@@ -485,7 +485,7 @@ body {
 
     .emprestimos-container {
       max-width: 1200px;
-      margin: 80px auto 20px;
+      margin: 80px 20px 20px 40px;
       padding: 20px;
     }
 
@@ -697,4 +697,43 @@ body {
         color: #856404;
         font-weight: bold;
         font-size: 14px;
+    }
+
+    /* Estilos para botões desabilitados */
+    .emprestimo-actions button[disabled] {
+        background: #ff9000 !important;
+        color: white !important;
+        border: 2px solid #e67e00 !important;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: not-allowed;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+        box-shadow: 0 2px 4px rgba(255, 144, 0, 0.3);
+    }
+
+    .emprestimo-actions button[disabled]:hover {
+        background: #ff9000 !important;
+        transform: none !important;
+        box-shadow: 0 2px 4px rgba(255, 144, 0, 0.3) !important;
+    }
+
+    /* Estilos para botões ativos - todos laranja */
+    .emprestimo-actions button:not([disabled]) {
+        background: #ff9000;
+        color: white;
+        border: 2px solid #e67e00;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin: 5px 0;
+    }
+
+    .emprestimo-actions button:not([disabled]):hover {
+        background: #e67e00;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(255, 144, 0, 0.3);
     }
