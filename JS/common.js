@@ -158,12 +158,14 @@ additionalStyles.textContent = `
     }
     
     .ver-mais-btn {
-        background: #2196F3;
-        color: white;
+        background: white !important;
+        background-color: white !important;
+        color: #ff6600 !important;
     }
     
     .ver-mais-btn:hover {
-        background: #1976D2;
+        background: #f0f0f0 !important;
+        background-color: #f0f0f0 !important;
     }
     
     .emprestar-btn {
@@ -181,12 +183,14 @@ additionalStyles.textContent = `
     }
     
     .book-card {
-        background: white;
+        background: #ff6600 !important;
         border-radius: 10px;
-        padding: 15px;
+        padding: 18px;
         margin: 10px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         transition: transform 0.3s ease;
+        min-width: 180px;
+        max-width: 220px;
     }
     
     .book-card:hover {

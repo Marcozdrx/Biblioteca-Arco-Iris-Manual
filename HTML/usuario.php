@@ -120,32 +120,69 @@ if($_SESSION['is_admin'] != 0){
 
   <div class="carousel-container">
     <div class="carousel">
-    <?php foreach ($livros as $livro): ?>
-      <?php if(!empty($livro['imagem_capa'])): ?>
-    <?php
-      $imagemData = $livro['imagem_capa'];
-      // Verificar se é WebP 
-      if (substr($imagemData, 0, 4) === 'RIFF') {
-          $mimeType = 'image/webp';
-      } else {
-          // Usar finfo para outros formatos
-          $finfo = finfo_open(FILEINFO_MIME_TYPE);
-          $mimeType = finfo_buffer($finfo, $imagemData);
-          finfo_close($finfo);
-      }
-      
-      // Verificar se o MIME foi detectado corretamente
-      if (!$mimeType || $mimeType === 'application/octet-stream') {
-          $mimeType = 'image/webp'; // Fallback para WebP
-      }
-  ?>
-    <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Banner">
-    <?php else: ?>
-      <img src="../IMG/default-avatar.svg" alt="capa do livro">
-  <?php endif; ?>
-    <?php endforeach; ?>
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
       <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-     
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <!-- Duplicar as imagens para criar o loop infinito -->
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <!-- Duplicar as imagens para criar o loop infinito -->
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+      <!-- Duplicar as imagens para criar o loop infinito -->
+      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
+      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
+      <img src="../IMG/acabana.jpg" alt="Banner 3">
+      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
+      <img src="../IMG/1984.jpg" alt="Banner 5">
+      <img src="../IMG/domquixote.jpg" alt="Banner 6">
+      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
+      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
+      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
+      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
     </div>
   </div>
 
@@ -164,7 +201,7 @@ if($_SESSION['is_admin'] != 0){
         <a href="usuario.php" style="display: inline-block; padding: 10px 20px; background: #ff9100; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">Ver todos os livros</a>
       </div>
     <?php else: ?>
-      <div class="books-grid" id="booksGrid">
+      <div class="books-container" id="booksGrid">
         <?php foreach ($livros as $livro): ?>
             <div class="book-card">
                 <?php if(!empty($livro['imagem_capa'])): ?>
@@ -185,14 +222,14 @@ if($_SESSION['is_admin'] != 0){
                             $mimeType = 'image/webp'; // Fallback para WebP
                         }
                     ?>
-                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
+                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro" class="book-cover">
                 <?php else: ?>
-                    <img src="../IMG/default-avatar.svg" alt="capa do livro">
+                    <img src="../IMG/default-avatar.svg" alt="capa do livro" class="book-cover">
                 <?php endif; ?>
-                <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
+                <div class="book-title"><?= htmlspecialchars($livro['titulo']) ?></div>
                 <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
 
-                  <button class="botao-emprestar" onclick="openBookModal(<?= $livro['id'] ?>, '<?= htmlspecialchars($livro['titulo'], ENT_QUOTES) ?>', '<?= htmlspecialchars($livro['nome_autor'], ENT_QUOTES) ?>', <?= $livro['estoque'] ?>)">Ver Livro</button>
+                  <button class="ver-mais-btn" onclick="openBookModal(<?= $livro['id'] ?>, '<?= htmlspecialchars($livro['titulo'], ENT_QUOTES) ?>', '<?= htmlspecialchars($livro['nome_autor'], ENT_QUOTES) ?>', <?= $livro['estoque'] ?>)">Ver mais</button>
             </div>
         <?php endforeach; ?>
       </div>
@@ -311,14 +348,14 @@ if($_SESSION['is_admin'] != 0){
       modal.style.display = 'flex';
       
       // Garantir que o modal mantenha a cor laranja
-      modalContent.style.background = '#ff9000';
-      modalContent.style.backgroundColor = '#ff9000';
+      modalContent.style.background = '#ff6600';
+      modalContent.style.backgroundColor = '#ff6600';
       
       setTimeout(() => {
         modal.classList.add('show');
         // Forçar novamente após a animação
-        modalContent.style.background = '#ff9000';
-        modalContent.style.backgroundColor = '#ff9000';
+        modalContent.style.background = '#ff6600';
+        modalContent.style.backgroundColor = '#ff6600';
       }, 10);
     }
 

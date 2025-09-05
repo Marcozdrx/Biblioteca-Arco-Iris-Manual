@@ -94,7 +94,7 @@ body::before {
     margin-bottom: 20px;
     overflow: hidden;
     position: relative;
-    background-color: #FF9000;
+    background-color: #ff9000;
     padding: 20px;
     border-radius: 10px;
 }
@@ -129,23 +129,26 @@ body::before {
     margin-top: 20px;
     padding: 20px;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 20px;
-    max-width: 1400px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+    gap: 22px;
+    max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
 }
 
 .book-card {
     background: #ff9000;
     border-radius: 10px;
-    padding: 15px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: transform 0.3s;
     position: relative;
     text-align: center;
+    min-width: 180px;
+    max-width: 220px;
 }
 
 .book-card:hover {
@@ -192,13 +195,15 @@ body::before {
 
 @media (max-width: 1200px) {
     .books-container {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(160px, 200px));
+        gap: 18px;
     }
 }
 
 @media (max-width: 768px) {
     .books-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(140px, 180px));
+        gap: 15px;
         padding: 10px;
     }
 }
@@ -438,6 +443,33 @@ body::before {
 }
 
 @media (max-width: 480px) {
+  .books-container {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 160px));
+    gap: 12px;
+    padding: 8px;
+  }
+  
+  .book-card {
+    padding: 12px;
+    min-width: 120px;
+    max-width: 160px;
+  }
+  
+  .book-cover {
+    width: 80px;
+    height: 110px;
+  }
+  
+  .book-title {
+    font-size: 12px;
+    min-height: 30px;
+  }
+  
+  .ver-mais-btn {
+    font-size: 12px;
+    padding: 6px 15px;
+  }
+  
   .modal-content {
     width: 98%;
     margin: 10px;
@@ -461,5 +493,35 @@ body::before {
   
   .book-details p {
     font-size: 14px;
+  }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 360px) {
+  .books-container {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 140px));
+    gap: 10px;
+    padding: 5px;
+  }
+  
+  .book-card {
+    padding: 10px;
+    min-width: 100px;
+    max-width: 140px;
+  }
+  
+  .book-cover {
+    width: 70px;
+    height: 100px;
+  }
+  
+  .book-title {
+    font-size: 11px;
+    min-height: 25px;
+  }
+  
+  .ver-mais-btn {
+    font-size: 10px;
+    padding: 5px 12px;
   }
 }
