@@ -192,11 +192,37 @@ if($_SESSION['is_admin'] != 0){
                 <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
                 <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
 
-                  <a class="botao-emprestar" href="detalhes-livro.php?id=<?= $livro['id'] ?>">Ver Livro</a>
+                  <button class="botao-emprestar" onclick="openBookModal(<?= $livro['id'] ?>, '<?= htmlspecialchars($livro['titulo'], ENT_QUOTES) ?>', '<?= htmlspecialchars($livro['nome_autor'], ENT_QUOTES) ?>', <?= $livro['estoque'] ?>)">Ver Livro</button>
             </div>
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
+  </div>
+
+  <!-- Modal de detalhes do livro -->
+  <div id="bookModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalBookTitle">Detalhes do Livro</h2>
+        <button class="close-modal" onclick="closeBookModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-book-cover">
+          <img id="modalBookImage" src="" alt="Capa do livro">
+        </div>
+        <div class="modal-book-info">
+          <div class="book-details">
+            <p><strong>Autor:</strong> <span id="modalBookAuthor"></span></p>
+            <p><strong>Estoque:</strong> <span id="modalBookStock"></span></p>
+            <p><strong>Status:</strong> <span id="modalBookStatus"></span></p>
+          </div>
+          <div class="modal-actions">
+            <button id="modalBorrowBtn" class="btn-borrow" onclick="borrowBook()">📚 Emprestar Livro</button>
+            <button class="btn-close" onclick="closeBookModal()">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   
   <script src="../JS/common.js"></script>
@@ -242,6 +268,88 @@ if($_SESSION['is_admin'] != 0){
         searchInput.focus();
         searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
       <?php endif; ?>
+    });
+
+    // Variáveis globais para o modal
+    let currentBookId = null;
+    let currentBookStock = 0;
+
+    // Função para abrir o modal do livro
+    function openBookModal(bookId, title, author, stock) {
+      currentBookId = bookId;
+      currentBookStock = stock;
+      
+      // Atualizar conteúdo do modal
+      document.getElementById('modalBookTitle').textContent = title;
+      document.getElementById('modalBookAuthor').textContent = author;
+      document.getElementById('modalBookStock').textContent = stock + ' disponível(is)';
+      
+      // Buscar imagem do livro
+      const bookCard = document.querySelector(`[onclick*="${bookId}"]`).closest('.book-card');
+      const bookImage = bookCard.querySelector('img');
+      document.getElementById('modalBookImage').src = bookImage.src;
+      
+      // Atualizar status e botão
+      const statusElement = document.getElementById('modalBookStatus');
+      const borrowBtn = document.getElementById('modalBorrowBtn');
+      
+      if (stock > 0) {
+        statusElement.textContent = 'Disponível';
+        statusElement.className = 'status-available';
+        borrowBtn.style.display = 'inline-block';
+        borrowBtn.textContent = '📚 Emprestar Livro';
+        borrowBtn.onclick = () => borrowBook();
+      } else {
+        statusElement.textContent = 'Indisponível';
+        statusElement.className = 'status-unavailable';
+        borrowBtn.style.display = 'none';
+      }
+      
+      // Mostrar modal com animação
+      const modal = document.getElementById('bookModal');
+      const modalContent = modal.querySelector('.modal-content');
+      modal.style.display = 'flex';
+      
+      // Garantir que o modal mantenha a cor laranja
+      modalContent.style.background = '#ff9000';
+      modalContent.style.backgroundColor = '#ff9000';
+      
+      setTimeout(() => {
+        modal.classList.add('show');
+        // Forçar novamente após a animação
+        modalContent.style.background = '#ff9000';
+        modalContent.style.backgroundColor = '#ff9000';
+      }, 10);
+    }
+
+    // Função para fechar o modal
+    function closeBookModal() {
+      const modal = document.getElementById('bookModal');
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    // Função para emprestar livro
+    function borrowBook() {
+      if (currentBookId && currentBookStock > 0) {
+        window.location.href = `../PHP/registrarEmprestimo.php?livro_id=${currentBookId}`;
+      }
+    }
+
+    // Fechar modal ao clicar fora dele
+    document.getElementById('bookModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeBookModal();
+      }
+    });
+
+    // Fechar modal com tecla ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeBookModal();
+      }
     });
   </script>
 </body>
