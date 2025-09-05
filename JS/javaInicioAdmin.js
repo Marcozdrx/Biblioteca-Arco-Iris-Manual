@@ -24,43 +24,15 @@ function closeBookModal() {
   // Mostra o modal com a lista
   function showDevolucoes() {
     const modal = document.getElementById("modalDevolucoes");
-    const lista = document.getElementById("listaDevolucoes");
-  
-    if (!modal || !lista) {
-      console.error("Modal ou lista não encontrados");
-      return;
-    }
-  
-    // Limpa e preenche a lista
-    lista.innerHTML = "";
     
-    if (typeof devolucoesPendentes !== 'undefined' && devolucoesPendentes.length > 0) {
-      devolucoesPendentes.forEach(dev => {
-        const item = document.createElement("li");
-        item.innerHTML = `
-          <strong>${dev.titulo_livro}</strong><br>
-          Usuário: ${dev.nome_usuario}<br>
-          Data prevista: ${dev.data_devolucao_prevista}<br>
-          Email: ${dev.email_usuario}
-        `;
-        item.style.marginBottom = "10px";
-        item.style.padding = "10px";
-        item.style.backgroundColor = "#f0f0f0";
-        item.style.borderRadius = "5px";
-        lista.appendChild(item);
-      });
-    } else {
-      const item = document.createElement("li");
-      item.textContent = "Nenhuma devolução pendente";
-      item.style.textAlign = "center";
-      item.style.fontStyle = "italic";
-      item.style.color = "#666";
-      lista.appendChild(item);
+    if (!modal) {
+        console.error("Modal não encontrado");
+        return;
     }
-  
-    // Usar classe em vez de style
+    
+    // Apenas abrir o modal - os dados já estão no HTML via PHP
     modal.classList.add("show");
-  }
+}
   
   // Fecha o modal
   function fecharModal() {
