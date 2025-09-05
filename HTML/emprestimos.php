@@ -90,14 +90,21 @@ if(isset($_POST['devolver'])){
               <input type="hidden" name="id" value="<?= htmlspecialchars($emprestimo['id'])?>">
               <?php if($emprestimo['renovado'] == 1): ?>
                   <button disabled>Já renovado</button>
+              <?php if($emprestimo['status'] == 'devolvido'): ?>
+                <button name="deletarEmprestimo">Deletar Emprestimo</button>
               <?php else: ?>
-                  <button name="renovacao">Renovar livro</button>
+                <?php if($emprestimo['renovado'] == 1): ?>
+                    <button disabled>Já renovado</button>
+                <?php else: ?>
+                    <button name="renovacao">Renovar livro</button>
+                <?php endif; ?>
+                <?php if($emprestimo['status'] == 'aguardando_devolucao'): ?>
+                <button disabled>Aguardando devolução</button>
+                <?php else: ?>
+                <button name="devolver">Devolver</button>
+                <?php endif; ?>
               <?php endif; ?>
-              <?php if($emprestimo['status'] == 'aguardando_devolucao'): ?>
-              <button disabled>Aguardando devolução</button>
-              <?php else: ?>
-              <button name="devolver">Devolver</button>
-              <?php endif; ?>
+
             </form>
           </div>
         </div>
