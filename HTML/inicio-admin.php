@@ -228,6 +228,17 @@ require_once '../PHP/PHPincioAdmin.php';
             <!-- As devoluções pendentes serão inseridas aqui via JavaScript -->
         </div>
     </div>
+    
+    <script>
+        // Passar dados de devoluções pendentes para o JavaScript
+        const devolucoesPendentes = <?php echo json_encode($devolucoesPendentes); ?>;
+        
+        // Atualizar o contador quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            atualizarContadorDevolucoes();
+        });
+    </script>
+    
     <script src="../JS/javaInicioAdmin.js"></script>
 </body>
 </html> 
