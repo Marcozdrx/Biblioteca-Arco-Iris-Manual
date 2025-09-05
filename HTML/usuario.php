@@ -9,10 +9,30 @@ $stmt->execute();
 $autores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $livros = [];
-$sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as nome_autor FROM livros l LEFT JOIN autores a ON l.autor_id = a.id WHERE l.ativo = TRUE";
-$stmt = $pdo->prepare($sqlApresentaLivros);
-$stmt->execute();
-$livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$pesquisa = $_GET['pesquisa'] ?? '';
+
+if (!empty($pesquisa)) {
+    // Buscar livros que começam com a pesquisa
+    $sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as nome_autor 
+                          FROM livros l 
+                          LEFT JOIN autores a ON l.autor_id = a.id 
+                          WHERE l.ativo = TRUE AND l.titulo LIKE :pesquisa 
+                          ORDER BY l.titulo ASC";
+    $stmt = $pdo->prepare($sqlApresentaLivros);
+    $stmt->bindValue(':pesquisa', $pesquisa . '%', PDO::PARAM_STR);
+    $stmt->execute();
+    $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // Buscar todos os livros
+    $sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as nome_autor 
+                          FROM livros l 
+                          LEFT JOIN autores a ON l.autor_id = a.id 
+                          WHERE l.ativo = TRUE 
+                          ORDER BY l.titulo ASC";
+    $stmt = $pdo->prepare($sqlApresentaLivros);
+    $stmt->execute();
+    $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 
@@ -84,8 +104,12 @@ if($_SESSION['is_admin'] != 0){
       <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
       <span>Biblioteca Arco-Íris</span>
     </div>
-    <form style="display: flex; align-items: center; gap: 8px;" action="../PHP/pesquisarLivros.php" method="POST">
-      <input type="text" placeholder="Pesquisar livros..." style="padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; outline: none; width: 300px;" id="searchInput">
+    <form style="display: flex; align-items: center; gap: 8px;" method="GET" id="searchForm">
+      <input type="text" name="pesquisa" placeholder="Pesquisar livros..." style="padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; outline: none; width: 300px;" id="searchInput" value="<?= htmlspecialchars($pesquisa) ?>">
+      <button type="submit" style="padding: 8px 16px; background: #ff9100; color: white; border: none; border-radius: 4px; cursor: pointer;">Buscar</button>
+      <?php if (!empty($pesquisa)): ?>
+        <a href="usuario.php" style="padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Limpar</a>
+      <?php endif; ?>
     </form>
     <div class="header-buttons">
       <a href="emprestimos.php" class="header-btn">Meus Empréstimos</a>
@@ -125,41 +149,100 @@ if($_SESSION['is_admin'] != 0){
     </div>
   </div>
 
-  <div >
-  <div class="books-grid" id="booksGrid">
-    <?php foreach ($livros as $livro): ?>
-        <div class="book-card">
-            <?php if(!empty($livro['imagem_capa'])): ?>
-                <?php
-                    $imagemData = $livro['imagem_capa'];
-                    // Verificar se é WebP 
-                    if (substr($imagemData, 0, 4) === 'RIFF') {
-                        $mimeType = 'image/webp';
-                    } else {
-                        // Usar finfo para outros formatos
-                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                        $mimeType = finfo_buffer($finfo, $imagemData);
-                        finfo_close($finfo);
-                    }
-                    
-                    // Verificar se o MIME foi detectado corretamente
-                    if (!$mimeType || $mimeType === 'application/octet-stream') {
-                        $mimeType = 'image/webp'; // Fallback para WebP
-                    }
-                ?>
-            <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
-            <?php else: ?>
-                <img src="../IMG/default-avatar.svg" alt="capa do livro">
-            <?php endif; ?>
-            <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
-            <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
+  <div>
+    <?php if (!empty($pesquisa)): ?>
+      <div style="text-align: center; margin: 20px 0;">
+        <h2>Resultados para: "<?= htmlspecialchars($pesquisa) ?>"</h2>
+        <p><?= count($livros) ?> livro(s) encontrado(s)</p>
+      </div>
+    <?php endif; ?>
+    
+    <?php if (empty($livros) && !empty($pesquisa)): ?>
+      <div style="text-align: center; margin: 40px 0; padding: 40px; background: rgba(255,255,255,0.9); border-radius: 10px;">
+        <h3>Nenhum livro encontrado</h3>
+        <p>Não foram encontrados livros que comecem com "<?= htmlspecialchars($pesquisa) ?>"</p>
+        <a href="usuario.php" style="display: inline-block; padding: 10px 20px; background: #ff9100; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">Ver todos os livros</a>
+      </div>
+    <?php else: ?>
+      <div class="books-grid" id="booksGrid">
+        <?php foreach ($livros as $livro): ?>
+            <div class="book-card">
+                <?php if(!empty($livro['imagem_capa'])): ?>
+                    <?php
+                        $imagemData = $livro['imagem_capa'];
+                        // Verificar se é WebP 
+                        if (substr($imagemData, 0, 4) === 'RIFF') {
+                            $mimeType = 'image/webp';
+                        } else {
+                            // Usar finfo para outros formatos
+                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                            $mimeType = finfo_buffer($finfo, $imagemData);
+                            finfo_close($finfo);
+                        }
+                        
+                        // Verificar se o MIME foi detectado corretamente
+                        if (!$mimeType || $mimeType === 'application/octet-stream') {
+                            $mimeType = 'image/webp'; // Fallback para WebP
+                        }
+                    ?>
+                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Capa do livro">
+                <?php else: ?>
+                    <img src="../IMG/default-avatar.svg" alt="capa do livro">
+                <?php endif; ?>
+                <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
+                <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
 
-              <a class="botao-emprestar" href="detalhes-livro.php?id=<?= $livro['id'] ?>">Ver Livro</a>
-        </div>
-    <?php endforeach; ?>
-    </div>
+                  <a class="botao-emprestar" href="detalhes-livro.php?id=<?= $livro['id'] ?>">Ver Livro</a>
+            </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
   </div>
   
   <script src="../JS/common.js"></script>
+  <script>
+    // Busca em tempo real (opcional)
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const searchForm = document.getElementById('searchForm');
+      let searchTimeout;
+      
+      // Busca em tempo real após 500ms de inatividade
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const query = this.value.trim();
+        
+        if (query.length >= 2) {
+          searchTimeout = setTimeout(() => {
+            // Redirecionar para a mesma página com o parâmetro de pesquisa
+            window.location.href = `usuario.php?pesquisa=${encodeURIComponent(query)}`;
+          }, 500);
+        } else if (query.length === 0) {
+          // Se o campo estiver vazio, mostrar todos os livros
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            window.location.href = 'usuario.php';
+          }, 300);
+        }
+      });
+      
+      // Permitir busca imediata com Enter
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+          window.location.href = `usuario.php?pesquisa=${encodeURIComponent(query)}`;
+        } else {
+          window.location.href = 'usuario.php';
+        }
+      });
+      
+      // Focar no campo de pesquisa se houver uma pesquisa ativa
+      <?php if (!empty($pesquisa)): ?>
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+      <?php endif; ?>
+    });
+  </script>
 </body>
 </html> 
