@@ -13,7 +13,7 @@ $idusuario = $_SESSION['id'];
 $emprestimos = [];
 $sql = "SELECT emprestimos.*, livros.titulo, livros.imagem_capa FROM emprestimos 
         INNER JOIN livros ON emprestimos.livro_id = livros.id 
-        WHERE emprestimos.usuario_id = ? AND emprestimos.status IN ('emprestado', 'atrasado', 'aguardando_devolucao')";   
+        WHERE emprestimos.usuario_id = ? AND emprestimos.status IN ('emprestado', 'atrasado', 'aguardando_devolucao', 'devolvido')";   
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$idusuario]);
         $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -21,13 +21,25 @@ $sql = "SELECT emprestimos.*, livros.titulo, livros.imagem_capa FROM emprestimos
 if(isset($_POST['renovacao'])){
   $sql = "UPDATE emprestimos SET data_devolucao_prevista = DATE_ADD(data_devolucao_prevista, INTERVAL 7 DAY), renovado = TRUE WHERE id = :id";
   $stmt = $pdo->prepare($sql);
-  $stmt->execute([':id' => $_POST['id']]);
+  if($stmt->execute([':id' => $_POST['id']])){
+    echo "<script>alert('Livro renovado com suceso')</script>"
+  }
 
 }
 if(isset($_POST['devolver'])){
   $sql = "UPDATE emprestimos SET `status` = 'aguardando_devolucao' WHERE id = :id";
   $stmt = $pdo->prepare($sql);
-  $stmt->execute([':id' => $_POST['id']]);
+  if($stmt->execute([':id' => $_POST['id']])){
+    echo "<script>alert('Livro enviado para o admin aceitar')</script>"
+  }
+}
+if(isset($_POST['deletarEmprestimo'])){
+  $sql = "DELETE FROM emprestimos WHERE id = :id";
+  $stmt = $pdo->prepare($sql);
+  if($stmt->execute([':id' => $_POST['id']])){
+    echo "<script>alert('Emprestimo deletado com sucesso')</script>"
+  }
+
 }
 ?>
 
