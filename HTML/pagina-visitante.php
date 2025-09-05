@@ -98,7 +98,7 @@ require_once '../PHP/conexao.php';
     <div class="book-card">
       <img src="../IMG/domquixote.jpg" alt="Dom Quixote" class="book-cover">
       <div class="book-title">Dom Quixote</div>
-      <a href="registro.php" class="ver-mais-btn">Ver mais</a>
+      <button class="ver-mais-btn" onclick="openBookModal('Dom Quixote', 'Miguel de Cervantes')">Ver mais</button>
     </div>
     <div class="book-card">
       <img src="../IMG/1984.jpg" alt="1984" class="book-cover">
@@ -226,7 +226,91 @@ require_once '../PHP/conexao.php';
       <a href="registro.php" class="ver-mais-btn">Ver mais</a>
     </div>
   </div>
+
+  <!-- Modal de detalhes do livro -->
+  <div id="bookModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalBookTitle">Detalhes do Livro</h2>
+        <button class="close-modal" onclick="closeBookModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-book-cover">
+          <img id="modalBookImage" src="" alt="Capa do livro">
+        </div>
+        <div class="modal-book-info">
+          <div class="book-details">
+            <p><strong>Autor:</strong> <span id="modalBookAuthor"></span></p>
+            <p><strong>Estoque:</strong> <span id="modalBookStock">Disponível</span></p>
+            <p><strong>Status:</strong> <span id="modalBookStatus" class="status-available">Disponível para empréstimo</span></p>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-borrow" onclick="window.location.href='registro.php'">📝 Cadastrar-se</button>
+            <button class="btn-close" onclick="closeBookModal()">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   
   <script src="../JS/common.js"></script>
+  <script>
+    // Função para abrir o modal do livro
+    function openBookModal(title, author) {
+      // Atualizar conteúdo do modal
+      document.getElementById('modalBookTitle').textContent = title;
+      document.getElementById('modalBookAuthor').textContent = author;
+      document.getElementById('modalBookStock').textContent = 'Disponível';
+      
+      // Buscar imagem do livro
+      const bookCard = event.target.closest('.book-card');
+      const bookImage = bookCard.querySelector('img');
+      document.getElementById('modalBookImage').src = bookImage.src;
+      
+      // Atualizar status
+      const statusElement = document.getElementById('modalBookStatus');
+      statusElement.textContent = 'Disponível para empréstimo';
+      statusElement.className = 'status-available';
+      
+      // Mostrar modal com animação
+      const modal = document.getElementById('bookModal');
+      const modalContent = modal.querySelector('.modal-content');
+      modal.style.display = 'flex';
+      
+      // Garantir que o modal mantenha a cor laranja
+      modalContent.style.background = '#ff9000';
+      modalContent.style.backgroundColor = '#ff9000';
+      
+      setTimeout(() => {
+        modal.classList.add('show');
+        // Forçar novamente após a animação
+        modalContent.style.background = '#ff9000';
+        modalContent.style.backgroundColor = '#ff9000';
+      }, 10);
+    }
+
+    // Função para fechar o modal
+    function closeBookModal() {
+      const modal = document.getElementById('bookModal');
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    // Fechar modal ao clicar fora dele
+    document.getElementById('bookModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeBookModal();
+      }
+    });
+
+    // Fechar modal com tecla ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeBookModal();
+      }
+    });
+  </script>
 </body>
 </html> 

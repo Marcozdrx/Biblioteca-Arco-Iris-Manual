@@ -307,9 +307,18 @@ if($_SESSION['is_admin'] != 0){
       
       // Mostrar modal com animação
       const modal = document.getElementById('bookModal');
+      const modalContent = modal.querySelector('.modal-content');
       modal.style.display = 'flex';
+      
+      // Garantir que o modal mantenha a cor laranja
+      modalContent.style.background = '#ff9000';
+      modalContent.style.backgroundColor = '#ff9000';
+      
       setTimeout(() => {
         modal.classList.add('show');
+        // Forçar novamente após a animação
+        modalContent.style.background = '#ff9000';
+        modalContent.style.backgroundColor = '#ff9000';
       }, 10);
     }
 

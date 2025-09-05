@@ -239,15 +239,6 @@ body::before {
   padding: 20px;
   max-width: 1200px;
 }
-.book-card {
-  padding: 10px;
-  min-height: 200px;
-  max-width: 220px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 220px;
-
-}
 .botao-emprestar {
   background: linear-gradient(#ff9000 100%);
   color: white;
@@ -269,11 +260,12 @@ body::before {
 .botao-emprestar:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(135deg, #ff9001 0%, #ff9000 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ff9000 100%);
 }
 
 .book-card {
-    background: linear-gradient(135deg, #ff9000 0%, #ffaa33 50%, #ff7b00 100%);
+    background: #ff9000 !important;
+    background-color: #ff9000 !important;
     border-radius: 20px;
     padding: 20px;
     text-align: center;
@@ -298,7 +290,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     pointer-events: none;
 }
@@ -337,7 +329,7 @@ body::before {
 }
 
 .book-title {
-  color: white;
+  color: #000000;
   font-size: 14px;
   text-align: center;
   margin: 10px 0;
@@ -346,6 +338,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .ver-mais-btn {
@@ -654,6 +647,20 @@ html {
   }
 }
 
+/* Forçar cor laranja nos cards */
+.books-grid .book-card,
+div.book-card {
+    background: #ff9000 !important;
+    background-color: #ff9000 !important;
+}
+
+/* Forçar cor laranja no modal */
+#bookModal .modal-content,
+.modal-overlay .modal-content {
+    background: #ff9000 !important;
+    background-color: #ff9000 !important;
+}
+
 /* Estilos do Modal */
 .modal-overlay {
   display: none;
@@ -675,7 +682,8 @@ html {
 }
 
 .modal-content {
-  background: #ff9000;
+  background: #ff9000 !important;
+  background-color: #ff9000 !important;
   border-radius: 25px;
   max-width: 600px;
   width: 90%;
