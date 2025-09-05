@@ -48,13 +48,10 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     
-    <div>
-        <a class="voltar" href="index.php">Voltar</a>
-    </div>
     <header class="header">
         <div>
             <a class="voltar" href="index.php">Voltar</a>
-          </div>
+        </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
             <span>Biblioteca Arco-Íris - Painel Administrativo (Teste)</span>
@@ -101,7 +98,7 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </header>
 
-    <div class="container">
+    <div class="admin-container">
         <div class="books-section">
             <div class="books-header">
                 <h2 class="books-title">Livros Disponíveis</h2>
@@ -160,7 +157,7 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <input list="listaAutores" id="autor" name="autor" placeholder="Autor do livro"  required>
                 <datalist id="listaAutores">
                     <?php foreach ($autores as $autor):?>
-                        <option value="<?=$autor['id']?>"><?= htmlspecialchars($autor['nome']) ?></option>
+                        <option value="<?= htmlspecialchars($autor['nome']) ?>"><?= htmlspecialchars($autor['nome']) ?></option>
                     <?php endforeach; ?>
                 </datalist>
                 <input type="number" id="dataPublicacao" name="dataPublicacao" placeholder="Ano de publicação" min="1000" max="2024" required>
@@ -173,7 +170,7 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <datalist id="listaCategorias">
             <?php foreach ($categorias as $categoria): ?>
-                <option value="<?=$categoria['id']?>"><?= htmlspecialchars($categoria['nome']) ?></option>
+                <option value="<?= htmlspecialchars($categoria['nome']) ?>"><?= htmlspecialchars($categoria['nome']) ?></option>
                 <?php endforeach; ?>
             </datalist>
             

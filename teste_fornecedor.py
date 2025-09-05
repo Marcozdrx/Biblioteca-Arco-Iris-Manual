@@ -106,12 +106,20 @@ class TesteFornecedor:
         
         nome_empresa = f"{random.choice(nomes_empresas)} {random.choice(sufixos)} {numero_aleatorio}"
         
+        # CEPs válidos do Brasil (São Paulo)
+        ceps_validos = [
+            "01310-100", "04038-001", "05407-002", "01234-567", "04567-890",
+            "02345-678", "05678-901", "03456-789", "06789-012", "04567-890"
+        ]
+        
+        cep_escolhido = random.choice(ceps_validos)
+        
         dados = {
             'nome': nome_empresa,
             'cpfCnpj': f'{numero_aleatorio:02d}.{numero_aleatorio:03d}.{numero_aleatorio:03d}/0001-{numero_aleatorio % 100:02d}',  # CNPJ
             'telefone': f'(11) {numero_aleatorio:04d}-{numero_aleatorio:04d}',
             'email': f'contato@{nome_empresa.lower().replace(" ", "")}.com.br',
-            'cep': f'{numero_aleatorio:05d}-{numero_aleatorio % 1000:03d}',
+            'cep': cep_escolhido,
             'cidade': 'São Paulo',
             'estado': 'SP'
         }
@@ -168,27 +176,38 @@ class TesteFornecedor:
                     
                     # Aguarda um pouco após preencher o CEP para a busca automática
                     if nome_campo == 'cep':
-                        time.sleep(2)
+                        time.sleep(3)  # Aguarda mais tempo para a busca automática
                         
-                        # Se a busca automática falhar, preenche manualmente cidade e estado
+                        # Sempre preenche manualmente cidade e estado após o CEP
                         try:
                             cidade_campo = self.driver.find_element(By.ID, "cidade")
-                            if not cidade_campo.get_attribute("value"):
-                                cidade_campo.clear()
-                                cidade_campo.send_keys(dados['cidade'])
-                                print("   ✅ Campo 'cidade' preenchido manualmente")
+                            cidade_campo.clear()
+                            cidade_campo.send_keys(dados['cidade'])
+                            print("   ✅ Campo 'cidade' preenchido")
                             
                             estado_campo = self.driver.find_element(By.ID, "estado")
-                            if not estado_campo.get_attribute("value"):
-                                estado_campo.clear()
-                                estado_campo.send_keys(dados['estado'])
-                                print("   ✅ Campo 'estado' preenchido manualmente")
-                        except:
-                            print("   ⚠️ Não foi possível preencher cidade/estado automaticamente")
+                            estado_campo.clear()
+                            estado_campo.send_keys(dados['estado'])
+                            print("   ✅ Campo 'estado' preenchido")
+                        except Exception as e:
+                            print(f"   ⚠️ Erro ao preencher cidade/estado: {e}")
                         
                 except NoSuchElementException:
                     print(f"   ❌ Campo '{nome_campo}' não encontrado")
                     return False
+            
+            # Verifica se todos os campos obrigatórios foram preenchidos
+            campos_obrigatorios = ['nome', 'cpfCnpj', 'telefone', 'email', 'cep', 'cidade', 'estado']
+            for campo in campos_obrigatorios:
+                try:
+                    elemento = self.driver.find_element(By.ID, campo)
+                    if not elemento.get_attribute("value").strip():
+                        print(f"   ⚠️ Campo '{campo}' está vazio, preenchendo novamente...")
+                        elemento.clear()
+                        elemento.send_keys(dados[campo])
+                        time.sleep(0.5)
+                except:
+                    print(f"   ❌ Erro ao verificar campo '{campo}'")
             
             print("✅ Formulário de fornecedor preenchido com sucesso!")
             return True
@@ -231,7 +250,7 @@ class TesteFornecedor:
         """Aguarda o processamento do cadastro"""
         try:
             print("⏳ Aguardando processamento...")
-            time.sleep(5)  # Aguarda mais tempo para o processamento
+            time.sleep(7)  # Aguarda mais tempo para o processamento
             
             # Aguarda o redirecionamento ou mudança na página
             try:
@@ -239,6 +258,16 @@ class TesteFornecedor:
                 print("✅ Redirecionamento detectado")
             except:
                 print("⚠️ Redirecionamento não detectado, mas continuando...")
+            
+            # Verifica se há mensagens de erro na página
+            try:
+                mensagens_erro = self.driver.find_elements(By.CSS_SELECTOR, ".error, .alert-danger, .text-danger")
+                if mensagens_erro:
+                    for msg in mensagens_erro:
+                        if msg.is_displayed():
+                            print(f"⚠️ Mensagem de erro encontrada: {msg.text}")
+            except:
+                pass
             
             print("✅ Processamento concluído")
             return True

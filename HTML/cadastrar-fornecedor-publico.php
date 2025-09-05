@@ -32,11 +32,11 @@ try{
             header('Location: sucesso-fornecedor.php');
             exit();
         } else {
-            echo "<script>alert('Erro ao cadastrar fornecedor');</script>";
+            echo "<script>console.log('Erro ao cadastrar fornecedor');</script>";
         }
     }
 } catch (Exception $e) {
-    echo "<script>alert('Erro ao cadastrar fornecedor: " . $e->getMessage() . "');</script>";
+    echo "<script>console.log('Erro ao cadastrar fornecedor: " . $e->getMessage() . "');</script>";
 }
 ?>
 <!DOCTYPE html>
@@ -62,7 +62,8 @@ try{
                 })
                 .then(data => {
                     if (data.erro) {
-                        alert("CEP não encontrado! Verifique o número do CEP informado.");
+                        // Não mostra alerta, apenas retorna silenciosamente
+                        console.log("CEP não encontrado:", cep);
                         return;
                     }
 
@@ -74,8 +75,8 @@ try{
                     document.querySelector('input[name="cidade"]').focus();
                 })
                 .catch(error => {
-                    alert("Erro ao buscar o CEP. Tente novamente.");
-                    console.error("Erro ao buscar o CEP:", error);
+                    // Não mostra alerta, apenas log no console
+                    console.log("Erro ao buscar o CEP:", error);
                 });
         }
 
@@ -84,9 +85,12 @@ try{
             var cpfCnpj = document.getElementById('cpfCnpj').value;
             var telefone = document.getElementById('telefone').value;
             var email = document.getElementById('email').value;
+            var cep = document.getElementById('cep').value;
+            var cidade = document.getElementById('cidade').value;
+            var estado = document.getElementById('estado').value;
             
-            if (!nome || !cpfCnpj || !telefone) {
-                alert("Por favor, preencha todos os campos obrigatórios!");
+            if (!nome || !cpfCnpj || !telefone || !email || !cep || !cidade || !estado) {
+                console.log("Campos obrigatórios não preenchidos");
                 return false;
             }
             return true;
@@ -121,7 +125,7 @@ try{
 <div>
     <a class="voltar" href="../index.php">Voltar</a>
 </div>
-   <form id="meuForm" method="POST" name="meuForm" action="cadastrar-fornecedor-publico.php"> 
+   <form id="meuForm" method="POST" name="meuForm" action="cadastrar-fornecedor-publico.php" onsubmit="return validarFormulario()"> 
    <table align="center">
             <tr>
                 <td><center><img src="../IMG/logo.png" alt="Logo"></center></td>

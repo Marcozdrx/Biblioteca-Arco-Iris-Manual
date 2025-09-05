@@ -7,14 +7,46 @@ try{
         
         $titulo = $_POST['titulo'];
         $estoque = $_POST['estoque'];
-        $autor_id = $_POST['autor'];
+        $autor_nome = $_POST['autor'];
         $dataPublicacao = $_POST['dataPublicacao'];
         $numeroPaginas = $_POST['numeroPaginas'];
         $editora = $_POST['editora'];
         $isbn = $_POST['isbn'];
         $idioma = $_POST['idioma'];
-        $categoria_id = $_POST['categoria'];
+        $categoria_nome = $_POST['categoria'];
         $descricao = $_POST['descricao'];
+
+        // Criar ou buscar autor
+        $sql_autor = "SELECT id FROM autores WHERE nome = :nome";
+        $stmt_autor = $pdo->prepare($sql_autor);
+        $stmt_autor->bindParam(":nome", $autor_nome);
+        $stmt_autor->execute();
+        $autor_id = $stmt_autor->fetchColumn();
+
+        if (!$autor_id) {
+            // Criar novo autor
+            $sql_insert_autor = "INSERT INTO autores (nome) VALUES (:nome)";
+            $stmt_insert_autor = $pdo->prepare($sql_insert_autor);
+            $stmt_insert_autor->bindParam(":nome", $autor_nome);
+            $stmt_insert_autor->execute();
+            $autor_id = $pdo->lastInsertId();
+        }
+
+        // Criar ou buscar categoria
+        $sql_categoria = "SELECT id FROM categorias WHERE nome = :nome";
+        $stmt_categoria = $pdo->prepare($sql_categoria);
+        $stmt_categoria->bindParam(":nome", $categoria_nome);
+        $stmt_categoria->execute();
+        $categoria_id = $stmt_categoria->fetchColumn();
+
+        if (!$categoria_id) {
+            // Criar nova categoria
+            $sql_insert_categoria = "INSERT INTO categorias (nome) VALUES (:nome)";
+            $stmt_insert_categoria = $pdo->prepare($sql_insert_categoria);
+            $stmt_insert_categoria->bindParam(":nome", $categoria_nome);
+            $stmt_insert_categoria->execute();
+            $categoria_id = $pdo->lastInsertId();
+        }
 
         // Processar upload de imagem se houver
         $imagem_capa = null;
