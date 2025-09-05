@@ -68,11 +68,29 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
 
                     <!-- Modal (mesmo de antes, adaptado) -->
                     <div id="modalDevolucoes" class="modal">
-                    <div class="modal-conteudo">
-                        <span class="fechar" onclick="fecharModal()">&times;</span>
-                        <h2>Devoluções Pendentes</h2>
-                        <ul id="listaDevolucoes"></ul>
-                    </div>
+                        <div class="modal-conteudo">
+                            <span class="fechar" onclick="fecharModal()">&times;</span>
+                            <h2>Devoluções Pendentes</h2>
+                            <ul id="listaDevolucoes">
+                                <?php if(!empty($emprestimos)): ?>
+                                    <?php foreach ($emprestimos as $emprestimo): ?>
+                                        <li>
+                                            <strong><?= htmlspecialchars($emprestimo['nome_livro']) ?></strong><br>
+                                            Usuário: <?= htmlspecialchars($emprestimo['nome_usuario']) ?><br>
+                                            Data Prevista: <?= date('d/m/Y', strtotime($emprestimo['data_devolucao_prevista'])) ?><br>
+                                            E-mail: <?= htmlspecialchars($emprestimo['email_usuario']) ?>
+                                            <form method="POST" action="../PHP/aceitarDevolucao.php">
+                                                <input type="hidden" name="IdEmprestimo" value="<?=htmlspecialchars($emprestimo['emprestimo_id'])?>" >
+                                            <button name="aceitarDevo">Aceitar devolução</button>
+                                            </form>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li>Nenhuma devolução pendente</li>
+                                <?php endif; ?>
+                                
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
