@@ -6,10 +6,7 @@ header("Expires: 0");
 session_start();
 require_once '../PHP/conexao.php';
 
-if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
-  header("Location: login.php");
-  exit();
-}
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   $email = trim($_POST['email']);

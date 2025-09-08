@@ -67,7 +67,7 @@ require_once '../PHP/conexao.php';
           </div>
           <div class="input-group">
           <span class="icon">🔒</span>
-          <input type="password" name="senha" placeholder="Senha" required>
+          <input type="password" name="senha" placeholder="Senha" minlenght="6" required>
           <button type="button" class="toggle-password" onclick="togglePassword(this)">👁️</button>  
         </div>
         <button type="submit" class="btn">REGISTRAR</button>
