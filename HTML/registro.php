@@ -72,7 +72,7 @@ require_once '../PHP/conexao.php';
         </div>
         <button type="submit" class="btn">REGISTRAR</button>
         <div class="links" style="display: flex; justify-content: center;">
-          <a href="login.php" class="btn">VOLTAR</a>
+          <a href="../index.php" class="btn">VOLTAR</a>
         </div>
       </form>
     </div>
