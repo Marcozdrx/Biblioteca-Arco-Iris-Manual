@@ -2,6 +2,11 @@
 session_start();
 require_once '../PHP/conexao.php';
 
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 0) {
+  header("Location: login.php");
+  exit();
+}
+
 $sqlPerfilUsuario = "SELECT nome, cpf, telefone, foto_usuario FROM usuarios WHERE id = :id";
 $stmt = $pdo->prepare($sqlPerfilUsuario);
 $stmt->bindParam(':id', $_SESSION['id']);

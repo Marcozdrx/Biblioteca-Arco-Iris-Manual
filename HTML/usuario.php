@@ -2,6 +2,10 @@
 session_start();
 require_once '../PHP/conexao.php';
 
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 0) {
+  header("Location: login.php");
+  exit();
+}
 $autores = [];
 $sqlBuscaAutor = "SELECT nome, id FROM autores ORDER BY nome ASC";
 $stmt = $pdo->prepare($sqlBuscaAutor);
@@ -14,10 +18,10 @@ $pesquisa = $_GET['pesquisa'] ?? '';
 if (!empty($pesquisa)) {
     // Buscar livros que começam com a pesquisa
     $sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as nome_autor 
-                          FROM livros l 
-                          LEFT JOIN autores a ON l.autor_id = a.id 
-                          WHERE l.ativo = TRUE AND l.titulo LIKE :pesquisa 
-                          ORDER BY l.titulo ASC";
+    FROM livros l 
+    LEFT JOIN autores a ON l.autor_id = a.id 
+    WHERE l.ativo = TRUE AND l.titulo LIKE :pesquisa 
+    ORDER BY l.titulo ASC";
     $stmt = $pdo->prepare($sqlApresentaLivros);
     $stmt->bindValue(':pesquisa', $pesquisa . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -25,10 +29,10 @@ if (!empty($pesquisa)) {
 } else {
     // Buscar todos os livros
     $sqlApresentaLivros = "SELECT l.*, COALESCE(a.nome, 'Autor não informado') as nome_autor 
-                          FROM livros l 
-                          LEFT JOIN autores a ON l.autor_id = a.id 
-                          WHERE l.ativo = TRUE 
-                          ORDER BY l.titulo ASC";
+    FROM livros l 
+    LEFT JOIN autores a ON l.autor_id = a.id 
+    WHERE l.ativo = TRUE 
+    ORDER BY l.titulo ASC";
     $stmt = $pdo->prepare($sqlApresentaLivros);
     $stmt->execute();
     $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);

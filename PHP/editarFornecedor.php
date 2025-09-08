@@ -6,6 +6,11 @@
 session_start();
 require_once 'conexao.php';
 
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    header("Location: ../HTML/login.php");
+    exit();
+}
+
 // Verificar se o usuário está logado e é admin
 if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     http_response_code(403);

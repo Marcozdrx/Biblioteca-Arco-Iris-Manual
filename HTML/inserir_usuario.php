@@ -2,9 +2,9 @@
 session_start();
 require_once '../PHP/conexao.php';
 
-if($_SESSION['is_admin'] != 1){
-    echo "Acesso negado, apenas ADMINS podem acessar essa página";
-    exit;
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+  header("Location: login.php");
+  exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -2,7 +2,10 @@
 require_once 'conexao.php';
 session_start();
 
-
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    header("Location: ../HTML/login.php");
+    exit();
+}
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){

@@ -3,7 +3,7 @@ session_start();
 require_once '../PHP/conexao.php';
 
 // Verificar se o usuário está logado
-if (!isset($_SESSION['id'])) {
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 0) {
     header("Location: login.php");
     exit();
 }

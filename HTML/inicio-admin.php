@@ -1,7 +1,10 @@
 <?php
 require_once '../PHP/PHPincioAdmin.php';
 
-
+if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    header("Location: login.php");
+    exit();
+}
 
 $sql = "SELECT e.id as emprestimo_id, l.titulo as nome_livro, l.imagem_capa, 
                u.nome as nome_usuario, u.email as email_usuario, 
