@@ -22,8 +22,11 @@ if(isset($_POST['renovacao'])){
   $sql = "UPDATE emprestimos SET data_devolucao_prevista = DATE_ADD(data_devolucao_prevista, INTERVAL 7 DAY), renovado = TRUE WHERE id = :id";
   $stmt = $pdo->prepare($sql);
   if($stmt->execute([':id' => $_POST['id']])){
-    echo "<script>alert('Livro renovado com suceso')</script>";
-    header('Location: emprestimos.php');
+    echo "<script>
+                alert('Livro renovado som sucesso!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
   }
 
 }
@@ -31,8 +34,11 @@ if(isset($_POST['devolver'])){
   $sql = "UPDATE emprestimos SET `status` = 'aguardando_devolucao' WHERE id = :id";
   $stmt = $pdo->prepare($sql);
   if($stmt->execute([':id' => $_POST['id']])){
-    echo "<script>alert('Livro enviado para o admin aceitar')</script>";
-    header('Location: emprestimos.php');
+    echo "<script>
+                alert('Livro enviado para funcionario aceitar devolução!');
+                window.location.href = 'emprestimos.php';
+                </script>";
+                exit;
   }
 }
 if(isset($_POST['deletarEmprestimo'])){

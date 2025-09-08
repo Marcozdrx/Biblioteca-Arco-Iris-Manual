@@ -93,11 +93,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     
     if($stmt->execute()){
-        echo "<script>alert('Livro atualizado com sucesso')</script>";
-        header('Location: ../HTML/inicio-admin.php');
+        echo "<script>
+                alert('Livro cadastrado com sucesso!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
         
     }else{
-        echo "<script>alert('Erro ao atualizar livro')</script>"; 
+        echo "<script>
+                alert('Erro ao atualizar livro!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
     }
 }
 ?>

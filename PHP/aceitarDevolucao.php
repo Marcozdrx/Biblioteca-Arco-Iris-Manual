@@ -12,8 +12,11 @@
         $stmt = $pdo->prepare($sql);
         
         if($stmt->execute([':id' => $_POST['IdEmprestimo']])){
-            echo "Devolução aceita";
-            header('Location: ../HTML/inicio-admin.php');
+            echo "<script>
+                alert('Devolução aceita!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;   
         }
     }
     

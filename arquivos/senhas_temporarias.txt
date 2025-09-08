@@ -15,3 +15,8 @@ Senha Temporária: pMGXY1jV
 Data/Hora: 04/09/2025 15:17:49
 Usuário: teste
 ---
+Email: loca@loca
+Senha Temporária: nUVGIxC0
+Data/Hora: 08/09/2025 16:45:43
+Usuário: teste
+---

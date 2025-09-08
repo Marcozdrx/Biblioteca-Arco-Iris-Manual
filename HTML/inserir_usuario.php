@@ -27,10 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
 //  aqui é pra redicionar devollta pra pagina de usuarios
-        header("Location: usuarios.php");
+        echo "<script>
+        alert('Usuari cadastrado com sucesso!');
+        window.location.href = 'usuarios.php';
+        </script>";
         exit;
     } else {
-        echo "Erro ao cadastrar usuário!";
+      echo "<script>
+      alert('Erro ao cadastrar usuarios!');
+      window.location.href = 'usuarios.php';
+      </script>";
+      exit;
     }
 }
 ?>

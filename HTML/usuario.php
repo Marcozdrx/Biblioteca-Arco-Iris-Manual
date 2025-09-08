@@ -41,8 +41,12 @@ if (!empty($pesquisa)) {
 
 
 if($_SESSION['is_admin'] != 0){
-  echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
-}else{
+  echo "<script>
+                alert('Aceso negado, apenas usuarios com acesso podem ver ess apagina!');
+                window.location.href = '../index.php';
+                </script>";
+                exit;
+}
 
   if($_SERVER['REQUEST_METHOD'] == 'POST'){
       $titulo = $_POST['titulo'] ?? '';

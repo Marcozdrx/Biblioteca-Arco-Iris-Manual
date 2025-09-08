@@ -14,10 +14,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $stmt->bindParam(':id', $id);
     
     if($stmt->execute()){
-        echo "<script>alert('Livro deletado com sucesso')</script>";
-        header("Location: ../HTML/inicio-admin.php");
+        echo "<script>
+                alert('Livro deletado com sucesso!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
     }else{
-        echo "<script>alert('Erro ao deletar livro')</script>";
+        echo "<script>
+                alert('Erro ao deletar livro!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
     }
 }
 

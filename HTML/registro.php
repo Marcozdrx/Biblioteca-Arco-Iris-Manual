@@ -18,13 +18,18 @@ require_once '../PHP/conexao.php';
       $stmt->bindParam(":email", $email);
       
       if($stmt->execute()) {
-        echo "<script>alert('Usuário cadastrado com sucesso');</script>";
+        echo "<script>
+                alert('Registro bem-sucedido!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
       } else {
-        echo "<script>alert('Erro ao cadastrar usuário');</script>";
+        echo "<script>
+                alert('Erro ao se registrar!');
+                window.location.href = '../registro.php';
+                </script>";
+                exit;
       }
-
-      header('Location: login.php');
-      exit();
     }
   } catch (Exception $e) {
     echo "<script>alert('Erro ao cadastrar usuário: " . $e->getMessage() . "');</script>";

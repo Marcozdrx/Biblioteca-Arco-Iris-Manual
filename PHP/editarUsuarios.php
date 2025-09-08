@@ -42,11 +42,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $stmt->bindParam(':statusUsuario', $status, PDO::PARAM_INT);
     } 
     if($stmt->execute()){
-        echo "<script>alert('Usuario atualizado com sucesso')</script>";
-        header('Location: ../HTML/inicio-admin.php');
+        echo "<script>
+                alert('Usuário atualizado com sucesso!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
         
     }else{
-        echo "<script>alert('Erro ao atualizar usuario')</script>"; 
+        echo "<script>
+                alert('Usuário ao atualizar usuario!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
     }
 }
 ?>

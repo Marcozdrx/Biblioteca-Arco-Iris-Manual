@@ -102,7 +102,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
           <button type="submit" class="btn">Entrar</button>
         </div>
         <div class="links" style="display: flex; justify-content: center; gap: 20px;">
-          <a href="#" class="btn" id="btnVisitante">ENTRAR COMO VISITANTE</a>
+          <a href="pagina-visitante.php" class="btn" id="btnVisitante">ENTRAR COMO VISITANTE</a>
           <a href="registro.php" class="btn">REGISTRAR <br> USUARIO</a>
         </div>
       </form>

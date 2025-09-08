@@ -33,13 +33,18 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
       $stmt->bindParam(":estado", $estado);
       
       if($stmt->execute()) {
-        echo "<script>alert('Fornecedor cadastrado com sucesso');</script>";
+        echo "<script>
+                alert('Fornecedor cadastrado com sucesso!');
+                window.location.href = 'fornecedores.php';
+                </script>";
+                exit;
       } else {
-        echo "<script>alert('Erro ao cadastrar fornecedor');</script>";
+        echo "<script>
+                alert('Erro ao cadastrar forncedores!');
+                window.location.href = 'fonecedores.php';
+                </script>";
+                exit;
       }
-
-      header('Location: fornecedores.php');
-      exit();
     }
   } catch (Exception $e) {
     echo "<script>alert('Erro ao cadastrar fornecedor: " . $e->getMessage() . "');</script>";

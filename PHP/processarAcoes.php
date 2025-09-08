@@ -16,8 +16,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':idUsuarioAcao', $id, PDO::PARAM_INT);
             if($stmt->execute()){
-                echo "Usuario bloqueado com sucesso";
-                header("Location: ../HTML/usuarios.php");
+                echo "<script>
+                alert('Usuário bloqueado com sucesso!');
+                window.location.href = '../HTML/usuarios.php';
+                </script>";
+                exit;
             }
             
         break;
@@ -26,8 +29,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':idUsuarioAcao', $id);
             if($stmt->execute()){
-                echo "Usuario desbloqueado com sucesso";
-                header("Location: ../HTML/usuarios.php");
+                echo "<script>
+                alert('Usuario desbloqueado com sucesso!');
+                window.location.href = '../HTML/usuarios.php';
+                </script>";
+                exit;
             }
             break;
         case 'excluir':
@@ -35,8 +41,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':idUsuarioAcao', $id);
             if($stmt->execute()){
-                echo "Usuario deletado com sucesso";
-                header("Location: ../HTML/usuarios.php");
+                echo "<script>
+                alert('Usuário deletado com sucesso!');
+                window.location.href = '../HTML/usuarios.php';
+                </script>";
+                exit;
             }
             break;
 
