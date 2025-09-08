@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['senha_temporaria'])) {
       
       <form class="form-box" method="POST">
         <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Validar Senha Temporária</h2>
-        <p style="text-align: center; margin-bottom: 20px; color: #666;">
+        <p style="text-align: center; margin-bottom: 20px; color: #ffffff;">
           Digite a senha temporária que foi gerada para o email: <strong><?= htmlspecialchars($_SESSION['recuperacao_email']) ?></strong>
         </p>
         <div class="input-group">
