@@ -68,7 +68,6 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <!-- Seu botão existente -->
                     <button class="dropdown-item-btn" onclick="showDevolucoes()">
                         <span>📚 Devoluções Pendentes</span>
-                        <span class="count-badge" id="devolucoesCount">0</span>
                     </button>
 
                     <!-- Modal (mesmo de antes, adaptado) -->

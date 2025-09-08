@@ -103,7 +103,7 @@ body::before {
 .graficos {
     background: #f3a53f;
     color: white;
-    padding: 8px 15px;
+    padding: 3px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
