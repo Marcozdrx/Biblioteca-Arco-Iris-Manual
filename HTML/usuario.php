@@ -47,9 +47,6 @@ if($_SESSION['is_admin'] != 0){
     </script>";
     exit;
 }
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -85,69 +82,30 @@ if($_SESSION['is_admin'] != 0){
 
   <div class="carousel-container">
     <div class="carousel">
-      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="../IMG/acabana.jpg" alt="Banner 3">
-      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="../IMG/1984.jpg" alt="Banner 5">
-      <img src="../IMG/domquixote.jpg" alt="Banner 6">
-      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
-      <!-- Duplicar as imagens para criar o loop infinito -->
-      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="../IMG/acabana.jpg" alt="Banner 3">
-      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="../IMG/1984.jpg" alt="Banner 5">
-      <img src="../IMG/domquixote.jpg" alt="Banner 6">
-      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
-      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="../IMG/acabana.jpg" alt="Banner 3">
-      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="../IMG/1984.jpg" alt="Banner 5">
-      <img src="../IMG/domquixote.jpg" alt="Banner 6">
-      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
-      <!-- Duplicar as imagens para criar o loop infinito -->
-      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="../IMG/acabana.jpg" alt="Banner 3">
-      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="../IMG/1984.jpg" alt="Banner 5">
-      <img src="../IMG/domquixote.jpg" alt="Banner 6">
-      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
-      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="../IMG/acabana.jpg" alt="Banner 3">
-      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="../IMG/1984.jpg" alt="Banner 5">
-      <img src="../IMG/domquixote.jpg" alt="Banner 6">
-      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
-      <!-- Duplicar as imagens para criar o loop infinito -->
-      <img src="../IMG/cemanosdesolidao.jpg" alt="Banner 1">
-      <img src="../IMG/ohobbit.jpg" alt="Banner 2">
-      <img src="../IMG/acabana.jpg" alt="Banner 3">
-      <img src="../IMG/ascronicasdenarnia.jpg" alt="Banner 4">
-      <img src="../IMG/1984.jpg" alt="Banner 5">
-      <img src="../IMG/domquixote.jpg" alt="Banner 6">
-      <img src="../IMG/orgulhoepreconceito.jpg" alt="Banner 7">
-      <img src="../IMG/osenhordosaneis.webp" alt="Banner 8">
-      <img src="../IMG/ametamorfose.webp" alt="Banner 9">
-      <img src="../IMG/arevolucaodosbichos.jpg" alt="Banner 10">
+    <?php foreach ($livros as $livro): ?>
+                <?php if(!empty($livro['imagem_capa'])): ?>
+                    <?php
+                        $imagemData = $livro['imagem_capa'];
+                        // Verificar se é WebP 
+                        if (substr($imagemData, 0, 4) === 'RIFF') {
+                            $mimeType = 'image/webp';
+                        } else {
+                            // Usar finfo para outros formatos
+                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                            $mimeType = finfo_buffer($finfo, $imagemData);
+                            finfo_close($finfo);
+                        }
+                        
+                        // Verificar se o MIME foi detectado corretamente
+                        if (!$mimeType || $mimeType === 'application/octet-stream') {
+                            $mimeType = 'image/webp'; // Fallback para WebP
+                        }
+                    ?>
+                <img src="data:<?= $mimeType ?>;base64,<?= base64_encode($imagemData) ?>" alt="Banners">
+                <?php else: ?>
+                    <img src="../IMG/default-avatar.svg" alt="capa do livro" class="book-cover">
+                <?php endif; ?>
+        <?php endforeach; ?>
     </div>
   </div>
 
