@@ -94,7 +94,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     if($stmt->execute()){
         echo "<script>
-                alert('Livro cadastrado com sucesso!');
+                alert('Livro atualizado com sucesso!');
                 window.location.href = '../HTML/inicio-admin.php';
                 </script>";
                 exit;
