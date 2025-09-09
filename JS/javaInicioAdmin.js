@@ -24,15 +24,18 @@ function closeBookModal() {
   // Mostra o modal com a lista
   function showDevolucoes() {
     const modal = document.getElementById("modalDevolucoes");
-    
     if (!modal) {
-        console.error("Modal não encontrado");
-        return;
+      console.error("Modal não encontrado");
+      return;
     }
-    
-    // Apenas abrir o modal - os dados já estão no HTML via PHP
+
+    // Garante que o modal esteja anexado ao body (fora de dropdowns/overflows)
+    if (modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
+
     modal.classList.add("show");
-}
+  }
   
   // Fecha o modal
   function fecharModal() {
@@ -40,19 +43,18 @@ function closeBookModal() {
     modal.classList.remove("show");
   }
   
-  // Fecha ao clicar fora
-  window.onclick = function(event) {
-    const modal = document.getElementById("modalDevolucoes");
-    if (event.target == modal) {
-      modal.classList.remove("show");
+  // Fecha ao clicar fora (não sobrescreve outros listeners)
+  window.addEventListener('click', function(event) {
+    const devolucoesModal = document.getElementById("modalDevolucoes");
+    if (devolucoesModal && event.target === devolucoesModal) {
+      devolucoesModal.classList.remove('show');
     }
-    
-    // Também fecha o modal de livro ao clicar fora
+
     const bookModal = document.getElementById("bookModal");
-    if (event.target == bookModal) {
-      bookModal.style.display = "none";
+    if (bookModal && event.target === bookModal) {
+      bookModal.style.display = 'none';
     }
-  }
+  });
   
   // Chamar ao carregar a página
   document.addEventListener("DOMContentLoaded", atualizarContadorDevolucoes);

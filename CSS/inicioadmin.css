@@ -1160,7 +1160,7 @@ body::before {
     width: 80% !important;
     max-width: 600px !important;
     position: fixed !important;
-    top: 250% !important;
+    top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     z-index: 10000 !important;
