@@ -88,11 +88,6 @@ try {
         ':prazo_dias' => $prazoDias
     ]);
 
-    // Decrementar estoque
-    $sql = "UPDATE livros SET estoque = estoque - 1 WHERE id = :livro_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':livro_id' => $livroId]);
-
     // Redirecionar para Meus Empréstimos
     header('Location: ../HTML/emprestimos.php');
     exit();
