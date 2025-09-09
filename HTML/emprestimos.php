@@ -112,8 +112,10 @@ if(isset($_POST['deletarEmprestimo'])){
               <?php if($emprestimo['status'] == 'devolvido'): ?>
                 <button name="deletarEmprestimo">Deletar Emprestimo</button>
               <?php else: ?>
-                <?php if($emprestimo['renovado'] == 1): ?>
+                <?php if($emprestimo['renovado'] == 1 ): ?>
                     <button disabled>Já renovado</button>
+                <?php elseif($emprestimo['status'] == 'aguardando_devolucao'): ?>
+                  <button disabled>Não é possivel renovar</button>
                 <?php else: ?>
                     <button name="renovacao">Renovar livro</button>
                 <?php endif; ?>
