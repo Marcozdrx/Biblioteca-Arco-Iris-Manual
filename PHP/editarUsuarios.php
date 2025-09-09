@@ -44,14 +44,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if($stmt->execute()){
         echo "<script>
                 alert('Usuário atualizado com sucesso!');
-                window.location.href = '../HTML/inicio-admin.php';
+                window.location.href = '../HTML/usuarios.php';
                 </script>";
                 exit;
         
     }else{
         echo "<script>
                 alert('Usuário ao atualizar usuario!');
-                window.location.href = '../HTML/inicio-admin.php';
+                window.location.href = '../HTML/usuarios.php';
                 </script>";
                 exit;
     }

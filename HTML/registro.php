@@ -20,13 +20,13 @@ require_once '../PHP/conexao.php';
       if($stmt->execute()) {
         echo "<script>
                 alert('Registro bem-sucedido!');
-                window.location.href = '../HTML/inicio-admin.php';
+                window.location.href = 'login.php';
                 </script>";
                 exit;
       } else {
         echo "<script>
                 alert('Erro ao se registrar!');
-                window.location.href = '../registro.php';
+                window.location.href = 'registro.php';
                 </script>";
                 exit;
       }

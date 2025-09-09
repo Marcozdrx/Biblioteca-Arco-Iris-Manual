@@ -42,10 +42,10 @@ if (!empty($pesquisa)) {
 
 if($_SESSION['is_admin'] != 0){
   echo "<script>
-                alert('Aceso negado, apenas usuarios com acesso podem ver ess apagina!');
-                window.location.href = '../index.php';
-                </script>";
-                exit;
+    alert('Aceso negado, apenas usuarios com acesso podem ver ess apagina!');
+    window.location.href = '../index.php';
+    </script>";
+    exit;
 }
 
 
