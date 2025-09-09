@@ -37,7 +37,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
     <header class="header">
         <div>
-            <a class="voltar" href="../index.php">Voltar</a>
+            <a class="header-btn" href="../index.php">Voltar</a>
           </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
@@ -52,7 +52,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             
             <a href="graficos.php" style="text-decoration: none;">
-                <button class="graficos">
+                <button class="header-btn">
                     <span>Gráficos</span>
                 </button>
             </a>
@@ -85,7 +85,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             E-mail: <?= htmlspecialchars($emprestimo['email_usuario']) ?>
                                             <form method="POST" action="../PHP/aceitarDevolucao.php">
                                                 <input type="hidden" name="IdEmprestimo" value="<?=htmlspecialchars($emprestimo['emprestimo_id'])?>" >
-                                            <button name="aceitarDevo">Aceitar devolução</button>
+                                            <button name="aceitarDevo" class="btn-accept-devolucao">Aceitar devolução</button>
                                             </form>
                                         </li>
                                     <?php endforeach; ?>

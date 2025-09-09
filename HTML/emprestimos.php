@@ -24,7 +24,7 @@ if(isset($_POST['renovacao'])){
   if($stmt->execute([':id' => $_POST['id']])){
     echo "<script>
                 alert('Livro renovado som sucesso!');
-                window.location.href = '../HTML/inicio-admin.php';
+                window.location.href = 'emprestimos.php';
                 </script>";
                 exit;
   }
@@ -45,8 +45,11 @@ if(isset($_POST['deletarEmprestimo'])){
   $sql = "DELETE FROM emprestimos WHERE id = :id";
   $stmt = $pdo->prepare($sql);
   if($stmt->execute([':id' => $_POST['id']])){
-    echo "<script>alert('Emprestimo deletado com sucesso')</script>";
-    header('Location: emprestimos.php');
+    echo "<script>
+                alert('Emprestimo deletado com sucesso!');
+                window.location.href = 'emprestimos.php';
+                </script>";
+                exit;
   }
 
 }

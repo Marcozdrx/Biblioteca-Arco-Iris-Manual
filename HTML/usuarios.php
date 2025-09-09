@@ -124,8 +124,8 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
                                     <td><?=htmlspecialchars($usuario['id'])?></td>
                                     <td><?=htmlspecialchars($usuario['nome'])?></td>
                                     <td>
-                                        <span class="status-badge <?= $usuario['ativo']?> 'active' : 'inactive'}">
-                                            <?= htmlspecialchars($usuario['ativo']) ?>
+                                        <span class="status-badge <?= $usuario['ativo'] == 1 ? 'active' : 'inactive' ?>">
+                                            <?= $usuario['ativo'] == 1 ? 'Ativo' : 'Bloqueado' ?>
                                         </span>
                                         <?php if($usuario['is_admin'] == 1): ?>
                                             <span class="admin-badge">👑 Admin</span>
@@ -244,6 +244,130 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     </div>
 
     <script>
+// Variáveis globais
+let todosUsuarios = [];
+let filtroAtual = 'todos';
+let termoPesquisa = '';
+
+// Inicializar quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    // Coletar todos os usuários da tabela
+    coletarUsuarios();
+    
+    // Configurar eventos dos filtros
+    configurarFiltros();
+    
+    // Configurar pesquisa
+    configurarPesquisa();
+    
+    // Atualizar estatísticas
+    atualizarEstatisticas();
+});
+
+function coletarUsuarios() {
+    const tbody = document.getElementById('usersTableBody');
+    const linhas = tbody.querySelectorAll('tr');
+    
+    todosUsuarios = [];
+    linhas.forEach(linha => {
+        const celulas = linha.querySelectorAll('td');
+        if (celulas.length >= 5) {
+            const usuario = {
+                id: celulas[0].textContent.trim(),
+                nome: celulas[1].textContent.trim(),
+                status: celulas[2].textContent.trim(),
+                emprestimos: celulas[3].textContent.trim(),
+                linha: linha
+            };
+            todosUsuarios.push(usuario);
+        }
+    });
+}
+
+function configurarFiltros() {
+    const botoesFiltro = document.querySelectorAll('.filter-btn');
+    
+    botoesFiltro.forEach(botao => {
+        botao.addEventListener('click', function() {
+            // Remover classe active de todos os botões
+            botoesFiltro.forEach(btn => btn.classList.remove('active'));
+            
+            // Adicionar classe active ao botão clicado
+            this.classList.add('active');
+            
+            // Aplicar filtro
+            filtroAtual = this.getAttribute('data-filter');
+            aplicarFiltros();
+        });
+    });
+}
+
+function configurarPesquisa() {
+    const campoPesquisa = document.getElementById('searchInput');
+    
+    campoPesquisa.addEventListener('input', function() {
+        termoPesquisa = this.value.toLowerCase();
+        aplicarFiltros();
+    });
+}
+
+function aplicarFiltros() {
+    const tbody = document.getElementById('usersTableBody');
+    
+    // Limpar tabela
+    tbody.innerHTML = '';
+    
+    // Filtrar usuários
+    let usuariosFiltrados = todosUsuarios.filter(usuario => {
+        // Filtro por pesquisa
+        if (termoPesquisa && !usuario.nome.toLowerCase().includes(termoPesquisa)) {
+            return false;
+        }
+        
+        // Filtro por status
+        switch(filtroAtual) {
+            case 'ativos':
+                return usuario.status.includes('1') || usuario.status.includes('Ativo');
+            case 'bloqueados':
+                return usuario.status.includes('0') || usuario.status.includes('Bloqueado');
+            case 'com-emprestimos':
+                return parseInt(usuario.emprestimos) > 0;
+            case 'todos':
+            default:
+                return true;
+        }
+    });
+    
+    // Adicionar usuários filtrados à tabela
+    if (usuariosFiltrados.length === 0) {
+        const linhaVazia = document.createElement('tr');
+        linhaVazia.innerHTML = '<td colspan="5" style="text-align: center; padding: 20px; color: #666;">Nenhum usuário encontrado</td>';
+        tbody.appendChild(linhaVazia);
+    } else {
+        usuariosFiltrados.forEach(usuario => {
+            tbody.appendChild(usuario.linha.cloneNode(true));
+        });
+    }
+    
+    // Atualizar estatísticas
+    atualizarEstatisticas();
+}
+
+function atualizarEstatisticas() {
+    const totalUsuarios = todosUsuarios.length;
+    const usuariosAtivos = todosUsuarios.filter(u => u.status.includes('1') || u.status.includes('Ativo')).length;
+    const usuariosBloqueados = todosUsuarios.filter(u => u.status.includes('0') || u.status.includes('Bloqueado')).length;
+    
+    // Atualizar elementos (se existirem)
+    const totalElement = document.getElementById('totalUsuarios');
+    const ativosElement = document.getElementById('usuariosAtivos');
+    const bloqueadosElement = document.getElementById('usuariosBloqueados');
+    
+    if (totalElement) totalElement.textContent = totalUsuarios;
+    if (ativosElement) ativosElement.textContent = usuariosAtivos;
+    if (bloqueadosElement) bloqueadosElement.textContent = usuariosBloqueados;
+}
+
 function abrirModalEdicao(botao) {
     // Pegar os dados do botão
     const usuarioId = botao.getAttribute('data-usuario-id');
@@ -265,7 +389,7 @@ function abrirModalEdicao(botao) {
     document.getElementById('userForm').setAttribute('data-edit-id', usuarioId);
 }
 
-function fecharModal() {  // ← ADICIONAR "function" AQUI
+function fecharModal() {
     document.getElementById('userModal').style.display = 'none';
     document.getElementById('userForm').reset();
     document.getElementById('userForm').removeAttribute('data-edit-id');
