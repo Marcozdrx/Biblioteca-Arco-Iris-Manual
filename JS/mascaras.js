@@ -1,4 +1,4 @@
-/**
+*
  * MASCARAMENTO BRASILEIRO - Biblioteca Arco-Íris
  * Funções para aplicar máscaras em campos de formulário
  */

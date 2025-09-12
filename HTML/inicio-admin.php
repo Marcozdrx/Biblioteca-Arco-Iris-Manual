@@ -1,11 +1,13 @@
 <?php
 require_once '../PHP/PHPincioAdmin.php';
 
+// Verifica se o usuário está logado e é admin
 if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     header("Location: login.php");
     exit();
 }
 
+// Puxando os empréstimos
 $sql = "SELECT e.id as emprestimo_id, l.titulo as nome_livro, l.imagem_capa, 
                u.nome as nome_usuario, u.email as email_usuario, 
                e.data_devolucao_prevista, e.data_emprestimo, e.status
@@ -19,9 +21,9 @@ $stmt->execute(); // Sem parâmetros
 $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-        
-        
+$nome['nome_usuario'] = $_SESSION['nome_usuario'];
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -41,7 +43,12 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
-            <span>Biblioteca Arco-Íris - Painel Administrativo</span>
+            <p>Seja bem-vindo, 
+                <span style="font-weight: bold; color: blue;">
+                    <?= htmlspecialchars($nome, ENT_QUOTES, 'UTF-8') ?>
+                </span>!
+            </p>
+
         </div>
         <div class="header-buttons">
             <div class="dropdown-menu">

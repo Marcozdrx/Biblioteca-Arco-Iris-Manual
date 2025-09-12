@@ -160,7 +160,7 @@ additionalStyles.textContent = `
     .ver-mais-btn {
         background: white !important;
         background-color: white !important;
-        color: #ff6600 !important;
+        color:rgb(0, 0, 0) !important;
     }
     
     .ver-mais-btn:hover {
@@ -183,7 +183,7 @@ additionalStyles.textContent = `
     }
     
     .book-card {
-        background: #ff6600 !important;
+        background: #ff9000 !important;
         border-radius: 10px;
         padding: 18px;
         margin: 10px;

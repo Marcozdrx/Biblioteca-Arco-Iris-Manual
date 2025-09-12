@@ -26,9 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':is_admin', $is_admin);
 
     if ($stmt->execute()) {
-//  aqui é pra redicionar devollta pra pagina de usuarios
+//  aqui é pra redicionar devolta pra pagina de usuarios
         echo "<script>
-        alert('Usuari cadastrado com sucesso!');
+        alert('Usuario cadastrado com sucesso!');
         window.location.href = 'usuarios.php';
         </script>";
         exit;
