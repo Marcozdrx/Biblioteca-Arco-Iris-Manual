@@ -165,7 +165,7 @@ $nome['nome_usuario'] = $_SESSION['nome_usuario'];
                     </div>
                 <?php endforeach; ?>
             </div>
- <!-- Modal para adicionar/editar livro -->
+ <!-- Modal para adicionar livro -->
     <div id="bookModal" class="modal" tabindex="-1" 
     data-backdrop="static" data-keyboard="false">
         <div class="modal-content">
@@ -185,7 +185,7 @@ $nome['nome_usuario'] = $_SESSION['nome_usuario'];
                 <input type="number" id="dataPublicacao" name="dataPublicacao" placeholder="Ano de publicação" min="1000" max="2024" required>
                 <input type="number" id="numeroPaginas" name="numeroPaginas" placeholder="Número de páginas" min="1"  required>
                 <input type="text" id="editora" name="editora" placeholder="Editora"  required>
-                <input type="text" id="isbn" name="isbn" placeholder="International Standard Book Number (ISBN)"  required>
+                <input type="text" id="isbn" name="isbn" placeholder="International Standard Book Number (ISBN)" maxlength="13"  required>
                 <input type="text" id="idioma" name="idioma" placeholder="Idioma" required>
                 <input list="listaCategorias" id="categoria" name="categoria" placeholder="Pesquise a categoria"  required>
             
