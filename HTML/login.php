@@ -24,6 +24,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $_SESSION['usuario'] = $usuario['nome'];
         $_SESSION['id'] = $usuario['id'];
         $_SESSION['is_admin'] = $usuario['is_admin'];
+        $_SESSION['nome_usuario'] = $usuario['nome'];
+        $_SESSION['cargo'] = $usuario['is_admin'];
         
         if($usuario['is_admin'] == 1) {
           header("Location: inicio-admin.php");

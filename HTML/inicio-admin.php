@@ -5,6 +5,8 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
     header("Location: login.php");
     exit();
 }
+$nome = $_SESSION['nome_usuario'];
+$cargo = $_SESSION['cargo'];
 
 $sql = "SELECT e.id as emprestimo_id, l.titulo as nome_livro, l.imagem_capa, 
                u.nome as nome_usuario, u.email as email_usuario, 
@@ -41,7 +43,11 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
-            <span>Biblioteca Arco-Íris - Painel Administrativo</span>
+            <?php if($cargo == admin): ?>
+            <span>Bem vindo <?= htmlspecialchars($nome) - Adm ?></span>
+            <?php else: ?>
+            <span> Bem-vindo <?= htmlspecialchars($nome) - Secretaria ?></span>
+            <?php endif; ?>
         </div>
         <div class="header-buttons">
             <div class="dropdown-menu">

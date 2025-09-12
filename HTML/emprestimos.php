@@ -8,6 +8,8 @@ if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 0) {
   exit();
 }
 
+
+
 $idusuario = $_SESSION['id'];
 
 $emprestimos = [];
