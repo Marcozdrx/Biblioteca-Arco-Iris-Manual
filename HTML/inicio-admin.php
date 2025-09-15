@@ -43,10 +43,10 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
-            <?php if($cargo == admin): ?>
-            <span>Bem vindo <?= htmlspecialchars($nome) - Adm ?></span>
+            <?php if($_SESSION['is_admin'] == 1): ?>
+            <span>Bem vindo <?= htmlspecialchars($nome)?> - adm</span>
             <?php else: ?>
-            <span> Bem-vindo <?= htmlspecialchars($nome) - Secretaria ?></span>
+            <span> Bem-vindo <?= htmlspecialchars($nome) ?> - Secretaria</span>
             <?php endif; ?>
         </div>
         <div class="header-buttons">
