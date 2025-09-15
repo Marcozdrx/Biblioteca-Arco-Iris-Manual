@@ -6,5 +6,6 @@ secretaria - só o admin aceita devolução? ➖
 atores caso de uso com nome de livro ✅
 inserir dados para os gráficos ➖
 foto perfil - tem que cadastrar a foto ✅
+foto perfil - a foto tem que ser recentralizada caso a orientação dela sja 16:9 ou parecida (lidar com isso somente no final)
 Criar tabela editora ➖
 autor e editora - tem  que ter cadastro para essas tabelas ➖
