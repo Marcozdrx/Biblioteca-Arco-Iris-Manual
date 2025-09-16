@@ -3,7 +3,7 @@ session_start();
 require_once '../PHP/conexao.php';
 
 if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 0) {
-  header("Location: login.php");
+  header("Location: ../HTML/login.php");
   exit();
 }
 
@@ -13,24 +13,22 @@ $stmt->bindParam(':id', $_SESSION['id']);
 $stmt->execute();
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$_SESSION['nome_usuario'] = $usuario['nome'];
-$_SESSION['cpf_usuario'] = $usuario['cpf'];
-$_SESSION['telefone_usuario'] = $usuario['telefone'];
-$_SESSION['foto_usuario'] = $usuario['foto_usuario'];
+// Só atualizar a sessão se não estiver definida (primeira vez)
+
+    $_SESSION['nome_usuario'] = $usuario['nome'];
+    $_SESSION['cpf_usuario'] = $usuario['cpf'];
+    $_SESSION['telefone_usuario'] = $usuario['telefone'];
+    $_SESSION['foto_usuario'] = $usuario['foto_usuario'];
+
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['id'])) {
-    header("Location: login.php");
+    header("Location: ../HTML/login.php");
     exit();
 }
 
 // Verificar se há mensagens de retorno
-$mensagem = '';
-$tipo_mensagem = '';
-if (isset($_GET['mensagem']) && isset($_GET['tipo'])) {
-    $mensagem = $_GET['mensagem'];
-    $tipo_mensagem = $_GET['tipo'];
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -59,11 +57,6 @@ if (isset($_GET['mensagem']) && isset($_GET['tipo'])) {
         <h1>Meu Perfil</h1>
         <p>Gerencie suas informações pessoais</p>
         
-        <?php if ($mensagem): ?>
-          <div class="mensagem <?= $tipo_mensagem ?>" style="margin-top: 15px;">
-            <?= htmlspecialchars($mensagem) ?>
-          </div>
-        <?php endif; ?>
       </div>
 
       <div class="profile-content">
@@ -91,20 +84,21 @@ if (isset($_GET['mensagem']) && isset($_GET['tipo'])) {
             <?php else: ?>
                 <img src="../IMG/default-avatar.svg" class="profile-photo">
             <?php endif; ?>
-            <div class="photo-overlay">
-              <label for="photoInput" class="photo-upload-btn">
-                <span>📷</span>
-                <span>Alterar Foto</span>
-              </label>
-              <input type="file" id="photoInput" accept="image/*" style="display: none;">
-            </div>
+           
           </div>
           <button id="removePhotoBtn" class="remove-photo-btn">Remover Foto</button>
         </div>
 
         <div class="profile-info">
-          <form id="profileForm" class="profile-form" action="atualizar_usuario.php" method="POST">
-            <div class="form-group">
+          <form id="profileForm" class="profile-form" action="../PHP/atualizar_usuario.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id_usuario" value="<?= $_SESSION['id'] ?>" required> 
+            <div class="form-group">  
+          </label>Foto usuario</label>
+        
+              <input type="file" name="foto_usuario" id="photoInput" accept="image/*" >
+           
+            </div>
+          <div class="form-group">
               <label for="nome">Nome Completo</label>
               <input type="text" id="nome" name="nome" value="<?= $_SESSION['nome_usuario'] ?>" required>
             </div>
@@ -113,6 +107,7 @@ if (isset($_GET['mensagem']) && isset($_GET['tipo'])) {
               <label for="cpf">CPF</label>
               <input type="text" id="cpf" name="cpf" data-mascara="cpf" maxlength="14" value="<?= $_SESSION['cpf_usuario'] ?>" required>
             </div>
+            
 
                          <div class="form-group">
                <label for="telefone">Telefone</label>
@@ -140,5 +135,7 @@ if (isset($_GET['mensagem']) && isset($_GET['tipo'])) {
       </div>
     </div>
   </div>
+
+  
 </body>
 </html> 
