@@ -20,10 +20,7 @@ $sql = "SELECT e.id as emprestimo_id, l.titulo as nome_livro, l.imagem_capa,
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute(); // Sem parâmetros
-$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-$nome['nome_usuario'] = $_SESSION['nome_usuario'];
+$emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
 ?>
 
 <!DOCTYPE html>
@@ -45,20 +42,13 @@ $nome['nome_usuario'] = $_SESSION['nome_usuario'];
           </div>
         <div class="header-title">
             <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
-<<<<<<< HEAD
-            <p>Seja bem-vindo, 
-                <span style="font-weight: bold; color: blue;">
-                    <?= htmlspecialchars($nome, ENT_QUOTES, 'UTF-8') ?>
-                </span>!
-            </p>
 
-=======
+
             <?php if($_SESSION['is_admin'] == 1): ?>
             <span>Bem vindo <?= htmlspecialchars($nome)?> - adm</span>
             <?php else: ?>
             <span> Bem-vindo <?= htmlspecialchars($nome) ?> - Secretaria</span>
             <?php endif; ?>
->>>>>>> baa4a0532c135396fc376cb479998fa074d13b7e
         </div>
         <div class="header-buttons">
             <div class="dropdown-menu">

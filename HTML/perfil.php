@@ -86,7 +86,7 @@ if (!isset($_SESSION['id'])) {
             <?php endif; ?>
            
           </div>
-          <button id="removePhotoBtn" class="remove-photo-btn">Remover Foto</button>
+          <button id="removePhotoBtn" class="remove-photo-btn" action="../PHP/remover_foto.php">Remover Foto</button>
         </div>
 
         <div class="profile-info">

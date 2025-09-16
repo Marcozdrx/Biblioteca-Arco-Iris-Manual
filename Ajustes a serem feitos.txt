@@ -1,5 +1,5 @@
 caso de uso - não tem include/extend do ator para a ação ✅
-laranja muito forte no site ➖
+laranja muito forte no site ✅
 tela confirmação - apaga o fundo (usar modal) ➖
 total doação - aparecer ➖
 secretaria - só o admin aceita devolução? ➖
