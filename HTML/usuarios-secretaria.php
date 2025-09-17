@@ -33,7 +33,7 @@ $sql = "SELECT * FROM usuarios ORDER BY nome ASC";
     $emprestimos_por_usuario = $stmt_emprestimos->fetchAll(PDO::FETCH_KEY_PAIR);
 
 // Verificar se o usuário está logado e é admin
-if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 2) {
     header("Location: login.php");
     exit();
 }
@@ -50,7 +50,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
 </head>
 <body>
     <div>
-        <a class="voltar" href="inicio-admin.php">Voltar</a>
+        <a class="voltar" href="inicio-secretaria.php">Voltar</a>
     </div>
     <header class="header">
         <div class="header-title">
@@ -61,9 +61,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
     <div class="container">
         <div class="page-header">
             <h1>Gestão de Usuários</h1>
-            <button class="add-user-btn">
-                <a href="inserir_usuario.php">Adicionar Usuario</a>
-            </button>
+           
         </div>
 
         <div class="stats-overview">
@@ -112,7 +110,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                             <th>Nome</th>
                             <th>Status</th>
                             <th>Empréstimos Ativos</th>
-                            <th>Ações</th>
+                    
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
@@ -132,37 +130,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($emprestimos_por_usuario[$usuario['id']]) ?></td>
-                                    
-                                    <td>
-                                    <button class="action-btn edit-btn" 
-                                    data-usuario-id="<?=$usuario['id']?>"
-                                    data-usuario-nome="<?=htmlspecialchars($usuario['nome'])?>"
-                                    data-usuario-status="<?=$usuario['ativo']?>"
-                                    onclick="abrirModalEdicao(this)" 
-                                    title="Editar">
-                                        ✏️
-                                    </button>
-                                        <form method="POST" action="../PHP/processarAcoes.php">
-                                            <input type="hidden" name="idUsuarioAcao" value="<?=$usuario['id']?>">
-                                            
-                                        <?php if($usuario['ativo'] == 0): ?>
-                                            <button class="action-btn unblock-btn" name="botao" value="desbloquear"
-                                                title="Desbloquear">
-                                                ✅
-                                            </button>
-                                        <?php else: ?>
-                                            
-                                            <button class="action-btn  block-btn" name="botao" value="bloquear"
-                                                title="Bloquear">
-                                                🚫
-                                            </button>
-                                            
-                                        <?php endif; ?>
-                                        
-                                        <button class="action-btn delete-btn" name="botao" value="excluir">
-                                            🗑️
-                                        </button>
-                                        </form>
+                                    <td style="display: none;">
                                     </td>
                                     
                                 </tr>
@@ -178,70 +146,9 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
         </div>
     </div>
 
-    <!-- Modal para adicionar/editar usuário -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Adicionar Usuário</h2>
-            <form id="userForm" method="POST" action="../PHP/editarUsuarios.php">
-                <div class="form-group">
-                    <input type="text" id="idUser" name="idUsuarioEdit">
-                    <label for="userName">Nome Completo:</label>
-                    <input type="text" id="userName" name="nomeEdit"  required>
-                </div>
-                <div class="form-group" id="passwordGroup">
-                    <label for="userPassword">Senha:</label>
-                    <small>Deixe em branco para deixar a senha antiga</small>
-                    <input type="password" id="userPassword" name="senhaNova" placeholder="Digite a senha">
-                </div>
-                <div class="form-group">
-                    <label for="userStatus">Status:</label>
-                    <select id="userStatus" name="statusUsuario">
-                        <option value="1">Ativo</option>
-                        <option value="0">Bloqueado</option>
-                    </select>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-                    <button type="submit" class="btn-save">Salvar</button>
-                </div>
-                
-            </form>
-        </div>
-    </div>
 
-    <!-- Modal de confirmação -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content confirm-modal">
-            <h3 id="confirmTitle">Confirmar Ação</h3>
-            <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
-            <div class="confirm-actions">
-            <button class="btn-cancel" onclick="fecharConfirmModal()">Cancelar</button>
-                <button class="btn-confirm" onclick="confirmarAcao()">Confirmar</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal para gerenciar multas -->
-    <div id="multaModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="fecharModalMulta()">&times;</span>
-            <h2 id="multaModalTitle">Gerenciar Multas</h2>
-            <div id="multaModalContent">
-                <div class="user-info">
-                    <h3 id="userNameMulta"></h3>
-                </div>
-                <div class="emprestimos-section">
-                    <h4>Empréstimos Ativos</h4>
-                    <div id="emprestimosList" class="emprestimos-list">
-                        <!-- Lista de empréstimos será carregada aqui -->
-                    </div>
-                </div>
-            </div>
-            <div class="form-actions">
-            <button type="button" class="btn-cancel" onclick="fecharModalMulta()">Fechar</button>
-            </div>
-        </div>
-    </div>
+    
 
     <script>
 // Variáveis globais
@@ -368,43 +275,12 @@ function atualizarEstatisticas() {
     if (bloqueadosElement) bloqueadosElement.textContent = usuariosBloqueados;
 }
 
-function abrirModalEdicao(botao) {
-    // Pegar os dados do botão
-    const usuarioId = botao.getAttribute('data-usuario-id');
-    const nomeUsuario = botao.getAttribute('data-usuario-nome');
-    const statusUsuario = botao.getAttribute('data-usuario-status');
-    
-    // Mostrar o modal
-    document.getElementById('userModal').style.display = 'block';
-    
-    // Preencher os campos
-    document.getElementById('idUser').value = usuarioId;
-    document.getElementById('userName').value = nomeUsuario;
-    document.getElementById('userStatus').value = statusUsuario;
-    
-    // Alterar o título do modal
-    document.getElementById('modalTitle').textContent = 'Editar Usuário';
-    
-    // Marcar que é uma edição
-    document.getElementById('userForm').setAttribute('data-edit-id', usuarioId);
-}
 
-function fecharModal() {
-    document.getElementById('userModal').style.display = 'none';
-    document.getElementById('userForm').reset();
-    document.getElementById('userForm').removeAttribute('data-edit-id');
-    document.getElementById('modalTitle').textContent = 'Adicionar Usuário';
-}
 
-// Função para fechar o modal de confirmação
-function fecharConfirmModal() {
-    document.getElementById('confirmModal').style.display = 'none';
-}
 
-// Função para fechar o modal de multa
-function fecharModalMulta() {
-    document.getElementById('multaModal').style.display = 'none';
-}
+
+
+
     </script>
 </body>
 </html> 

@@ -2,7 +2,7 @@
 require_once '../PHP/PHPincioAdmin.php';
 
 // Verifica se o usuário está logado e é admin
-if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 2) {
     header("Location: login.php");
     exit();
 }
@@ -33,9 +33,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
 </head>
 <body>
     
-    <div>
-        <a class="voltar" href="../index.php">Voltar</a>
-    </div>
+   
     <header class="header">
         <div>
             <a class="header-btn" href="../index.php">Voltar</a>
@@ -45,29 +43,19 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
 
 
             <?php if($_SESSION['cargo'] == 1): ?>
-            <span>Bem vindo <?= htmlspecialchars($nome)?> - adm</span>
+            <span>Bem vindo(a) <?= htmlspecialchars($nome)?> - adm</span>
             <?php else: ?>
-            <span> Bem-vindo <?= htmlspecialchars($nome) ?> - Secretaria</span>
+            <span> Bem-vindo(a) <?= htmlspecialchars($nome) ?> - Secretaria</span>
             <?php endif; ?>
         </div>
         <div class="header-buttons">
             <div class="dropdown-menu">
-                <a href="fornecedores.php" class="header-btn dropdown-trigger">Fornecedores ▼</a>
-                <div class="dropdown-content">
-                    <a href="fornecedores.php" class="dropdown-item">👥 Ver Fornecedores</a>
-                    <a href="cadastrar-fornecedores.php" class="dropdown-item">➕ Cadastrar Fornecedor</a></div>
-            </div>
+                
             
-            <a href="graficos.php" style="text-decoration: none;">
-                <button class="header-btn">
-                    <span>Gráficos</span>
-                </button>
-            </a>
-            
-            <div class="dropdown-menu dropdown-usuarios">
-                <a href="usuarios.php" class="header-btn dropdown-trigger">Usuários ▼</a>
+                <div class="dropdown-menu dropdown-usuarios">
+                    <a href="usuarios.php" class="header-btn dropdown-trigger">Usuários ▼</a>
                 <div class="dropdown-content">
-                    <a href="usuarios.php" class="dropdown-item">👥 Gerenciar Usuários</a>
+                    <a href="usuarios-secretaria.php" class="dropdown-item">👥 Visualizar Usuarios</a>
                   
                         
                 
@@ -105,8 +93,8 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
                     </div>
                 </div>
             </div>
-            <a href="logout.php" class="header-btn">Sair</a>
         </div>
+        <a href="logout.php" class="header-btn">Sair</a>
     </header>
 
     <div class="admin-container">

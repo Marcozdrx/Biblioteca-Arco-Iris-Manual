@@ -2,7 +2,7 @@
 require_once 'conexao.php';
 session_start();
 
-if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] == 0) {
     header("Location: ../HTML/login.php");
     exit();
 }
@@ -92,19 +92,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
 
     
-    if($stmt->execute()){
+    if($stmt->execute() && $_SESSION['cargo'] == 1){
         echo "<script>
-                alert('Livro atualizado com sucesso!');
-                window.location.href = '../HTML/inicio-admin.php';
-                </script>";
-                exit;
-        
+        alert('Livro editado com sucesso!');
+        window.location.href = '../HTML/inicio-admin.php';
+        </script>";
+        exit;
+    }elseif($stmt->execute() && $_SESSION['cargo'] == 2){
+        echo "<script>
+        alert('Livro editado com sucesso!');
+        window.location.href = '../HTML/inicio-secretaria.php';
+        </script>";
+        exit;
+    }elseif($_SESSION['cargo'] == 1){
+        echo "<script>
+        alert('Erro ao editar livro!');
+        window.location.href = '../HTML/inicio-admin.php';
+        </script>";
+        exit;
     }else{
         echo "<script>
-                alert('Erro ao atualizar livro!');
-                window.location.href = '../HTML/inicio-admin.php';
-                </script>";
-                exit;
+        alert('Erro ao editar livro!');
+        window.location.href = '../HTML/inicio-secretaria.php';
+        </script>";
+        exit;
     }
 }
 ?>

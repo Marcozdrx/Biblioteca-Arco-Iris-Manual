@@ -2,7 +2,7 @@
 session_start();
 require_once 'conexao.php';
 
-if($_SESSION['is_admin'] != 1){
+if($_SESSION['cargo'] != 1){
     echo "Acesso negado";
     header('Location: ../index.php');
 }

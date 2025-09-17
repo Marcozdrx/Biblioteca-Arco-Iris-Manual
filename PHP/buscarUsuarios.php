@@ -7,7 +7,7 @@ session_start();
 require_once 'conexao.php';
 
 // Verificar se o usuário está logado e é admin
-if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
     http_response_code(403);
     echo json_encode(['error' => 'Acesso negado']);
     exit();
@@ -21,7 +21,7 @@ try {
                 cpf, 
                 telefone, 
                 email, 
-                is_admin, 
+                cargo, 
                 ativo,
                 tem_debito,
                 tem_doacao_pendente
@@ -37,7 +37,7 @@ try {
         COUNT(*) as total_usuarios,
         SUM(CASE WHEN ativo = 1 THEN 1 ELSE 0 END) as usuarios_ativos,
         SUM(CASE WHEN ativo = 0 THEN 1 ELSE 0 END) as usuarios_bloqueados,
-        SUM(CASE WHEN is_admin = 1 THEN 1 ELSE 0 END) as usuarios_admin
+        SUM(CASE WHEN cargo = 1 THEN 1 ELSE 0 END) as usuarios_admin
         FROM usuarios";
     
     $stmt_stats = $pdo->prepare($sql_stats);
