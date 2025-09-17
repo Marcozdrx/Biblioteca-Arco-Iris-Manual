@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('../IMG/fundo.png') no-repeat center center fixed;
+    background: #EFB9FF;
     background-size: cover;
     min-height: 100vh;
     color: #333;
@@ -21,7 +21,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 0;
 }
 
@@ -34,7 +34,7 @@ body::before {
     text-decoration: none;
     font-size: 12px;
     font-weight: bold;
-    background: #ffaa33;
+    background: #EFB9FF;
     border-radius: 25px;
     padding: 8px 15px;
     z-index: 1001;
@@ -42,7 +42,7 @@ body::before {
 }
 
 .voltar:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-1px);
 }
 
@@ -115,7 +115,7 @@ body::before {
 
 /* Botão de relatório */
 .report-btn {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -131,11 +131,11 @@ body::before {
 }
 
 .report-btn:hover {
-    background: #fa9108;
+    background: #EFB9FF;
 }
 
 .add-supplier-btn {
-    background: #ffaa33;
+    background: #B79CBF;
     color: white;
     border: none;
     padding: 15px 25px;
@@ -151,7 +151,7 @@ body::before {
 }
 
 .add-supplier-btn:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 170, 51, 0.4);
 }
@@ -197,7 +197,7 @@ body::before {
     align-items: center;
     justify-content: center;
     border-radius: 15px;
-    background: #ffaa33;
+    background: #B79CBF;
     color: white;
 }
 
@@ -243,13 +243,13 @@ body::before {
 
 .search-box input:focus {
     outline: none;
-    border-color: #ffaa33;
+    border-color: #B79CBF;
     box-shadow: 0 0 0 3px rgba(255, 170, 51, 0.1);
     background: white;
 }
 
 .search-btn {
-    background: #ffaa33;
+    background: #B79CBF;
     color: white;
     border: none;
     padding: 15px 20px;
@@ -260,7 +260,7 @@ body::before {
 }
 
 .search-btn:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(255, 170, 51, 0.3);
 }
@@ -289,7 +289,7 @@ body::before {
 }
 
 .filter-btn.active {
-    background: #ffaa33;
+    background: #B79CBF;
     color: white;
     box-shadow: 0 4px 15px rgba(255, 170, 51, 0.3);
 }
@@ -314,7 +314,7 @@ body::before {
 }
 
 #suppliersTable th {
-    background: #ffaa33;
+    background: #B79CBF;
     color: white;
     padding: 20px 15px;
     text-align: left;
@@ -479,7 +479,7 @@ body::before {
     font-size: 24px;
     font-weight: 700;
     padding-bottom: 15px;
-    border-bottom: 2px solid #ffaa33;
+    border-bottom: 2px solid #B79CBF;
 }
 
 /* Formulário */
@@ -509,7 +509,7 @@ body::before {
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #ffaa33;
+    border-color: #B79CBF;
     box-shadow: 0 0 0 3px rgba(255, 170, 51, 0.1);
     background: white;
 }
@@ -546,7 +546,7 @@ body::before {
 }
 
 .btn-save {
-    background: #ffaa33;
+    background: #B79CBF;
     color: white;
     border: none;
     padding: 12px 25px;
@@ -558,7 +558,7 @@ body::before {
 }
 
 .btn-save:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-1px);
     box-shadow: 0 4px 15px rgba(255, 170, 51, 0.3);
 }
@@ -780,7 +780,7 @@ body::before {
     width: 20px;
     height: 20px;
     margin: -10px 0 0 -10px;
-    border: 2px solid #ffaa33;
+    border: 2px solid #B79CBF;
     border-top: 2px solid transparent;
     border-radius: 50%;
     animation: spin 1s linear infinite;
