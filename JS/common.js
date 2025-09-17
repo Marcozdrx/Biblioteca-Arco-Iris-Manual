@@ -160,7 +160,7 @@ additionalStyles.textContent = `
     .ver-mais-btn {
         background: white !important;
         background-color: white !important;
-        color: #ff6600 !important;
+        color: #ff9000 !important;
     }
     
     .ver-mais-btn:hover {
