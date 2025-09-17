@@ -6,7 +6,8 @@
 -- Tempo de geração: 17/09/2025 às 04:02
 -- Versão do servidor: 9.1.0
 -- Versão do PHP: 8.3.14
-CREATE DATABASE biblioteca_arco_iris;
+DROP DATABASE IF EXISTS `biblioteca_arco_iris`;
+CREATE DATABASE IF NOT EXISTS biblioteca_arco_iris;
 USE biblioteca_arco_iris;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
