@@ -2,7 +2,7 @@
 require_once 'conexao.php';
 session_start();
 
-if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
     header("Location: ../HTML/login.php");
     exit();
 }

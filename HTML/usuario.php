@@ -2,7 +2,7 @@
 session_start();
 require_once '../PHP/conexao.php';
 
-if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 0) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 0) {
   header("Location: login.php");
   exit();
 }
@@ -40,7 +40,7 @@ if (!empty($pesquisa)) {
 
 
 
-if($_SESSION['is_admin'] != 0){
+if($_SESSION['cargo'] != 0){
   echo "<script>
     alert('Aceso negado, apenas usuarios com acesso podem ver ess apagina!');
     window.location.href = '../index.php';

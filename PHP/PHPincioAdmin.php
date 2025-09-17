@@ -3,7 +3,7 @@
     require_once 'conexao.php';
 
 // Verificar se o usuário está logado e é admin
-    if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+    if (!isset($_SESSION['id']) || $_SESSION['cargo'] == 0) {
         header("Location: ../HTML/login.php");
         exit();
     }
@@ -107,7 +107,7 @@
     $stmt->execute();
     $ultimosEmprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if($_SESSION['is_admin'] != 1){
+    if($_SESSION['cargo'] == 0){
         echo "Acesso negado, apenas usuarios com permissão podem acessar essa pagina";
     }else{
 
@@ -148,16 +148,28 @@
             $stmt->bindParam(':editora', $editora);
             $stmt->bindParam(':idioma', $idioma);
         
-            if($stmt->execute()){
+            if($stmt->execute() && $_SESSION['cargo'] == 1){
                 echo "<script>
                 alert('Livro cadastrado com sucesso!');
+                window.location.href = '../HTML/inicio-admin.php';
+                </script>";
+                exit;
+            }elseif($stmt->execute() && $_SESSION['cargo'] == 2){
+                echo "<script>
+                alert('Livro cadastrado com sucesso!');
+                window.location.href = '../HTML/inicio-secretaria.php';
+                </script>";
+                exit;
+            }elseif($_SESSION['cargo'] == 1){
+                echo "<script>
+                alert('Erro ao cadastrar livro!');
                 window.location.href = '../HTML/inicio-admin.php';
                 </script>";
                 exit;
             }else{
                 echo "<script>
                 alert('Erro ao cadastrar livro!');
-                window.location.href = '../HTML/inicio-admin.php';
+                window.location.href = '../HTML/inicio-secretaria.php';
                 </script>";
                 exit;
             }

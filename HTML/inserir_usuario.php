@@ -2,7 +2,7 @@
 session_start();
 require_once '../PHP/conexao.php';
 
-if (!isset($_SESSION['id']) || $_SESSION['is_admin'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
   header("Location: login.php");
   exit();
 }
@@ -13,17 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefone = $_POST['telefone'];
     $email    = $_POST['email'];
     $senha    = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-    $is_admin = isset($_POST['is_admin']) ? 1 : 0; // Verifica se a caixa foi marcada
+    $cargo = $_POST['cargo'];
 
-    $sql = "INSERT INTO usuarios (nome, cpf, telefone, email, senha, is_admin, ativo) 
-            VALUES (:nome, :cpf, :telefone, :email, :senha, :is_admin, TRUE)";
+    $sql = "INSERT INTO usuarios (nome, cpf, telefone, email, senha, cargo, ativo) 
+            VALUES (:nome, :cpf, :telefone, :email, :senha, :cargo, TRUE)";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':nome', $nome);
     $stmt->bindParam(':cpf', $cpf);
     $stmt->bindParam(':telefone', $telefone);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':senha', $senha);
-    $stmt->bindParam(':is_admin', $is_admin);
+    $stmt->bindParam(':cargo', $cargo);
 
     if ($stmt->execute()) {
 //  aqui é pra redicionar devolta pra pagina de usuarios
@@ -84,11 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <div class="input-group admin-checkbox-group">
           <span class="icon">👑</span>
-          <label class="admin-checkbox-label">
-            <input type="checkbox" name="is_admin" class="admin-checkbox">
-            <span class="checkbox-custom"></span>
-            <span class="checkbox-text">Usuário Administrador</span>
-          </label>
+            <select name="cargo">
+              <option value="0">Usuario Comum</option>
+              <option value="1">Administrador</option>
+              <option value="2">Secretaria</option>
+            </select>
         </div>
         <button type="submit" class="btn">REGISTRAR</button>
         <div class="links" style="display: flex; justify-content: center;">

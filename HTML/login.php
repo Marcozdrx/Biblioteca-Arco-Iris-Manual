@@ -23,14 +23,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
       if($usuario && password_verify($senha, $usuario['senha'])) {
         $_SESSION['usuario'] = $usuario['nome'];
         $_SESSION['id'] = $usuario['id'];
-        $_SESSION['is_admin'] = $usuario['is_admin'];
+        $_SESSION['cargo'] = $usuario['cargo'];
         $_SESSION['nome_usuario'] = $usuario['nome'];
-        $_SESSION['cargo'] = $usuario['is_admin'];
+        $_SESSION['cargo'] = $usuario['cargo'];
         
-        if($usuario['is_admin'] == 1) {
+        if($usuario['cargo'] === 1) {
           header("Location: inicio-admin.php");
           exit();
-        } else {
+        } elseif($usuario['cargo'] === 2){
+          header("Location: inicio-secretaria.php");
+          exit();
+        } else{
           header("Location: usuario.php");
           exit();
         }

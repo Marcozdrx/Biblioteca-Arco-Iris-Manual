@@ -2,7 +2,7 @@
 require_once 'conexao.php';
 session_start();
 
-if($_SESSION['is_admin'] != 0){
+if($_SESSION['cargo'] != 0){
     echo "<script>alert('Voce nao tem permissao para acessar essa pagina');window.location.href='../index.php';</script>";
 }
 
