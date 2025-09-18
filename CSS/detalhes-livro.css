@@ -34,7 +34,7 @@ body::before {
     text-decoration: none;
     font-size: 12px;
     font-weight: bold;
-    background: #ffaa33;
+    background: #B79CBF;
     border-radius: 25px;
     padding: 8px 15px;
     z-index: 1001;
@@ -42,7 +42,7 @@ body::before {
 }
 
 .voltar:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-1px);
 }
 
@@ -78,7 +78,7 @@ body::before {
 }
 
 .header-btn {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
     padding: 8px 15px;
     border: none;
@@ -90,7 +90,7 @@ body::before {
 }
 
 .header-btn:hover {
-    background: #fa9108;
+    background: #EFB9FF;
 }
 
 /* Container principal */
@@ -189,7 +189,7 @@ body::before {
     background: rgba(255, 170, 51, 0.1);
     padding: 25px;
     border-radius: 15px;
-    border-left: 4px solid #ffaa33;
+    border-left: 4px solid #B79CBF;
 }
 
 .book-description h3 {

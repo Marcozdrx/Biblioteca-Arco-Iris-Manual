@@ -72,7 +72,7 @@ body::before {
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(255, 144, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(183, 156, 191, 0.3);
 }
 .header-btn::before{
     background: rgba(0, 0, 0, 0.3);
@@ -80,7 +80,7 @@ body::before {
 .header-btn:hover {
     background: #EFB9FF;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 144, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(183, 156, 191, 0.4);
 }
 
 .fornecedores {
@@ -99,11 +99,11 @@ body::before {
 
 
 .fornecedores:hover {
-    background: #f3a53f;
+    background: #B79CBF;
 }
 
 .graficos {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
     padding: 8px 15px;
     border: none;
@@ -117,7 +117,7 @@ body::before {
 }
 
 .graficos:hover {
-    background: #f3a53f;
+    background: #B79CBF;
 }
 
 .donations-btn {
@@ -229,7 +229,7 @@ body::before {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #f3a53f, #ff6b35, #f3a53f);
+    background: linear-gradient(90deg, #B79CBF, #EFB9FF, #B79CBF);
     background-size: 200% 100%;
     animation: shimmer 3s ease-in-out infinite;
 }
@@ -607,11 +607,11 @@ body::before {
 .modal-form input:focus,
 .modal-form textarea:focus {
     outline: none;
-    border-color: #f3a53f;
+    border-color: #B79CBF;
 }
 
 .modal-form button {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
     padding: 12px 24px;
     border: none;
@@ -846,7 +846,7 @@ body::before {
     text-decoration: none;
     font-size: 10px;
     font-weight: bold;
-    background: #f3a53f;
+    background: #B79CBF;
     border-radius: 6px;
     padding: 5px 8px;
     transition: all 0.3s ease;

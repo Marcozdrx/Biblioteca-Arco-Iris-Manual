@@ -1,5 +1,5 @@
 body {
-    background: #EFB9FF !important;
+    background: url('../IMG/fundo.png') no-repeat center center fixed !important;
     background-size: cover !important;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -138,7 +138,7 @@ body {
   }
 
   .status.pendente {
-    background-color: #ff9000;
+    background-color: #B79CBF;
     color: white;
   }
 
@@ -192,9 +192,9 @@ body {
     margin: 5px 0;
     text-align: center;
     padding: 5px;
-    background: rgba(255, 144, 0, 0.1);
+    background: rgba(183, 156, 191, 0.1);
     border-radius: 5px;
-    border-left: 3px solid #ff9000;
+    border-left: 3px solid #B79CBF;
   }
 
   .info-renovacao.renovado {
@@ -215,12 +215,12 @@ body {
   }
 
   .btn-devolver.pendente {
-    background-color: #ff9000;
+    background-color: #B79CBF;
     cursor: not-allowed;
   }
 
   .btn-devolver.pendente:hover {
-    background-color: #ff9000;
+    background-color: #B79CBF;
     transform: none;
   }
 
@@ -305,12 +305,12 @@ body {
   }
 
   .modal-content::-webkit-scrollbar-thumb {
-    background: #ff9000;
+    background: #B79CBF;
     border-radius: 4px;
   }
 
   .modal-content::-webkit-scrollbar-thumb:hover {
-    background: #fa9108;
+    background: #EFB9FF;
   }
 
   .close-modal {
@@ -345,12 +345,12 @@ body {
   }
 
   .payment-option:hover {
-    border-color: #ff9000;
+    border-color: #B79CBF;
   }
 
   .payment-option.selected {
-    border-color: #ff9000;
-    background: rgba(255, 144, 0, 0.1);
+    border-color: #B79CBF;
+    background: rgba(183, 156, 191, 0.1);
   }
 
   .payment-option img {
@@ -360,7 +360,7 @@ body {
   }
 
   .btn-confirmar {
-    background: #ff9000;
+    background: #B79CBF;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -372,7 +372,7 @@ body {
   }
 
   .btn-confirmar:hover {
-    background: #ff7b00;
+    background: #B79CBF;
   }
 
   .btn-cancelar {
@@ -430,12 +430,12 @@ body {
   }
 
   .modal-content.pix-selected::-webkit-scrollbar-thumb {
-    background: #ff9000;
+    background: #B79CBF;
     border-radius: 4px;
   }
 
   .modal-content.pix-selected::-webkit-scrollbar-thumb:hover {
-    background: #fa9108;
+    background: #EFB9FF;
   }
   .qrcode-image{
     margin-top: 0px;
@@ -617,7 +617,7 @@ body {
     }
 
     .header-btn {
-      background: #ff9000;
+      background: #B79CBF;
       color: white;
       text-decoration: none;
       padding: 10px 20px;
@@ -626,7 +626,7 @@ body {
     }
 
     .header-btn:hover {
-      background: #e67e00;
+      background: #B79CBF;
       transform: translateY(-2px);
     }
 
@@ -688,7 +688,7 @@ body {
     /* Estilos para doação pendente */
     .doacao-pendente {
         background: rgba(255, 193, 7, 0.2);
-        border: 2px solid #ffc107;
+        border: 2px solid #EFB9FF;
         border-radius: 8px;
         padding: 10px;
         margin-top: 10px;
@@ -704,29 +704,29 @@ body {
 
     /* Estilos para botões desabilitados */
     .emprestimo-actions button[disabled] {
-        background: #ff9000 !important;
+        background: #B79CBF !important;
         color: white !important;
-        border: 2px solid #e67e00 !important;
+        border: 2px solid #B79CBF !important;
         padding: 10px 20px;
         border-radius: 6px;
         cursor: not-allowed;
         font-weight: 500;
         transition: all 0.3s ease;
         opacity: 0.8;
-        box-shadow: 0 2px 4px rgba(255, 144, 0, 0.3);
+        box-shadow: 0 2px 4px rgba(183, 156, 191, 0.3);
     }
 
     .emprestimo-actions button[disabled]:hover {
-        background: #ff9000 !important;
+        background: #B79CBF !important;
         transform: none !important;
-        box-shadow: 0 2px 4px rgba(255, 144, 0, 0.3) !important;
+        box-shadow: 0 2px 4px rgba(183, 156, 191, 0.3) !important;
     }
 
     /* Estilos para botões ativos - todos laranja */
     .emprestimo-actions button:not([disabled]) {
-        background: #ff9000;
+        background: #B79CBF;
         color: white;
-        border: 2px solid #e67e00;
+        border: 2px solid #B79CBF;
         padding: 10px 20px;
         border-radius: 6px;
         cursor: pointer;
@@ -736,7 +736,7 @@ body {
     }
 
     .emprestimo-actions button:not([disabled]):hover {
-        background: #e67e00;
+        background: #B79CBF;
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(255, 144, 0, 0.3);
+        box-shadow: 0 4px 8px rgba(183, 156, 191, 0.3);
     }

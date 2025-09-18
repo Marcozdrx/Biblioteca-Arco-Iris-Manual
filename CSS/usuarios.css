@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #EFB9FF;
+    background: url('../IMG/fundo.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: #333;
@@ -217,7 +217,7 @@ body::before {
 
 .search-box input:focus {
     border-color: #EFB9FF ;
-    box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);
+    box-shadow: 0 0 0 3px rgba(183, 156, 191, 0.1);
 }
 
 .search-btn {
@@ -479,7 +479,7 @@ tbody tr:hover {
 .form-group input:focus,
 .form-group select:focus {
     border-color: #EFB9FF ;
-    box-shadow: 0 0 0 3px rgba(255, 144, 0, 0.1);
+    box-shadow: 0 0 0 3px rgba(183, 156, 191, 0.1);
 }
 
 .form-actions {
@@ -719,7 +719,7 @@ tbody tr:hover {
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #f3a53f;
+    background: #B79CBF;
     border-radius: 4px;
 }
 
@@ -733,7 +733,7 @@ tbody tr:hover {
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
-    border-left: 4px solid #ffaa33;
+    border-left: 4px solid #EFB9FF;
 }
 
 .user-info h3 {
@@ -756,7 +756,7 @@ tbody tr:hover {
     color: #333;
     margin-bottom: 15px;
     font-size: 16px;
-    border-bottom: 2px solid #ffaa33;
+    border-bottom: 2px solid #EFB9FF;
     padding-bottom: 5px;
 }
 
@@ -813,7 +813,7 @@ tbody tr:hover {
 }
 
 .btn-adicionar-multa {
-    background: #ffaa33;
+    background: #EFB9FF;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -888,7 +888,7 @@ tbody tr:hover {
     font-size: 10px;
     font-weight: 600;
     margin-left: 8px;
-    border: 1px solid #ffc107;
+    border: 1px solid #EFB9FF;
     box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
 }
 
