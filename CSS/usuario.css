@@ -1,5 +1,5 @@
 body {
-    background-image: url('../IMG/fundo.png');
+    background: #EFB9FF;
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
@@ -28,7 +28,7 @@ body::before {
     text-decoration: none;
     font-size: 10px;
     font-weight: bold;
-    background: #ffaa33;
+    background: #B79CBF;
     transform: translateY(-2px);
     border-radius: 25px;
     padding: 4px 8px;
@@ -75,7 +75,7 @@ body::before {
 }
 
 .header-btn {
-    background: #ff9000;
+    background: #B79CBF;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -86,13 +86,13 @@ body::before {
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(255, 144, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(183, 156, 191, 0.3);
 }
 
 .header-btn:hover {
-    background: #ffaa33;
+    background: #EFB9FF;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 144, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(183, 156, 191, 0.4);
 }
 
 /* Carrossel moderno e estilizado */
@@ -104,10 +104,10 @@ body::before {
     margin-bottom: 30px;
     overflow: hidden;
     position: relative;
-    background: linear-gradient(135deg, #ff9000, #ff9100);
+    background: linear-gradient(135deg, #C9BDCD, #B79CBF);
     padding: 25px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(255, 102, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(183, 156, 191, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.2);
 }
 

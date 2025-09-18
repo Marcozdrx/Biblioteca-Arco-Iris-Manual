@@ -1,5 +1,5 @@
 body {
-  background: url('../IMG/fundo.png') no-repeat center center fixed !important;
+  background: #EFB9FF !important;
   background-size: cover !important;
   margin: 0;
   font-family: Arial, sans-serif;
@@ -50,7 +50,7 @@ body::before {
   text-decoration: none;
   font-size: 15px;
   font-weight: bold;
-  background: #ffaa33;
+  background: #B79CBF;
   transform: translateY(-2px);
   border-radius: 25px;
   padding: 8px 8px;
@@ -66,7 +66,7 @@ body::before {
 
 /* Estilos da página inicial */
 .landing-page .content-box {
-  background: #ff9000;
+  background: #C9BDCD;
   border-radius: 25px;
   padding: 30px;
   text-align: center;
@@ -148,7 +148,7 @@ body::before {
   padding: 15px 45px;
   border: none;
   border-radius: 10px;
-  background: #ff9000;
+  background: #B79CBF;
   color: white;
   font-size: 16px;
   box-sizing: border-box;
@@ -193,7 +193,7 @@ body::before {
 }
 
 .btn {
-  background: #ff9000;
+  background: #B79CBF;
   color: white;
   padding: 5px 1px;
   border: none;
@@ -207,7 +207,7 @@ body::before {
   transition: all 0.3s ease;
 }
 .btn {
-  background: #ff9000;
+  background: #B79CBF;
   color: white;
   padding: 5px 1px;
   border: none;
@@ -235,7 +235,7 @@ body::before {
   text-align: left;
   color: white;
   margin: 15px 0;
-  background: #ff9000;
+  background: #B79CBF;
   padding: 15px;
   border-radius: 10px;
 }
@@ -282,7 +282,7 @@ body::before {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #ff9000;
+  background: #B79CBF;
   color: white;
   border: none;
   font-size: 20px;
@@ -337,7 +337,7 @@ body::before {
 }
 
 .help-email {
-  color: #ff9000;
+  color: #B79CBF;
   font-weight: bold;
   text-decoration: none;
 }
@@ -348,7 +348,7 @@ body::before {
 
 /* Estilos específicos para o checkbox de administrador */
 .admin-checkbox-group {
-  background: #ff9000;
+  background: #B79CBF;
   border-radius: 10px;
   padding: 15px 45px;
   margin-bottom: 20px;
@@ -389,7 +389,7 @@ body::before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #ff9000;
+  color: #B79CBF;
   font-size: 14px;
   font-weight: bold;
   opacity: 0;

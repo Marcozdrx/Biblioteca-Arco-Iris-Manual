@@ -1,5 +1,5 @@
 body {
-    background: url('../IMG/fundo.png') no-repeat center center fixed !important;
+    background: #EFB9FF !important;
     background-size: cover !important;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -58,7 +58,7 @@ body {
   }
 
   .header-btn {
-    background: #ff9100;
+    background: #B79CBF;
     color: white;
     padding: 8px 15px;
     border: none;
@@ -71,12 +71,12 @@ body {
   .emprestimos-container {
     margin-top: 70px;
     padding: 20px;
-    background: #ff9000;
+    background: #C9BDCD;
     border-radius: 15px;
   }
 
   .emprestimo-card {
-    background: #ffb347;
+    background: #B79CBF;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 15px;

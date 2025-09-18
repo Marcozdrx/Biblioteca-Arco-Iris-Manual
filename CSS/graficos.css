@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url('../IMG/fundo.png') no-repeat center center fixed;
+    background: #EFB9FF;
     background-size: cover;
     min-height: 100vh;
     color: #333;
@@ -56,7 +56,7 @@ body::before {
 }
 
 .header-btn {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -69,7 +69,7 @@ body::before {
 }
 
 .header-btn:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-2px);
 }
 
@@ -82,7 +82,7 @@ body::before {
     text-decoration: none;
     font-size: 12px;
     font-weight: bold;
-    background: #ffaa33;
+    background: #B79CBF;
     border-radius: 25px;
     padding: 8px 15px;
     z-index: 1001;
@@ -90,7 +90,7 @@ body::before {
 }
 
 .voltar:hover {
-    background: #fa9108;
+    background: #EFB9FF;
     transform: translateY(-1px);
 }
 
@@ -124,7 +124,7 @@ body::before {
 
 /* Botão de relatório */
 .report-btn {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -140,7 +140,7 @@ body::before {
 }
 
 .report-btn:hover {
-    background: #fa9108;
+    background: #EFB9FF;
 }
 
 /* Cards de estatísticas */
@@ -152,7 +152,7 @@ body::before {
 }
 
 .stat-card {
-    background: #ff9000;
+    background: #C9BDCD;
     border-radius: 20px;
     padding: 25px;
     display: flex;
@@ -176,7 +176,7 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3a53f;
+    background: #B79CBF;
     border-radius: 15px;
     color: white;
 }
