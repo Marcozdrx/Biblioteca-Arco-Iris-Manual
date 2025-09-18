@@ -56,6 +56,8 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
                 <a href="fornecedores.php" class="header-btn dropdown-trigger">Fornecedores ▼</a>
                 <div class="dropdown-content">
                     <a href="fornecedores.php" class="dropdown-item">👥 Ver Fornecedores</a>
+                    <a href="cadastro-autor.php" class="dropdown-item">👥 Cadastrar Autor</a>
+
                     <a href="cadastrar-fornecedores.php" class="dropdown-item">➕ Cadastrar Fornecedor</a></div>
             </div>
             
