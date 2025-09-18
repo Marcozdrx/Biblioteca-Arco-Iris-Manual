@@ -64,6 +64,7 @@ if(isset($_POST['deletarEmprestimo'])){
   <title>Meus Empréstimos - Biblioteca Arco-Íris</title>
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="../CSS/emprestimo.css">
+  <link rel="stylesheet" href="../CSS/modais.css">
 </head>
 <body>
   <header class="header">
@@ -115,7 +116,7 @@ if(isset($_POST['deletarEmprestimo'])){
             <form method="POST" action="emprestimos.php">
               <input type="hidden" name="id" value="<?= htmlspecialchars($emprestimo['id'])?>">
               <?php if($emprestimo['status'] == 'devolvido'): ?>
-                <button name="deletarEmprestimo">Deletar Emprestimo</button>
+                <button type="button" onclick="confirmarExclusaoEmprestimo(<?= $emprestimo['id'] ?>, '<?= htmlspecialchars($emprestimo['titulo']) ?>')">Deletar Emprestimo</button>
               <?php else: ?>
                 <?php if($emprestimo['renovado'] == 1 ): ?>
                     <button disabled>Já renovado</button>
@@ -177,6 +178,38 @@ if(isset($_POST['deletarEmprestimo'])){
     </div>
   </div>
 
+  <script src="../JS/emprestimos.js"></script>
+  <script src="../JS/modais.js"></script>
+  <script>
+    // Função para confirmar exclusão de empréstimo
+    function confirmarExclusaoEmprestimo(emprestimoId, tituloLivro) {
+      showDeleteConfirmation(
+        'Confirmar Exclusão de Empréstimo',
+        `Tem certeza que deseja excluir o empréstimo do livro "${tituloLivro}"? Esta ação não pode ser desfeita.`,
+        function() {
+          // Criar formulário para enviar a requisição de exclusão
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = 'emprestimos.php';
+          
+          const inputId = document.createElement('input');
+          inputId.type = 'hidden';
+          inputId.name = 'id';
+          inputId.value = emprestimoId;
+          
+          const inputDeletar = document.createElement('input');
+          inputDeletar.type = 'hidden';
+          inputDeletar.name = 'deletarEmprestimo';
+          inputDeletar.value = '1';
+          
+          form.appendChild(inputId);
+          form.appendChild(inputDeletar);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      );
+    }
+  </script>
 
 </body>
 </html> 

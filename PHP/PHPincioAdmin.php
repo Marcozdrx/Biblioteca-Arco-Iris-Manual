@@ -149,28 +149,20 @@
             $stmt->bindParam(':idioma', $idioma);
         
             if($stmt->execute() && $_SESSION['cargo'] == 1){
-                echo "<script>
-                alert('Livro cadastrado com sucesso!');
-                window.location.href = '../HTML/inicio-admin.php';
-                </script>";
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'message' => 'Livro cadastrado com sucesso!']);
                 exit;
             }elseif($stmt->execute() && $_SESSION['cargo'] == 2){
-                echo "<script>
-                alert('Livro cadastrado com sucesso!');
-                window.location.href = '../HTML/inicio-secretaria.php';
-                </script>";
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'message' => 'Livro cadastrado com sucesso!']);
                 exit;
             }elseif($_SESSION['cargo'] == 1){
-                echo "<script>
-                alert('Erro ao cadastrar livro!');
-                window.location.href = '../HTML/inicio-admin.php';
-                </script>";
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Erro ao cadastrar livro!']);
                 exit;
             }else{
-                echo "<script>
-                alert('Erro ao cadastrar livro!');
-                window.location.href = '../HTML/inicio-secretaria.php';
-                </script>";
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Erro ao cadastrar livro!']);
                 exit;
             }
         }

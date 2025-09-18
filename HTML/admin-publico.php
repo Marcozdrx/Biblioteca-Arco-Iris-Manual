@@ -45,6 +45,7 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Biblioteca Arco-Íris - Administração (Teste)</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="../CSS/inicioadmin.css">
+    <link rel="stylesheet" href="../CSS/modais.css">
 </head>
 <body>
     
@@ -134,7 +135,7 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     data-imagem-capa="<?= $livro['imagem_capa'] ? base64_encode($livro['imagem_capa']) : '' ?>">
                                 ✏️ Editar
                             </button>
-                            <button class="delete-btn" onclick="deleteBook(<?= $livro['id'] ?>)">🗑️ Excluir</button>
+                            <button class="delete-btn" onclick="confirmarExclusaoLivro(<?= $livro['id'] ?>, '<?= htmlspecialchars($livro['titulo']) ?>')">🗑️ Excluir</button>
                         </div>
                     </div>
                 </div>
@@ -181,5 +182,40 @@ $devolucoesPendentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script type="text/javascript" src="../JS/javaInicioAdmin.js"></script>
+    <script src="../JS/modais.js"></script>
+    <script>
+        // Função para confirmar exclusão de livro na página admin-publico
+        function confirmarExclusaoLivro(livroId, tituloLivro) {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Livro',
+                `Tem certeza que deseja excluir o livro "${tituloLivro}"? Esta ação não pode ser desfeita.`,
+                function() {
+                    // Usar a função deleteBook existente do javaInicioAdmin.js
+                    const formData = new FormData();
+                    formData.append('id', livroId);
+                    
+                    fetch('../PHP/DeletarLivros.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showNotification(data.message, 'success');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            showNotification('Erro: ' + data.error, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir livro:', error);
+                        showNotification('Erro ao excluir livro', 'error');
+                    });
+                }
+            );
+        }
+    </script>
 </body>
 </html>

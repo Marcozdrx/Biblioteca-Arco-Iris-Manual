@@ -16,6 +16,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
     <title>Fornecedores - Biblioteca Arco-Íris</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="../CSS/fornecedores.css">
+    <link rel="stylesheet" href="../CSS/modais.css">
 </head>
 <body>
     <div>
@@ -121,17 +122,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
         </div>
     </div>
 
-    <!-- Modal de confirmação -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content confirm-modal">
-            <h3 id="confirmTitle">Confirmar Ação</h3>
-            <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
-            <div class="confirm-actions">
-                <button class="btn-cancel" onclick="fecharConfirmModal()">Cancelar</button>
-                <button class="btn-confirm" onclick="confirmarAcao()">Confirmar</button>
-            </div>
-        </div>
-    </div>
+
 
     <script>
         // Variáveis globais
@@ -163,11 +154,11 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                     exibirFornecedores(fornecedoresFiltrados);
                 } else {
                     console.error('Erro ao carregar fornecedores:', data.error);
-                    alert('Erro ao carregar fornecedores: ' + data.error);
+                    showNotification('Erro ao carregar fornecedores: ' + data.error, 'error');
                 }
             } catch (error) {
                 console.error('Erro na requisição:', error);
-                alert('Erro ao conectar com o servidor');
+                showNotification('Erro ao conectar com o servidor', 'error');
             }
         }
 
@@ -247,7 +238,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                 
                 // Validações básicas
                 if (!dados.nome || !dados.cpf_cnpj || !dados.telefone) {
-                    alert('Por favor, preencha todos os campos obrigatórios.');
+                    showNotification('Por favor, preencha todos os campos obrigatórios.', 'error');
                     return;
                 }
                 
@@ -256,7 +247,19 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                     dados.id = parseInt(editId);
                 }
                 
-                salvarFornecedor(dados);
+                // Mostrar confirmação de edição
+                const actionText = isEdit ? 'editar' : 'cadastrar';
+                const confirmMessage = isEdit ? 
+                    `Tem certeza que deseja salvar as alterações do fornecedor "${dados.nome}"?` :
+                    `Tem certeza que deseja cadastrar o fornecedor "${dados.nome}"?`;
+                
+                showEditConfirmation(
+                    isEdit ? 'Confirmar Edição de Fornecedor' : 'Confirmar Cadastro de Fornecedor',
+                    confirmMessage,
+                    function() {
+                        salvarFornecedor(dados);
+                    }
+                );
             });
         }
 
@@ -335,15 +338,15 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                 const result = await response.json();
                 
                 if (result.success) {
-                    alert(result.message || 'Fornecedor salvo com sucesso!');
+                    showNotification(result.message || 'Fornecedor salvo com sucesso!', 'success');
                     fecharModal();
                     carregarFornecedores(); // Recarregar dados
                 } else {
-                    alert('Erro: ' + result.error);
+                    showNotification('Erro: ' + result.error, 'error');
                 }
             } catch (error) {
                 console.error('Erro na requisição:', error);
-                alert('Erro ao conectar com o servidor');
+                showNotification('Erro ao conectar com o servidor', 'error');
             }
         }
 
@@ -351,38 +354,33 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
         function excluirFornecedor(id) {
             const fornecedor = fornecedores.find(f => f.id === id);
             if (fornecedor) {
-                document.getElementById('confirmTitle').textContent = 'Confirmar Exclusão';
-                document.getElementById('confirmMessage').textContent = 
-                    `Tem certeza que deseja excluir o fornecedor "${fornecedor.nome}"?\n\nEsta ação não pode ser desfeita.`;
-                
-                acaoConfirmada = async () => {
-                    try {
-                        const response = await fetch('../PHP/excluirFornecedor.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ id: id })
-                        });
-                        
-                        const result = await response.json();
-                        
-                        if (result.success) {
-                            alert(result.message);
-                            fecharConfirmModal();
-                            carregarFornecedores(); // Recarregar dados
-                        } else {
-                            alert('Erro: ' + result.error);
-                            fecharConfirmModal();
+                showDeleteConfirmation(
+                    'Confirmar Exclusão de Fornecedor',
+                    `Tem certeza que deseja excluir o fornecedor "${fornecedor.nome}"? Esta ação não pode ser desfeita.`,
+                    async function() {
+                        try {
+                            const response = await fetch('../PHP/excluirFornecedor.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ id: id })
+                            });
+                            
+                            const result = await response.json();
+                            
+                            if (result.success) {
+                                showNotification(result.message, 'success');
+                                carregarFornecedores(); // Recarregar dados
+                            } else {
+                                showNotification('Erro: ' + result.error, 'error');
+                            }
+                        } catch (error) {
+                            console.error('Erro na requisição:', error);
+                            showNotification('Erro ao conectar com o servidor', 'error');
                         }
-                    } catch (error) {
-                        console.error('Erro na requisição:', error);
-                        alert('Erro ao conectar com o servidor');
-                        fecharConfirmModal();
                     }
-                };
-                
-                document.getElementById('confirmModal').style.display = 'block';
+                );
             }
         }
 
@@ -394,19 +392,6 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
             document.getElementById('modalTitle').textContent = 'Adicionar Fornecedor';
         }
 
-        // Função para fechar modal de confirmação
-        function fecharConfirmModal() {
-            document.getElementById('confirmModal').style.display = 'none';
-            acaoConfirmada = null;
-        }
-
-        // Função para confirmar ação
-        function confirmarAcao() {
-            if (acaoConfirmada) {
-                acaoConfirmada();
-            }
-        }
-
         // Função para gerar relatório de fornecedores
         function gerarRelatorioFornecedores() {
             window.location.href = '../PHP/relatorioFornecedores.php';
@@ -415,15 +400,12 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
         // Fechar modais ao clicar fora
         window.onclick = function(event) {
             const supplierModal = document.getElementById('supplierModal');
-            const confirmModal = document.getElementById('confirmModal');
             
             if (event.target === supplierModal) {
                 fecharModal();
             }
-            if (event.target === confirmModal) {
-                fecharConfirmModal();
-            }
         }
     </script>
+    <script src="../JS/modais.js"></script>
 </body>
 </html> 

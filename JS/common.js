@@ -114,12 +114,12 @@ function fazerEmprestimo(bookId) {
             if (data.pode_emprestar) {
                 window.location.href = `../PHP/registrarEmprestimo.php?livro_id=${bookId}`;
             } else {
-                alert(data.mensagem);
+                showNotification(data.mensagem, 'error');
             }
         })
         .catch(error => {
             console.error('Erro ao verificar limite:', error);
-            alert('Erro ao verificar disponibilidade para empréstimo');
+            showNotification('Erro ao verificar disponibilidade para empréstimo', 'error');
         });
 }
 
