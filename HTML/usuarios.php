@@ -47,6 +47,7 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
     <title>Usuários - Biblioteca Arco-Íris</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="../CSS/usuarios.css">
+    <link rel="stylesheet" href="../CSS/modais.css">
 </head>
 <body>
     <div>
@@ -159,7 +160,8 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
                                             
                                         <?php endif; ?>
                                         
-                                        <button class="action-btn delete-btn" name="botao" value="excluir">
+                                        <button class="action-btn delete-btn" type="button" onclick="confirmarExclusaoUsuario(<?=$usuario['id']?>, '<?=htmlspecialchars($usuario['nome'])?>')"
+                                                title="Excluir">
                                             🗑️
                                         </button>
                                         </form>
@@ -182,9 +184,9 @@ if (!isset($_SESSION['id']) || $_SESSION['cargo'] != 1) {
     <div id="userModal" class="modal">
         <div class="modal-content">
             <h2 id="modalTitle">Adicionar Usuário</h2>
-            <form id="userForm" method="POST" action="../PHP/editarUsuarios.php">
+            <form id="userForm" onsubmit="confirmarEdicaoUsuario(event)">
                 <div class="form-group">
-                    <input type="text" id="idUser" name="idUsuarioEdit">
+                    <input type="hidden" id="idUser" name="idUsuarioEdit">
                     <label for="userName">Nome Completo:</label>
                     <input type="text" id="userName" name="nomeEdit"  required>
                 </div>
@@ -405,6 +407,78 @@ function fecharConfirmModal() {
 function fecharModalMulta() {
     document.getElementById('multaModal').style.display = 'none';
 }
+
+// Função para confirmar edição de usuário
+function confirmarEdicaoUsuario(event) {
+    event.preventDefault();
+    
+    const userName = document.getElementById('userName').value;
+    
+    showEditConfirmation(
+        'Confirmar Edição de Usuário',
+        `Tem certeza que deseja salvar as alterações do usuário "${userName}"?`,
+        function() {
+            // Criar formulário para enviar os dados
+            const formData = new FormData();
+            formData.append('idUsuarioEdit', document.getElementById('idUser').value);
+            formData.append('nomeEdit', document.getElementById('userName').value);
+            formData.append('senhaNova', document.getElementById('userPassword').value);
+            formData.append('statusUsuario', document.getElementById('userStatus').value);
+            
+            fetch('../PHP/editarUsuarios.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    fecharModal();
+                    // Recarregar a página após um pequeno delay
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showNotification('Erro: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao editar usuário:', error);
+                showNotification('Erro ao editar usuário', 'error');
+            });
+        }
+    );
+}
+
+// Função para confirmar exclusão de usuário
+function confirmarExclusaoUsuario(userId, userName) {
+    showDeleteConfirmation(
+        'Confirmar Exclusão de Usuário',
+        `Tem certeza que deseja excluir o usuário "${userName}"? Esta ação não pode ser desfeita.`,
+        function() {
+            // Criar formulário para enviar a requisição de exclusão
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '../PHP/processarAcoes.php';
+            
+            const inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.name = 'idUsuarioAcao';
+            inputId.value = userId;
+            
+            const inputBotao = document.createElement('input');
+            inputBotao.type = 'hidden';
+            inputBotao.name = 'botao';
+            inputBotao.value = 'excluir';
+            
+            form.appendChild(inputId);
+            form.appendChild(inputBotao);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    );
+}
     </script>
+    <script src="../JS/modais.js"></script>
 </body>
 </html> 

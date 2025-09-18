@@ -1,14 +1,11 @@
-
+-- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Tempo de geração: 17/09/2025 às 04:02
--- Versão do servidor: 9.1.0
--- Versão do PHP: 8.3.14
-DROP DATABASE IF EXISTS `biblioteca_arco_iris`;
-CREATE DATABASE IF NOT EXISTS biblioteca_arco_iris;
-USE biblioteca_arco_iris;
+-- Host: 127.0.0.1
+-- Tempo de geração: 18-Set-2025 às 20:01
+-- Versão do servidor: 10.4.32-MariaDB
+-- versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +25,6 @@ DELIMITER $$
 --
 -- Procedimentos
 --
-DROP PROCEDURE IF EXISTS `CalcularMultas`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `CalcularMultas` ()   BEGIN
     DECLARE valor_multa DECIMAL(10,2) DEFAULT 0.25;
     
@@ -58,7 +54,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `CalcularMultas` ()   BEGIN
     );
 END$$
 
-DROP PROCEDURE IF EXISTS `RenovarEmprestimo`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `RenovarEmprestimo` (IN `emprestimo_id` INT)   BEGIN
     DECLARE dias_para_renovacao INT DEFAULT 6;
     DECLARE prazo_emprestimo INT DEFAULT 7;
@@ -93,47 +88,37 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `agendamentos`
+-- Estrutura da tabela `agendamentos`
 --
 
-DROP TABLE IF EXISTS `agendamentos`;
-CREATE TABLE IF NOT EXISTS `agendamentos` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `livro_id` int NOT NULL,
+CREATE TABLE `agendamentos` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `livro_id` int(11) NOT NULL,
   `data_agendamento` date NOT NULL,
   `horario` time NOT NULL,
-  `status` enum('agendado','concluido','cancelado') COLLATE utf8mb4_unicode_ci DEFAULT 'agendado',
-  `data_criacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `data_atualizacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `idx_agendamentos_usuario` (`usuario_id`),
-  KEY `idx_agendamentos_livro` (`livro_id`),
-  KEY `idx_agendamentos_data` (`data_agendamento`),
-  KEY `idx_agendamentos_status` (`status`),
-  KEY `idx_agendamentos_horario` (`horario`),
-  KEY `idx_agendamentos_usuario_data` (`usuario_id`,`data_agendamento`)
+  `status` enum('agendado','concluido','cancelado') DEFAULT 'agendado',
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_atualizacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `autores`
+-- Estrutura da tabela `autores`
 --
 
-DROP TABLE IF EXISTS `autores`;
-CREATE TABLE IF NOT EXISTS `autores` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `biografia` text COLLATE utf8mb4_unicode_ci,
-  `nacionalidade` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `autores` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `biografia` text DEFAULT NULL,
+  `nacionalidade` varchar(50) DEFAULT NULL,
   `data_nascimento` date DEFAULT NULL,
-  `ativo` tinyint(1) DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `ativo` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `autores`
+-- Extraindo dados da tabela `autores`
 --
 
 INSERT INTO `autores` (`id`, `nome`, `biografia`, `nacionalidade`, `data_nascimento`, `ativo`) VALUES
@@ -166,20 +151,17 @@ INSERT INTO `autores` (`id`, `nome`, `biografia`, `nacionalidade`, `data_nascime
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `categorias`
+-- Estrutura da tabela `categorias`
 --
 
-DROP TABLE IF EXISTS `categorias`;
-CREATE TABLE IF NOT EXISTS `categorias` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descricao` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nome` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `categorias` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(50) NOT NULL,
+  `descricao` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `categorias`
+-- Extraindo dados da tabela `categorias`
 --
 
 INSERT INTO `categorias` (`id`, `nome`, `descricao`) VALUES
@@ -201,23 +183,20 @@ INSERT INTO `categorias` (`id`, `nome`, `descricao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `configuracoes`
+-- Estrutura da tabela `configuracoes`
 --
 
-DROP TABLE IF EXISTS `configuracoes`;
-CREATE TABLE IF NOT EXISTS `configuracoes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `chave` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `valor` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descricao` text COLLATE utf8mb4_unicode_ci,
-  `tipo` enum('string','integer','boolean','decimal','json') COLLATE utf8mb4_unicode_ci DEFAULT 'string',
-  `data_atualizacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `chave` (`chave`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `configuracoes` (
+  `id` int(11) NOT NULL,
+  `chave` varchar(50) NOT NULL,
+  `valor` text NOT NULL,
+  `descricao` text DEFAULT NULL,
+  `tipo` enum('string','integer','boolean','decimal','json') DEFAULT 'string',
+  `data_atualizacao` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `configuracoes`
+-- Extraindo dados da tabela `configuracoes`
 --
 
 INSERT INTO `configuracoes` (`id`, `chave`, `valor`, `descricao`, `tipo`, `data_atualizacao`) VALUES
@@ -232,79 +211,58 @@ INSERT INTO `configuracoes` (`id`, `chave`, `valor`, `descricao`, `tipo`, `data_
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `doacoes`
+-- Estrutura da tabela `doacoes`
 --
 
-DROP TABLE IF EXISTS `doacoes`;
-CREATE TABLE IF NOT EXISTS `doacoes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `tipo_doacao` enum('livro','item_higiene') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descricao` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `quantidade` int DEFAULT '1',
-  `status` enum('pendente','aprovada','rejeitada','entregue') COLLATE utf8mb4_unicode_ci DEFAULT 'pendente',
-  `data_doacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `doacoes` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `tipo_doacao` enum('livro','item_higiene') NOT NULL,
+  `descricao` text NOT NULL,
+  `quantidade` int(11) DEFAULT 1,
+  `status` enum('pendente','aprovada','rejeitada','entregue') DEFAULT 'pendente',
+  `data_doacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_aprovacao` timestamp NULL DEFAULT NULL,
-  `aprovado_por` int DEFAULT NULL,
-  `observacoes` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `aprovado_por` (`aprovado_por`),
-  KEY `idx_doacoes_usuario` (`usuario_id`),
-  KEY `idx_doacoes_status` (`status`),
-  KEY `idx_doacoes_tipo` (`tipo_doacao`),
-  KEY `idx_doacoes_data` (`data_doacao`)
+  `aprovado_por` int(11) DEFAULT NULL,
+  `observacoes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `editora`
+-- Estrutura da tabela `editora`
 --
 
-DROP TABLE IF EXISTS `editora`;
-CREATE TABLE IF NOT EXISTS `editora` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `editora` (
+  `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `nacionalidade` varchar(30) DEFAULT NULL,
-  `ativo` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
+  `ativo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `emprestimos`
+-- Estrutura da tabela `emprestimos`
 --
 
-DROP TABLE IF EXISTS `emprestimos`;
-CREATE TABLE IF NOT EXISTS `emprestimos` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `livro_id` int NOT NULL,
-  `data_emprestimo` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `emprestimos` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL,
+  `livro_id` int(11) NOT NULL,
+  `data_emprestimo` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_devolucao_prevista` date NOT NULL,
   `data_devolucao_real` timestamp NULL DEFAULT NULL,
-  `status` enum('emprestado','devolvido','atrasado','aguardando_devolucao') COLLATE utf8mb4_unicode_ci DEFAULT 'emprestado',
-  `renovado` tinyint(1) DEFAULT '0',
-  `multa_valor` decimal(10,2) DEFAULT '0.00',
-  `multa_paga` tinyint(1) DEFAULT '0',
-  `data_multa_paga` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_emprestimos_usuario` (`usuario_id`),
-  KEY `idx_emprestimos_livro` (`livro_id`),
-  KEY `idx_emprestimos_status` (`status`),
-  KEY `idx_emprestimos_data_emprestimo` (`data_emprestimo`),
-  KEY `idx_emprestimos_data_devolucao` (`data_devolucao_prevista`),
-  KEY `idx_emprestimos_renovado` (`renovado`),
-  KEY `idx_emprestimos_multa` (`multa_paga`),
-  KEY `idx_emprestimos_usuario_status` (`usuario_id`,`status`),
-  KEY `idx_emprestimos_livro_status` (`livro_id`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `status` enum('emprestado','devolvido','atrasado','aguardando_devolucao') DEFAULT 'emprestado',
+  `renovado` tinyint(1) DEFAULT 0,
+  `multa_valor` decimal(10,2) DEFAULT 0.00,
+  `multa_paga` tinyint(1) DEFAULT 0,
+  `data_multa_paga` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `emprestimos`
+-- Extraindo dados da tabela `emprestimos`
 --
 
 INSERT INTO `emprestimos` (`id`, `usuario_id`, `livro_id`, `data_emprestimo`, `data_devolucao_prevista`, `data_devolucao_real`, `status`, `renovado`, `multa_valor`, `multa_paga`, `data_multa_paga`) VALUES
@@ -313,7 +271,6 @@ INSERT INTO `emprestimos` (`id`, `usuario_id`, `livro_id`, `data_emprestimo`, `d
 --
 -- Acionadores `emprestimos`
 --
-DROP TRIGGER IF EXISTS `after_emprestimo_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_emprestimo_insert` AFTER INSERT ON `emprestimos` FOR EACH ROW BEGIN
     UPDATE livros 
@@ -322,7 +279,6 @@ CREATE TRIGGER `after_emprestimo_insert` AFTER INSERT ON `emprestimos` FOR EACH 
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `after_emprestimo_update`;
 DELIMITER $$
 CREATE TRIGGER `after_emprestimo_update` AFTER UPDATE ON `emprestimos` FOR EACH ROW BEGIN
     IF NEW.status = 'devolvido' AND OLD.status != 'devolvido' THEN
@@ -337,32 +293,25 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `fornecedores`
+-- Estrutura da tabela `fornecedores`
 --
 
-DROP TABLE IF EXISTS `fornecedores`;
-CREATE TABLE IF NOT EXISTS `fornecedores` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cpf_cnpj` varchar(18) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telefone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `endereco` text COLLATE utf8mb4_unicode_ci,
-  `cidade` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cep` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` enum('ativo','inativo') COLLATE utf8mb4_unicode_ci DEFAULT 'ativo',
-  `total_doacoes` int DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cpf_cnpj` (`cpf_cnpj`),
-  KEY `idx_fornecedores_cpf_cnpj` (`cpf_cnpj`),
-  KEY `idx_fornecedores_status` (`status`),
-  KEY `idx_fornecedores_cidade` (`cidade`),
-  KEY `idx_fornecedores_estado` (`estado`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `fornecedores` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cpf_cnpj` varchar(18) NOT NULL,
+  `telefone` varchar(15) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `endereco` text DEFAULT NULL,
+  `cidade` varchar(50) DEFAULT NULL,
+  `estado` varchar(2) DEFAULT NULL,
+  `cep` varchar(10) DEFAULT NULL,
+  `status` enum('ativo','inativo') DEFAULT 'ativo',
+  `total_doacoes` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `fornecedores`
+-- Extraindo dados da tabela `fornecedores`
 --
 
 INSERT INTO `fornecedores` (`id`, `nome`, `cpf_cnpj`, `telefone`, `email`, `endereco`, `cidade`, `estado`, `cep`, `status`, `total_doacoes`) VALUES
@@ -370,66 +319,51 @@ INSERT INTO `fornecedores` (`id`, `nome`, `cpf_cnpj`, `telefone`, `email`, `ende
 (2, 'Distribuidora Nacional', '98.765.432/0001-10', '(11) 4444-5555', 'vendas@gmail.com', 'Av. dos Livros, 456', 'São Paulo', 'SP', '04567-890', 'ativo', 8),
 (3, 'Livraria Central', '11.222.333/0001-44', '(21) 5555-6666', 'central@gmail.com', 'Rua Central, 789', 'Rio de Janeiro', 'RJ', '20000-123', 'ativo', 12),
 (4, 'Editora Regional', '55.666.777/0001-88', '(31) 6666-7777', 'regional@gmail.com', 'Av. Regional, 321', 'Belo Horizonte', 'MG', '30000-456', 'ativo', 6),
-(6, 'aaa', '52.532.531/4322-13', '(42) 35261-5113', 'a@estudante', 'Joinville - SC', 'Joinville', 'SC', '89212305', 'ativo', 0);
+(6, 'Marcos', '52.532.531/4322-13', '(42) 35261-5113', NULL, NULL, NULL, NULL, NULL, 'ativo', 0),
+(7, 'Fornecedor Anônimo', '000.000.000-00', '(00) 00000-0000', 'usuariodesconhecido@gmail.com', 'Rua desconhecida', 'São Paulo', 'SP', '00000-000', 'ativo', 1052);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `historico_atividades`
+-- Estrutura da tabela `historico_atividades`
 --
 
-DROP TABLE IF EXISTS `historico_atividades`;
-CREATE TABLE IF NOT EXISTS `historico_atividades` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int DEFAULT NULL,
-  `tipo_acao` enum('emprestimo','devolucao','renovacao','agendamento','doacao') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descricao` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dados_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci,
-  `data_acao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `idx_historico_usuario` (`usuario_id`),
-  KEY `idx_historico_tipo` (`tipo_acao`),
-  KEY `idx_historico_data` (`data_acao`)
-) ;
+CREATE TABLE `historico_atividades` (
+  `id` int(11) NOT NULL,
+  `usuario_id` int(11) DEFAULT NULL,
+  `tipo_acao` enum('emprestimo','devolucao','renovacao','agendamento','doacao') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descricao` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dados_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `ip_address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data_acao` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `livros`
+-- Estrutura da tabela `livros`
 --
 
-DROP TABLE IF EXISTS `livros`;
-CREATE TABLE IF NOT EXISTS `livros` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `titulo` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `autor_id` int DEFAULT NULL,
-  `categoria_id` int DEFAULT NULL,
-  `isbn` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ano_publicacao` int DEFAULT NULL,
-  `numero_paginas` int DEFAULT NULL,
-  `descricao` text COLLATE utf8mb4_unicode_ci,
-  `imagem_capa` mediumblob,
-  `estoque` int DEFAULT '0',
-  `editora` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idioma` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'Português',
-  `ativo` tinyint(1) DEFAULT '1',
-  `id_editora` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `isbn` (`isbn`),
-  KEY `idx_livros_titulo` (`titulo`),
-  KEY `idx_livros_isbn` (`isbn`),
-  KEY `idx_livros_autor` (`autor_id`),
-  KEY `idx_livros_categoria` (`categoria_id`),
-  KEY `idx_livros_ativo` (`ativo`),
-  KEY `idx_livros_editora` (`editora`),
-  KEY `idx_livros_ano` (`ano_publicacao`),
-  KEY `idx_livros_categoria_ativo` (`categoria_id`,`ativo`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `livros` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(200) NOT NULL,
+  `autor_id` int(11) DEFAULT NULL,
+  `categoria_id` int(11) DEFAULT NULL,
+  `isbn` varchar(20) DEFAULT NULL,
+  `ano_publicacao` int(11) DEFAULT NULL,
+  `numero_paginas` int(11) DEFAULT NULL,
+  `descricao` text DEFAULT NULL,
+  `imagem_capa` mediumblob DEFAULT NULL,
+  `estoque` int(11) DEFAULT 0,
+  `editora` varchar(100) DEFAULT NULL,
+  `idioma` varchar(20) DEFAULT 'Português',
+  `ativo` tinyint(1) DEFAULT 1,
+  `id_editora` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `livros`
+-- Extraindo dados da tabela `livros`
 --
 
 INSERT INTO `livros` (`id`, `titulo`, `autor_id`, `categoria_id`, `isbn`, `ano_publicacao`, `numero_paginas`, `descricao`, `imagem_capa`, `estoque`, `editora`, `idioma`, `ativo`, `id_editora`) VALUES
@@ -463,56 +397,42 @@ INSERT INTO `livros` (`id`, `titulo`, `autor_id`, `categoria_id`, `isbn`, `ano_p
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `multas`
+-- Estrutura da tabela `multas`
 --
 
-DROP TABLE IF EXISTS `multas`;
-CREATE TABLE IF NOT EXISTS `multas` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `emprestimo_id` int NOT NULL,
+CREATE TABLE `multas` (
+  `id` int(11) NOT NULL,
+  `emprestimo_id` int(11) NOT NULL,
   `valor` decimal(10,2) NOT NULL,
-  `status` enum('pendente','paga','cancelada') COLLATE utf8mb4_unicode_ci DEFAULT 'pendente',
-  `data_geracao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('pendente','paga','cancelada') DEFAULT 'pendente',
+  `data_geracao` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_pagamento` timestamp NULL DEFAULT NULL,
-  `metodo_pagamento` enum('pix','boleto','cartao','doacao') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `observacoes` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `idx_multas_emprestimo` (`emprestimo_id`),
-  KEY `idx_multas_status` (`status`),
-  KEY `idx_multas_metodo` (`metodo_pagamento`)
+  `metodo_pagamento` enum('pix','boleto','cartao','doacao') DEFAULT NULL,
+  `observacoes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuarios`
+-- Estrutura da tabela `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cpf` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telefone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `senha` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cargo` int DEFAULT NULL,
-  `ativo` tinyint(1) DEFAULT '1',
-  `tem_debito` tinyint(1) DEFAULT '0',
-  `tem_doacao_pendente` tinyint(1) DEFAULT '0',
-  `foto_usuario` blob,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cpf` (`cpf`),
-  KEY `idx_usuarios_cpf` (`cpf`),
-  KEY `idx_usuarios_email` (`email`),
-  KEY `idx_usuarios_admin` (`cargo`),
-  KEY `idx_usuarios_ativo` (`ativo`),
-  KEY `idx_usuarios_debito` (`tem_debito`),
-  KEY `idx_usuarios_admin_ativo` (`cargo`,`ativo`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `telefone` varchar(15) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `cargo` int(11) DEFAULT NULL,
+  `ativo` tinyint(1) DEFAULT 1,
+  `tem_debito` tinyint(1) DEFAULT 0,
+  `tem_doacao_pendente` tinyint(1) DEFAULT 0,
+  `foto_usuario` blob DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Despejando dados para a tabela `usuarios`
+-- Extraindo dados da tabela `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `cpf`, `telefone`, `senha`, `email`, `cargo`, `ativo`, `tem_debito`, `tem_doacao_pendente`, `foto_usuario`) VALUES
@@ -538,124 +458,320 @@ INSERT INTO `usuarios` (`id`, `nome`, `cpf`, `telefone`, `senha`, `email`, `carg
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `vw_emprestimos_atrasados`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `vw_emprestimos_atrasados`
+-- (Veja abaixo para a view atual)
 --
-DROP VIEW IF EXISTS `vw_emprestimos_atrasados`;
-CREATE TABLE IF NOT EXISTS `vw_emprestimos_atrasados` (
-`cpf` varchar(14)
-,`data_devolucao_prevista` date
-,`data_emprestimo` timestamp
-,`dias_atraso` int
-,`id` int
-,`livro` varchar(200)
-,`multa_calculada` decimal(11,2)
-,`telefone` varchar(15)
+CREATE TABLE `vw_emprestimos_atrasados` (
+`id` int(11)
 ,`usuario` varchar(100)
+,`cpf` varchar(14)
+,`telefone` varchar(15)
+,`livro` varchar(200)
+,`data_emprestimo` timestamp
+,`data_devolucao_prevista` date
+,`dias_atraso` int(7)
+,`multa_calculada` decimal(9,2)
 );
 
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `vw_estatisticas_gerais`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `vw_estatisticas_gerais`
+-- (Veja abaixo para a view atual)
 --
-DROP VIEW IF EXISTS `vw_estatisticas_gerais`;
-CREATE TABLE IF NOT EXISTS `vw_estatisticas_gerais` (
-`agendamentos_pendentes` bigint
-,`livros_devolvidos` bigint
-,`livros_emprestados` bigint
-,`total_fornecedores` bigint
-,`total_livros` bigint
-,`total_usuarios` bigint
+CREATE TABLE `vw_estatisticas_gerais` (
+`total_usuarios` bigint(21)
+,`total_livros` bigint(21)
+,`livros_emprestados` bigint(21)
+,`livros_devolvidos` bigint(21)
+,`total_fornecedores` bigint(21)
+,`agendamentos_pendentes` bigint(21)
 );
 
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `vw_livros_mais_emprestados`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `vw_livros_mais_emprestados`
+-- (Veja abaixo para a view atual)
 --
-DROP VIEW IF EXISTS `vw_livros_mais_emprestados`;
-CREATE TABLE IF NOT EXISTS `vw_livros_mais_emprestados` (
-`autor` varchar(100)
-,`categoria` varchar(50)
-,`estoque` int
-,`id` int
+CREATE TABLE `vw_livros_mais_emprestados` (
+`id` int(11)
 ,`titulo` varchar(200)
-,`total_emprestimos` bigint
+,`autor` varchar(100)
+,`categoria` varchar(50)
+,`estoque` int(11)
+,`total_emprestimos` bigint(21)
 );
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `vw_emprestimos_atrasados`
+-- Estrutura para vista `vw_emprestimos_atrasados`
 --
 DROP TABLE IF EXISTS `vw_emprestimos_atrasados`;
 
-DROP VIEW IF EXISTS `vw_emprestimos_atrasados`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_emprestimos_atrasados`  AS SELECT `e`.`id` AS `id`, `u`.`nome` AS `usuario`, `u`.`cpf` AS `cpf`, `u`.`telefone` AS `telefone`, `l`.`titulo` AS `livro`, `e`.`data_emprestimo` AS `data_emprestimo`, `e`.`data_devolucao_prevista` AS `data_devolucao_prevista`, (to_days(curdate()) - to_days(`e`.`data_devolucao_prevista`)) AS `dias_atraso`, ((to_days(curdate()) - to_days(`e`.`data_devolucao_prevista`)) * 0.25) AS `multa_calculada` FROM ((`emprestimos` `e` join `usuarios` `u` on((`e`.`usuario_id` = `u`.`id`))) join `livros` `l` on((`e`.`livro_id` = `l`.`id`))) WHERE ((`e`.`status` = 'emprestado') AND (`e`.`data_devolucao_prevista` < curdate())) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_emprestimos_atrasados`  AS SELECT `e`.`id` AS `id`, `u`.`nome` AS `usuario`, `u`.`cpf` AS `cpf`, `u`.`telefone` AS `telefone`, `l`.`titulo` AS `livro`, `e`.`data_emprestimo` AS `data_emprestimo`, `e`.`data_devolucao_prevista` AS `data_devolucao_prevista`, to_days(curdate()) - to_days(`e`.`data_devolucao_prevista`) AS `dias_atraso`, (to_days(curdate()) - to_days(`e`.`data_devolucao_prevista`)) * 0.25 AS `multa_calculada` FROM ((`emprestimos` `e` join `usuarios` `u` on(`e`.`usuario_id` = `u`.`id`)) join `livros` `l` on(`e`.`livro_id` = `l`.`id`)) WHERE `e`.`status` = 'emprestado' AND `e`.`data_devolucao_prevista` < curdate() ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `vw_estatisticas_gerais`
+-- Estrutura para vista `vw_estatisticas_gerais`
 --
 DROP TABLE IF EXISTS `vw_estatisticas_gerais`;
 
-DROP VIEW IF EXISTS `vw_estatisticas_gerais`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_estatisticas_gerais`  AS SELECT (select count(0) from `usuarios` where (`usuarios`.`ativo` = 1)) AS `total_usuarios`, (select count(0) from `livros` where (`livros`.`ativo` = 1)) AS `total_livros`, (select count(0) from `emprestimos` where (`emprestimos`.`status` = 'emprestado')) AS `livros_emprestados`, (select count(0) from `emprestimos` where (`emprestimos`.`status` = 'devolvido')) AS `livros_devolvidos`, (select count(0) from `fornecedores` where (`fornecedores`.`status` = 'ativo')) AS `total_fornecedores`, (select count(0) from `agendamentos` where (`agendamentos`.`status` = 'agendado')) AS `agendamentos_pendentes` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_estatisticas_gerais`  AS SELECT (select count(0) from `usuarios` where `usuarios`.`ativo` = 1) AS `total_usuarios`, (select count(0) from `livros` where `livros`.`ativo` = 1) AS `total_livros`, (select count(0) from `emprestimos` where `emprestimos`.`status` = 'emprestado') AS `livros_emprestados`, (select count(0) from `emprestimos` where `emprestimos`.`status` = 'devolvido') AS `livros_devolvidos`, (select count(0) from `fornecedores` where `fornecedores`.`status` = 'ativo') AS `total_fornecedores`, (select count(0) from `agendamentos` where `agendamentos`.`status` = 'agendado') AS `agendamentos_pendentes` ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `vw_livros_mais_emprestados`
+-- Estrutura para vista `vw_livros_mais_emprestados`
 --
 DROP TABLE IF EXISTS `vw_livros_mais_emprestados`;
 
-DROP VIEW IF EXISTS `vw_livros_mais_emprestados`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_livros_mais_emprestados`  AS SELECT `l`.`id` AS `id`, `l`.`titulo` AS `titulo`, `a`.`nome` AS `autor`, `c`.`nome` AS `categoria`, `l`.`estoque` AS `estoque`, count(`e`.`id`) AS `total_emprestimos` FROM (((`livros` `l` left join `autores` `a` on((`l`.`autor_id` = `a`.`id`))) left join `categorias` `c` on((`l`.`categoria_id` = `c`.`id`))) left join `emprestimos` `e` on((`l`.`id` = `e`.`livro_id`))) WHERE (`l`.`ativo` = 1) GROUP BY `l`.`id`, `l`.`titulo`, `a`.`nome`, `c`.`nome`, `l`.`estoque` ORDER BY count(`e`.`id`) DESC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_livros_mais_emprestados`  AS SELECT `l`.`id` AS `id`, `l`.`titulo` AS `titulo`, `a`.`nome` AS `autor`, `c`.`nome` AS `categoria`, `l`.`estoque` AS `estoque`, count(`e`.`id`) AS `total_emprestimos` FROM (((`livros` `l` left join `autores` `a` on(`l`.`autor_id` = `a`.`id`)) left join `categorias` `c` on(`l`.`categoria_id` = `c`.`id`)) left join `emprestimos` `e` on(`l`.`id` = `e`.`livro_id`)) WHERE `l`.`ativo` = 1 GROUP BY `l`.`id`, `l`.`titulo`, `a`.`nome`, `c`.`nome`, `l`.`estoque` ORDER BY count(`e`.`id`) DESC ;
 
 --
--- Restrições para tabelas despejadas
+-- Índices para tabelas despejadas
 --
 
 --
--- Restrições para tabelas `agendamentos`
+-- Índices para tabela `agendamentos`
+--
+ALTER TABLE `agendamentos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_agendamentos_usuario` (`usuario_id`),
+  ADD KEY `idx_agendamentos_livro` (`livro_id`),
+  ADD KEY `idx_agendamentos_data` (`data_agendamento`),
+  ADD KEY `idx_agendamentos_status` (`status`),
+  ADD KEY `idx_agendamentos_horario` (`horario`),
+  ADD KEY `idx_agendamentos_usuario_data` (`usuario_id`,`data_agendamento`);
+
+--
+-- Índices para tabela `autores`
+--
+ALTER TABLE `autores`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nome` (`nome`);
+
+--
+-- Índices para tabela `configuracoes`
+--
+ALTER TABLE `configuracoes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `chave` (`chave`);
+
+--
+-- Índices para tabela `doacoes`
+--
+ALTER TABLE `doacoes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `aprovado_por` (`aprovado_por`),
+  ADD KEY `idx_doacoes_usuario` (`usuario_id`),
+  ADD KEY `idx_doacoes_status` (`status`),
+  ADD KEY `idx_doacoes_tipo` (`tipo_doacao`),
+  ADD KEY `idx_doacoes_data` (`data_doacao`);
+
+--
+-- Índices para tabela `editora`
+--
+ALTER TABLE `editora`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Índices para tabela `emprestimos`
+--
+ALTER TABLE `emprestimos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_emprestimos_usuario` (`usuario_id`),
+  ADD KEY `idx_emprestimos_livro` (`livro_id`),
+  ADD KEY `idx_emprestimos_status` (`status`),
+  ADD KEY `idx_emprestimos_data_emprestimo` (`data_emprestimo`),
+  ADD KEY `idx_emprestimos_data_devolucao` (`data_devolucao_prevista`),
+  ADD KEY `idx_emprestimos_renovado` (`renovado`),
+  ADD KEY `idx_emprestimos_multa` (`multa_paga`),
+  ADD KEY `idx_emprestimos_usuario_status` (`usuario_id`,`status`),
+  ADD KEY `idx_emprestimos_livro_status` (`livro_id`,`status`);
+
+--
+-- Índices para tabela `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cpf_cnpj` (`cpf_cnpj`),
+  ADD KEY `idx_fornecedores_cpf_cnpj` (`cpf_cnpj`),
+  ADD KEY `idx_fornecedores_status` (`status`),
+  ADD KEY `idx_fornecedores_cidade` (`cidade`),
+  ADD KEY `idx_fornecedores_estado` (`estado`);
+
+--
+-- Índices para tabela `historico_atividades`
+--
+ALTER TABLE `historico_atividades`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_historico_usuario` (`usuario_id`),
+  ADD KEY `idx_historico_tipo` (`tipo_acao`),
+  ADD KEY `idx_historico_data` (`data_acao`);
+
+--
+-- Índices para tabela `livros`
+--
+ALTER TABLE `livros`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `isbn` (`isbn`),
+  ADD KEY `idx_livros_titulo` (`titulo`),
+  ADD KEY `idx_livros_isbn` (`isbn`),
+  ADD KEY `idx_livros_autor` (`autor_id`),
+  ADD KEY `idx_livros_categoria` (`categoria_id`),
+  ADD KEY `idx_livros_ativo` (`ativo`),
+  ADD KEY `idx_livros_editora` (`editora`),
+  ADD KEY `idx_livros_ano` (`ano_publicacao`),
+  ADD KEY `idx_livros_categoria_ativo` (`categoria_id`,`ativo`);
+
+--
+-- Índices para tabela `multas`
+--
+ALTER TABLE `multas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_multas_emprestimo` (`emprestimo_id`),
+  ADD KEY `idx_multas_status` (`status`),
+  ADD KEY `idx_multas_metodo` (`metodo_pagamento`);
+
+--
+-- Índices para tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cpf` (`cpf`),
+  ADD KEY `idx_usuarios_cpf` (`cpf`),
+  ADD KEY `idx_usuarios_email` (`email`),
+  ADD KEY `idx_usuarios_admin` (`cargo`),
+  ADD KEY `idx_usuarios_ativo` (`ativo`),
+  ADD KEY `idx_usuarios_debito` (`tem_debito`),
+  ADD KEY `idx_usuarios_admin_ativo` (`cargo`,`ativo`);
+
+--
+-- AUTO_INCREMENT de tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `agendamentos`
+--
+ALTER TABLE `agendamentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `autores`
+--
+ALTER TABLE `autores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT de tabela `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de tabela `configuracoes`
+--
+ALTER TABLE `configuracoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `doacoes`
+--
+ALTER TABLE `doacoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `editora`
+--
+ALTER TABLE `editora`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `emprestimos`
+--
+ALTER TABLE `emprestimos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de tabela `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `historico_atividades`
+--
+ALTER TABLE `historico_atividades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `livros`
+--
+ALTER TABLE `livros`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT de tabela `multas`
+--
+ALTER TABLE `multas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `agendamentos`
 --
 ALTER TABLE `agendamentos`
   ADD CONSTRAINT `agendamentos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `agendamentos_ibfk_2` FOREIGN KEY (`livro_id`) REFERENCES `livros` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `doacoes`
+-- Limitadores para a tabela `doacoes`
 --
 ALTER TABLE `doacoes`
   ADD CONSTRAINT `doacoes_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `doacoes_ibfk_2` FOREIGN KEY (`aprovado_por`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL;
 
 --
--- Restrições para tabelas `emprestimos`
+-- Limitadores para a tabela `emprestimos`
 --
 ALTER TABLE `emprestimos`
   ADD CONSTRAINT `emprestimos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `emprestimos_ibfk_2` FOREIGN KEY (`livro_id`) REFERENCES `livros` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `historico_atividades`
+-- Limitadores para a tabela `historico_atividades`
 --
 ALTER TABLE `historico_atividades`
   ADD CONSTRAINT `historico_atividades_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL;
 
 --
--- Restrições para tabelas `livros`
+-- Limitadores para a tabela `livros`
 --
 ALTER TABLE `livros`
   ADD CONSTRAINT `livros_ibfk_1` FOREIGN KEY (`autor_id`) REFERENCES `autores` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `livros_ibfk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE SET NULL;
 
 --
--- Restrições para tabelas `multas`
+-- Limitadores para a tabela `multas`
 --
 ALTER TABLE `multas`
   ADD CONSTRAINT `multas_ibfk_1` FOREIGN KEY (`emprestimo_id`) REFERENCES `emprestimos` (`id`) ON DELETE CASCADE;

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Modais de Confirmação</title>
+    <link rel="stylesheet" href="CSS/modais.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .test-btn:hover {
+            background: #b71c1c;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .success {
+            background: #4caf50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste de Modais de Confirmação de Exclusão</h1>
+        
+        <h2>Testes dos Modais Implementados:</h2>
+        
+        <button class="test-btn" onclick="testarModalLivro()">
+            📚 Testar Modal de Exclusão de Livro
+        </button>
+        
+        <button class="test-btn" onclick="testarModalUsuario()">
+            👤 Testar Modal de Exclusão de Usuário
+        </button>
+        
+        <button class="test-btn" onclick="testarModalFornecedor()">
+            🏢 Testar Modal de Exclusão de Fornecedor
+        </button>
+        
+        <button class="test-btn" onclick="testarModalEmprestimo()">
+            📄 Testar Modal de Exclusão de Empréstimo
+        </button>
+        
+        <button class="test-btn" onclick="testarModalDoacao()">
+            🎁 Testar Modal de Exclusão de Doação
+        </button>
+        
+        <h2>Testes de Modais de Edição:</h2>
+        
+        <button class="test-btn" style="background: #1976d2;" onclick="testarModalEdicaoLivro()">
+            📚 Testar Modal de Edição de Livro
+        </button>
+        
+        <button class="test-btn" style="background: #1976d2;" onclick="testarModalEdicaoUsuario()">
+            👤 Testar Modal de Edição de Usuário
+        </button>
+        
+        <button class="test-btn" style="background: #1976d2;" onclick="testarModalEdicaoFornecedor()">
+            🏢 Testar Modal de Edição de Fornecedor
+        </button>
+        
+        <h2>Teste de Notificações:</h2>
+        
+        <button class="test-btn" style="background: #4caf50;" onclick="testarNotificacaoSucesso()">
+            ✅ Testar Notificação de Sucesso
+        </button>
+        
+        <button class="test-btn" style="background: #f44336;" onclick="testarNotificacaoErro()">
+            ❌ Testar Notificação de Erro
+        </button>
+        
+        <button class="test-btn" style="background: #2196f3;" onclick="testarNotificacaoInfo()">
+            ℹ️ Testar Notificação de Info
+        </button>
+        
+        <h2>Teste Adicional:</h2>
+        
+        <button class="test-btn" style="background: #9c27b0;" onclick="testarModalAdicaoLivro()">
+            📚 Testar Modal de Adição de Livro
+        </button>
+        
+        <div id="resultado" style="margin-top: 20px;"></div>
+        
+        <h2>✅ Modais de Exclusão Implementados com Sucesso:</h2>
+        <ul>
+            <li><strong>usuarios.php</strong> - Modal de confirmação para exclusão de usuários</li>
+            <li><strong>inicio-admin.php</strong> - Modal de confirmação para exclusão de livros</li>
+            <li><strong>inicio-secretaria.php</strong> - Modal de confirmação para exclusão de livros</li>
+            <li><strong>admin-publico.php</strong> - Modal de confirmação para exclusão de livros</li>
+            <li><strong>emprestimos.php</strong> - Modal de confirmação para exclusão de empréstimos</li>
+            <li><strong>fornecedores.php</strong> - Já tinha modal implementado</li>
+            <li><strong>javaInicioAdmin.js</strong> - Substituiu confirm() por modais em funções de doação e devolução</li>
+        </ul>
+        
+        <h2>✅ Modais de Edição Implementados com Sucesso:</h2>
+        <ul>
+            <li><strong>usuarios.php</strong> - Modal de confirmação para edição de usuários</li>
+            <li><strong>inicio-admin.php</strong> - Modal de confirmação para edição de livros</li>
+            <li><strong>inicio-secretaria.php</strong> - Modal de confirmação para edição de livros</li>
+            <li><strong>fornecedores.php</strong> - Modal de confirmação para edição de fornecedores</li>
+        </ul>
+        
+        <h2>✅ Modais de Adição Implementados com Sucesso:</h2>
+        <ul>
+            <li><strong>inicio-admin.php</strong> - Modal de confirmação para adição de livros</li>
+            <li><strong>inicio-secretaria.php</strong> - Modal de confirmação para adição de livros</li>
+        </ul>
+        
+        <h2>🔧 Arquivos Atualizados:</h2>
+        <ul>
+            <li><strong>CSS/modais.css</strong> - Estilos para modais de confirmação e edição + notificações</li>
+            <li><strong>JS/modais.js</strong> - Funções universais para modais e notificações</li>
+            <li><strong>PHP/DeletarLivros.php</strong> - Agora retorna JSON em vez de alerts</li>
+            <li><strong>PHP/editarUsuarios.php</strong> - Agora retorna JSON em vez de alerts</li>
+            <li><strong>PHP/editarLivros.php</strong> - Agora retorna JSON em vez de alerts</li>
+            <li><strong>PHP/PHPincioAdmin.php</strong> - Agora retorna JSON para adição de livros</li>
+            <li><strong>HTML/fornecedores.php</strong> - Atualizado para usar modais universais</li>
+        </ul>
+        
+        <h2>🚀 Novas Funcionalidades:</h2>
+        <ul>
+            <li><strong>Modais de Confirmação de Edição</strong> - Para todas as operações de edição</li>
+            <li><strong>Modais de Confirmação de Adição</strong> - Para adicionar novos livros</li>
+            <li><strong>Notificações Toast</strong> - Substituição profissional para alert()</li>
+            <li><strong>Respostas JSON</strong> - Backend mais moderno e silencioso</li>
+            <li><strong>UX Melhorada</strong> - Sem mais popups intrusivos!</li>
+            <li><strong>Botões de Fornecedores Corrigidos</strong> - Edit/Delete funcionais</li>
+        </ul>
+    </div>
+
+    <script src="JS/modais.js"></script>
+    <script>
+        function testarModalLivro() {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Livro',
+                'Tem certeza que deseja excluir o livro "Dom Casmurro"? Esta ação não pode ser desfeita.',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de livro funcionando! Exclusão seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        function testarModalUsuario() {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Usuário',
+                'Tem certeza que deseja excluir o usuário "João Silva"? Esta ação não pode ser desfeita.',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de usuário funcionando! Exclusão seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        function testarModalFornecedor() {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Fornecedor',
+                'Tem certeza que deseja excluir o fornecedor "Distribuidora Nacional"? Esta ação não pode ser desfeita.',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de fornecedor funcionando! Exclusão seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        function testarModalEmprestimo() {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Empréstimo',
+                'Tem certeza que deseja excluir o empréstimo do livro "O Cortiço"? Esta ação não pode ser desfeita.',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de empréstimo funcionando! Exclusão seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        function testarModalDoacao() {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Doação',
+                'Tem certeza que deseja deletar esta doação? Esta ação não pode ser desfeita.',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de doação funcionando! Exclusão seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        // Testes de Modais de Edição
+        function testarModalEdicaoLivro() {
+            showEditConfirmation(
+                'Confirmar Edição de Livro',
+                'Tem certeza que deseja salvar as alterações do livro "Dom Casmurro"?',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de edição de livro funcionando! Edição seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        function testarModalEdicaoUsuario() {
+            showEditConfirmation(
+                'Confirmar Edição de Usuário',
+                'Tem certeza que deseja salvar as alterações do usuário "João Silva"?',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de edição de usuário funcionando! Edição seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        function testarModalEdicaoFornecedor() {
+            showEditConfirmation(
+                'Confirmar Edição de Fornecedor',
+                'Tem certeza que deseja salvar as alterações do fornecedor "Distribuidora Nacional"?',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de edição de fornecedor funcionando! Edição seria executada aqui.</div>';
+                }
+            );
+        }
+        
+        // Testes de Notificações
+        function testarNotificacaoSucesso() {
+            showNotification('Operação realizada com sucesso!', 'success');
+            document.getElementById('resultado').innerHTML = '<div class="success">✅ Notificação de sucesso exibida!</div>';
+        }
+        
+        function testarNotificacaoErro() {
+            showNotification('Ocorreu um erro durante a operação!', 'error');
+            document.getElementById('resultado').innerHTML = '<div class="success">✅ Notificação de erro exibida!</div>';
+        }
+        
+        function testarNotificacaoInfo() {
+            showNotification('Esta é uma informação importante!', 'info');
+            document.getElementById('resultado').innerHTML = '<div class="success">✅ Notificação de info exibida!</div>';
+        }
+        
+        // Teste de Modal de Adição de Livro
+        function testarModalAdicaoLivro() {
+            showEditConfirmation(
+                'Confirmar Adição de Livro',
+                'Tem certeza que deseja adicionar o livro "Dom Casmurro" ao acervo?',
+                function() {
+                    document.getElementById('resultado').innerHTML = '<div class="success">✅ Modal de adição de livro funcionando! Adição seria executada aqui.</div>';
+                }
+            );
+        }
+    </script>
+</body>
+</html>

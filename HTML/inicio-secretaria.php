@@ -30,6 +30,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
     <title>Biblioteca Arco-Íris - Administração</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="../CSS/inicioadmin.css">
+    <link rel="stylesheet" href="../CSS/modais.css">
 </head>
 <body>
     
@@ -131,7 +132,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
                         <h3><?= htmlspecialchars($livro['titulo']) ?></h3>
                         <p>Autor: <?= htmlspecialchars($livro['nome_autor']) ?></p>
                         <p>Estoque: <?= htmlspecialchars($livro['estoque']) ?></p>
-                        <form method="POST" class="book-actions" action="../PHP/DeletarLivros.php" onsubmit="return confirm('Quer mesmo deletar esse livro?')">
+                        <form method="POST" class="book-actions" action="../PHP/DeletarLivros.php">
                             <input type="hidden" name="id" value="<?= $livro['id'] ?>">
                             <button type="button" class="book-btn btn-edit" 
                                 data-livro-id="<?= $livro['id'] ?>"
@@ -148,7 +149,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
                                 onclick="showEditBookModal(this)">
                                 ✏️ Editar
                             </button>
-                            <button type="submit" class="book-btn btn-delete">🗑️ Excluir</button>
+                            <button type="button" class="book-btn btn-delete" onclick="confirmarExclusaoLivroSecretaria(<?= $livro['id'] ?>, '<?= htmlspecialchars($livro['titulo']) ?>')">🗑️ Excluir</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -159,7 +160,7 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
         <div class="modal-content">
             <span class="close-modal" onclick="closeBookModal()">&times;</span>
             <h2 id="modalTitle">Adicionar Novo Livro</h2>
-            <form id="bookForm" class="modal-form" method="POST" enctype="multipart/form-data">
+            <form id="bookForm" class="modal-form" onsubmit="confirmarAdicaoLivro(event)">
                 <input type="hidden" id="bookId" name="bookId" >
                 <input type="File" id="capa" name="capa" accept="image/*"  >
                 <input type="text" id="titulo" name="titulo" placeholder="Título do livro"  required>
@@ -195,8 +196,8 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
         <div class="modal-content">
             <span class="close-modal" onclick="closeEditModal()">&times;</span>
             <h2 id="modalTitle">Editar Livro</h2>
-            <form id="editForm" class="modal-form" method="POST" enctype="multipart/form-data" action="../PHP/editarLivros.php">
-                <input type="hidden" id="idLivroEdit" name="idLivroEdit" value="<?= htmlspecialchars($livro['id']) ?>">
+            <form id="editForm" class="modal-form" onsubmit="confirmarEdicaoLivro(event)">
+                <input type="hidden" id="idLivroEdit" name="idLivroEdit">
                 <input type="hidden" id="imagemAtual" name="imagemAtual" value="">
                 <input type="File" id="capaEdit" name="capaEdit" accept="image/*">
                 <small>Deixe em branco para manter a imagem atual</small>
@@ -244,5 +245,146 @@ $emprestimos = $stmt->fetchAll(PDO::FETCH_ASSOC)
 
 
     <script src="../JS/javaInicioAdmin.js"></script>
+    <script src="../JS/modais.js"></script>
+    <script>
+        // Função para confirmar exclusão de livro na página inicio-secretaria
+        function confirmarExclusaoLivroSecretaria(livroId, tituloLivro) {
+            showDeleteConfirmation(
+                'Confirmar Exclusão de Livro',
+                `Tem certeza que deseja excluir o livro "${tituloLivro}"? Esta ação não pode ser desfeita.`,
+                function() {
+                    const formData = new FormData();
+                    formData.append('id', livroId);
+                    
+                    fetch('../PHP/DeletarLivros.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showNotification(data.message, 'success');
+                            location.reload();
+                        } else {
+                            showNotification('Erro: ' + data.error, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir livro:', error);
+                        showNotification('Erro ao excluir livro', 'error');
+                    });
+                }
+            );
+        }
+        
+        // Função para confirmar edição de livro
+        function confirmarEdicaoLivro(event) {
+            event.preventDefault();
+            
+            const tituloLivro = document.getElementById('tituloEdit').value;
+            
+            showEditConfirmation(
+                'Confirmar Edição de Livro',
+                `Tem certeza que deseja salvar as alterações do livro "${tituloLivro}"?`,
+                function() {
+                    // Criar formulário para enviar os dados
+                    const formData = new FormData();
+                    const form = document.getElementById('editForm');
+                    
+                    // Adicionar todos os campos do formulário
+                    formData.append('idLivroEdit', document.getElementById('idLivroEdit').value);
+                    formData.append('tituloEdit', document.getElementById('tituloEdit').value);
+                    formData.append('estoqueEdit', document.getElementById('estoqueEdit').value);
+                    formData.append('autorEdit', document.getElementById('autorEdit').value);
+                    formData.append('dataPublicacaoEdit', document.getElementById('dataPublicacaoEdit').value);
+                    formData.append('numeroPaginasEdit', document.getElementById('numeroPaginasEdit').value);
+                    formData.append('editoraEdit', document.getElementById('editoraEdit').value);
+                    formData.append('isbnEdit', document.getElementById('isbnEdit').value);
+                    formData.append('idiomaEdit', document.getElementById('idiomaEdit').value);
+                    formData.append('categoriaEdit', document.getElementById('categoriaEdit').value);
+                    formData.append('descricaoEdit', document.getElementById('descricaoEdit').value);
+                    
+                    // Adicionar arquivo se houver
+                    const capaFile = document.getElementById('capaEdit').files[0];
+                    if (capaFile) {
+                        formData.append('capaEdit', capaFile);
+                    }
+                    
+                    fetch('../PHP/editarLivros.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showNotification(data.message, 'success');
+                            closeEditModal();
+                            // Recarregar a página após um pequeno delay
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            showNotification('Erro: ' + data.error, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao editar livro:', error);
+                        showNotification('Erro ao editar livro', 'error');
+                    });
+                }
+            );
+        }
+            
+        // Função para confirmar adição de livro
+        function confirmarAdicaoLivro(event) {
+            event.preventDefault();
+                
+            const tituloLivro = document.getElementById('titulo').value;
+                
+            showEditConfirmation(
+                'Confirmar Adição de Livro',
+                `Tem certeza que deseja adicionar o livro "${tituloLivro}" ao acervo?`,
+                function() {
+                    // Criar formulário para enviar os dados
+                    const formData = new FormData();
+                        
+                    // Adicionar todos os campos do formulário
+                    formData.append('capa', document.getElementById('capa').files[0]);
+                    formData.append('titulo', document.getElementById('titulo').value);
+                    formData.append('estoque', document.getElementById('estoque').value);
+                    formData.append('autor', document.getElementById('autor').value);
+                    formData.append('dataPublicacao', document.getElementById('dataPublicacao').value);
+                    formData.append('numeroPaginas', document.getElementById('numeroPaginas').value);
+                    formData.append('editora', document.getElementById('editora').value);
+                    formData.append('isbn', document.getElementById('isbn').value);
+                    formData.append('idioma', document.getElementById('idioma').value);
+                    formData.append('categoria', document.getElementById('categoria').value);
+                    formData.append('descricao', document.getElementById('descricao').value);
+                        
+                    fetch('../PHP/PHPincioAdmin.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showNotification(data.message, 'success');
+                            closeBookModal();
+                            // Recarregar a página após um pequeno delay
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            showNotification('Erro: ' + data.error, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao adicionar livro:', error);
+                        showNotification('Erro ao adicionar livro', 'error');
+                    });
+                }
+            );
+        }
+    </script>
 </body>
 </html> 

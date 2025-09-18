@@ -199,7 +199,7 @@ function confirmDelete() {
     const bookId = window.currentBookId;
     
     if (!bookId) {
-        alert('Erro: ID do livro não encontrado');
+        showNotification('Erro: ID do livro não encontrado', 'error');
         return;
     }
     
@@ -214,15 +214,15 @@ function confirmDelete() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Livro excluído com sucesso!');
+            showNotification('Livro excluído com sucesso!', 'success');
             location.reload(); // Recarregar a página para atualizar a lista
         } else {
-            alert('Erro ao excluir livro: ' + data.error);
+            showNotification('Erro ao excluir livro: ' + data.error, 'error');
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        alert('Erro ao excluir livro');
+        showNotification('Erro ao excluir livro', 'error');
     })
     .finally(() => {
         closeDeleteModal();
@@ -237,135 +237,163 @@ function closeDeleteModal() {
 
 // Função para aceitar doação
 function aceitarDoacao(doacaoId) {
-    if (confirm('Tem certeza que deseja aceitar esta doação?')) {
-        const formData = new FormData();
-        formData.append('doacao_id', doacaoId);
-        formData.append('acao', 'aceitar');
-        
-        fetch('../PHP/processarDoacao.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Doação aceita com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro ao aceitar doação: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao processar doação');
-        });
-    }
+    showDeleteConfirmation(
+        'Confirmar Aceitação de Doação',
+        'Tem certeza que deseja aceitar esta doação?',
+        function() {
+            const formData = new FormData();
+            formData.append('doacao_id', doacaoId);
+            formData.append('acao', 'aceitar');
+            
+            fetch('../PHP/processarDoacao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Doação aceita com sucesso!', 'success');
+                    location.reload();
+                } else {
+                    showNotification('Erro ao aceitar doação: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                showNotification('Erro ao processar doação', 'error');
+            });
+        },
+        'Sim, Aceitar',
+        'Cancelar'
+    );
 }
 
 // Função para recusar doação
 function recusarDoacao(doacaoId) {
-    if (confirm('Tem certeza que deseja recusar esta doação?')) {
-        const formData = new FormData();
-        formData.append('doacao_id', doacaoId);
-        formData.append('acao', 'recusar');
-        
-        fetch('../PHP/processarDoacao.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Doação recusada com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro ao recusar doação: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao processar doação');
-        });
-    }
+    showDeleteConfirmation(
+        'Confirmar Recusa de Doação',
+        'Tem certeza que deseja recusar esta doação?',
+        function() {
+            const formData = new FormData();
+            formData.append('doacao_id', doacaoId);
+            formData.append('acao', 'recusar');
+            
+            fetch('../PHP/processarDoacao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Doação recusada com sucesso!', 'success');
+                    location.reload();
+                } else {
+                    showNotification('Erro ao recusar doação: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                showNotification('Erro ao processar doação', 'error');
+            });
+        },
+        'Sim, Recusar',
+        'Cancelar'
+    );
 }
 
 // Função para confirmar devolução
 function confirmarDevolucao(emprestimoId) {
-    if (confirm('Tem certeza que deseja confirmar esta devolução?')) {
-        const formData = new FormData();
-        formData.append('emprestimo_id', emprestimoId);
-        formData.append('acao', 'confirmar');
-        
-        fetch('../PHP/processarDevolucao.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Devolução confirmada com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro ao confirmar devolução: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao processar devolução');
-        });
-    }
+    showDeleteConfirmation(
+        'Confirmar Devolução',
+        'Tem certeza que deseja confirmar esta devolução?',
+        function() {
+            const formData = new FormData();
+            formData.append('emprestimo_id', emprestimoId);
+            formData.append('acao', 'confirmar');
+            
+            fetch('../PHP/processarDevolucao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Devolução confirmada com sucesso!', 'success');
+                    location.reload();
+                } else {
+                    showNotification('Erro ao confirmar devolução: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                showNotification('Erro ao processar devolução', 'error');
+            });
+        },
+        'Sim, Confirmar',
+        'Cancelar'
+    );
 }
 
 // Função para deletar doação
 function deletarDoacao(doacaoId) {
-    if (confirm('Tem certeza que deseja deletar esta doação? Esta ação não pode ser desfeita.')) {
-        const formData = new FormData();
-        formData.append('doacao_id', doacaoId);
-        
-        fetch('../PHP/deletarDoacao.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Doação deletada com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro ao deletar doação: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao deletar doação');
-        });
-    }
+    showDeleteConfirmation(
+        'Confirmar Exclusão de Doação',
+        'Tem certeza que deseja deletar esta doação? Esta ação não pode ser desfeita.',
+        function() {
+            const formData = new FormData();
+            formData.append('doacao_id', doacaoId);
+            
+            fetch('../PHP/deletarDoacao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Doação deletada com sucesso!', 'success');
+                    location.reload();
+                } else {
+                    showNotification('Erro ao deletar doação: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                showNotification('Erro ao deletar doação', 'error');
+            });
+        }
+    );
 }
 
 // Função para enviar lembrete
 function enviarLembrete(emprestimoId) {
-    if (confirm('Deseja enviar um lembrete para este usuário?')) {
-        const formData = new FormData();
-        formData.append('emprestimo_id', emprestimoId);
-        formData.append('acao', 'lembrete');
-        
-        fetch('../PHP/processarDevolucao.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Lembrete enviado com sucesso!');
-            } else {
-                alert('Erro ao enviar lembrete: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar lembrete');
-        });
-    }
+    showDeleteConfirmation(
+        'Enviar Lembrete',
+        'Deseja enviar um lembrete para este usuário?',
+        function() {
+            const formData = new FormData();
+            formData.append('emprestimo_id', emprestimoId);
+            formData.append('acao', 'lembrete');
+            
+            fetch('../PHP/processarDevolucao.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Lembrete enviado com sucesso!', 'success');
+                } else {
+                    showNotification('Erro ao enviar lembrete: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                showNotification('Erro ao enviar lembrete', 'error');
+            });
+        },
+        'Sim, Enviar',
+        'Cancelar'
+    );
 }
 
 

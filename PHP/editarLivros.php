@@ -2,8 +2,11 @@
 require_once 'conexao.php';
 session_start();
 
+header('Content-Type: application/json');
+
 if (!isset($_SESSION['id']) || $_SESSION['cargo'] == 0) {
-    header("Location: ../HTML/login.php");
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Acesso negado']);
     exit();
 }
 
@@ -92,30 +95,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
 
     
-    if($stmt->execute() && $_SESSION['cargo'] == 1){
-        echo "<script>
-        alert('Livro editado com sucesso!');
-        window.location.href = '../HTML/inicio-admin.php';
-        </script>";
-        exit;
-    }elseif($stmt->execute() && $_SESSION['cargo'] == 2){
-        echo "<script>
-        alert('Livro editado com sucesso!');
-        window.location.href = '../HTML/inicio-secretaria.php';
-        </script>";
-        exit;
-    }elseif($_SESSION['cargo'] == 1){
-        echo "<script>
-        alert('Erro ao editar livro!');
-        window.location.href = '../HTML/inicio-admin.php';
-        </script>";
-        exit;
-    }else{
-        echo "<script>
-        alert('Erro ao editar livro!');
-        window.location.href = '../HTML/inicio-secretaria.php';
-        </script>";
-        exit;
+    if($stmt->execute()){
+        echo json_encode([
+            'success' => true, 
+            'message' => 'Livro editado com sucesso!'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false, 
+            'error' => 'Erro ao editar livro'
+        ]);
     }
+} else {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'error' => 'Método não permitido']);
 }
 ?>
