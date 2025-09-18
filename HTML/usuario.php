@@ -57,20 +57,17 @@ if($_SESSION['cargo'] != 0){
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="../CSS/usuario.css">
 </head>
-<body style="background-image: url(../IMG/fundo.png);
-             background-size: cover;
-             background-position: center;
-             background-repeat: no-repeat;" >
+<body>
   <header class="header">
     <div class="header-title">
       <img src="../IMG/logo.png" alt="Logo" style="height: 30px;">
       <span>Biblioteca Arco-Íris</span>
     </div>
-    <form style="display: flex; align-items: center; gap: 8px;" method="GET" id="searchForm">
-      <input type="text" name="pesquisa" placeholder="Pesquisar livros..." style="padding: 8px 16px; border-radius: 4px; border: none; font-size: 16px; outline: none; width: 300px;" id="searchInput" value="<?= htmlspecialchars($pesquisa) ?>">
-      <button type="submit" style="padding: 8px 16px; background: #ff9100; color: white; border: none; border-radius: 4px; cursor: pointer;">Buscar</button>
+    <form class="search-form" method="GET" id="searchForm">
+      <input type="text" name="pesquisa" placeholder="Pesquisar livros..." class="search-input" id="searchInput" value="<?= htmlspecialchars($pesquisa) ?>">
+      <button type="submit" class="search-button">Buscar</button>
       <?php if (!empty($pesquisa)): ?>
-        <a href="usuario.php" style="padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Limpar</a>
+        <a href="usuario.php" class="clear-search-btn">Limpar</a>
       <?php endif; ?>
     </form>
     <div class="header-buttons">
@@ -112,16 +109,16 @@ if($_SESSION['cargo'] != 0){
   <div>
     <?php if (!empty($pesquisa)): ?>
       <div style="text-align: center; margin: 20px 0;">
-        <h2>Resultados para: "<?= htmlspecialchars($pesquisa) ?>"</h2>
-        <p><?= count($livros) ?> livro(s) encontrado(s)</p>
+        <h2 class="search-title">Resultados para: "<?= htmlspecialchars($pesquisa) ?>"</h2>
+        <p class="search-count"><?= count($livros) ?> livro(s) encontrado(s)</p>
       </div>
     <?php endif; ?>
     
     <?php if (empty($livros) && !empty($pesquisa)): ?>
-      <div style="text-align: center; margin: 40px 0; padding: 40px; background: rgba(255,255,255,0.9); border-radius: 10px;">
+      <div class="no-results">
         <h3>Nenhum livro encontrado</h3>
         <p>Não foram encontrados livros que comecem com "<?= htmlspecialchars($pesquisa) ?>"</p>
-        <a href="usuario.php" style="display: inline-block; padding: 10px 20px; background: #ff9100; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">Ver todos os livros</a>
+        <a href="usuario.php" class="btn-view-all">Ver todos os livros</a>
       </div>
     <?php else: ?>
       <div class="books-container" id="booksGrid">
@@ -270,15 +267,8 @@ if($_SESSION['cargo'] != 0){
       const modalContent = modal.querySelector('.modal-content');
       modal.style.display = 'flex';
       
-      // Garantir que o modal mantenha a cor laranja
-      modalContent.style.background = '#ff6600';
-      modalContent.style.backgroundColor = '#ff6600';
-      
       setTimeout(() => {
         modal.classList.add('show');
-        // Forçar novamente após a animação
-        modalContent.style.background = '#ff6600';
-        modalContent.style.backgroundColor = '#ff6600';
       }, 10);
     }
 

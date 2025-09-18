@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #EFB9FF;
+    background: url('../IMG/fundo.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: #333;
@@ -278,7 +278,7 @@ table {
 }
 
 thead {
-    background: #f3a53f;
+    background: #B79CBF;
     color: white;
 }
 
@@ -317,7 +317,7 @@ tbody tr:hover {
 }
 
 .status-atrasado {
-    color: #FF5722;
+    color: #B79CBF;
     font-weight: 600;
 }
 
@@ -456,10 +456,10 @@ tbody tr:hover {
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #f3a53f;
+    background: #B79CBF;
     border-radius: 4px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #fa9108;
+    background: #EFB9FF;
 } 

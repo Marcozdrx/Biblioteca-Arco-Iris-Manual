@@ -1,5 +1,5 @@
 body {
-  background: #EFB9FF !important;
+  background: url('../IMG/fundo.png') no-repeat center center fixed !important;
   background-size: cover !important;
   margin: 0;
   font-family: Arial, sans-serif;
@@ -94,7 +94,7 @@ body::before {
 
 /* Cores do arco-íris para BIBLIOTECA */
 .arco-iris span:nth-child(1) { color: #ff0000; } /* B */
-.arco-iris span:nth-child(2) { color: #ffa500; } /* I */
+.arco-iris span:nth-child(2) { color: #EFB9FF; } /* I */
 .arco-iris span:nth-child(3) { color: #ffff00; } /* B */
 .arco-iris span:nth-child(4) { color: #00ff00; } /* L */
 .arco-iris span:nth-child(5) { color: #00ffff; } /* I */
@@ -106,7 +106,7 @@ body::before {
 
 /* Cores do arco-íris para ARCO-ÍRIS */
 .arco-iris span:nth-child(12) { color: #ff0000; } /* A */
-.arco-iris span:nth-child(13) { color: #ffa500; } /* R */
+.arco-iris span:nth-child(13) { color: #EFB9FF; } /* R */
 .arco-iris span:nth-child(14) { color: #ffff00; } /* C */
 .arco-iris span:nth-child(15) { color: #00ff00; } /* O */
 .arco-iris span:nth-child(16) { color: #00ffff; } /* - */
@@ -222,13 +222,13 @@ body::before {
 }
 
 .btn.glow {
-  box-shadow: 0 0 15px rgba(255, 144, 0, 0.5);
+  box-shadow: 0 0 15px rgba(183, 156, 191, 0.5);
 }
 
 .btn:hover {
-  background: #ffaa33;
+  background: #EFB9FF;
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 144, 0, 0.7);
+  box-shadow: 0 0 20px rgba(183, 156, 191, 0.7);
 }
 
 .radio-group {
@@ -296,7 +296,7 @@ body::before {
 
 .help-btn:hover {
   transform: scale(1.1);
-  background: #ff7b00;
+  background: #B79CBF;
 }
 
 .help-modal {
@@ -413,10 +413,10 @@ body::before {
 }
 
 .admin-checkbox-label:hover .checkbox-custom {
-  border-color: #ffaa33;
+  border-color: #EFB9FF;
   box-shadow: 0 0 8px rgba(255, 170, 51, 0.3);
 }
 
 .admin-checkbox-label:hover .checkbox-text {
-  color: #ffaa33;
+  color: #EFB9FF;
 }

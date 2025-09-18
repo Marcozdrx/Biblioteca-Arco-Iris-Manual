@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #EFB9FF;
+    background: url('../IMG/fundo.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: #333;
@@ -399,7 +399,7 @@ body::before {
 
 .action-btn.block {
     background: rgba(255, 152, 0, 0.1);
-    color: #FF9800;
+    color: #B79CBF;
 }
 
 .action-btn.unblock {

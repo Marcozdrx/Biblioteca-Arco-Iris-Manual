@@ -293,7 +293,7 @@ style.textContent = `
     
     .btn-voltar {
         display: inline-block;
-        background: #ff9100;
+        background: #B79CBF;
         color: white;
         padding: 10px 20px;
         text-decoration: none;
@@ -347,7 +347,7 @@ style.textContent = `
     }
     
     .btn-pagar-multa, .btn-renovar {
-        background: #ff9100;
+        background: #B79CBF;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -358,7 +358,7 @@ style.textContent = `
     }
     
     .btn-pagar-multa:hover, .btn-renovar:hover {
-        background: #e67e00;
+        background: #EFB9FF;
     }
     
     .payment-option {
@@ -373,7 +373,7 @@ style.textContent = `
     }
     
     .payment-option.selected {
-        border-color: #ff9100;
+        border-color: #B79CBF;
         background: #fff3cd;
     }
     

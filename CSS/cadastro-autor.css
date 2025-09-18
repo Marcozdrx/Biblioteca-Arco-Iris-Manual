@@ -166,7 +166,7 @@ img {
 }
 
 .btn-confirm {
-    background: #FF5722;
+    background: #B79CBF;
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
@@ -199,7 +199,7 @@ th, td {
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #f3a53f;
+    background: #B79CBF;
     border-radius: 4px;
 }
 
@@ -233,7 +233,7 @@ th, td {
 }
 
 .action-btn.block-btn:hover {
-    background: #FF5722;
+    background: #B79CBF;
     color: white;
 }
 
