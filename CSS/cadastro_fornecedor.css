@@ -14,12 +14,6 @@ form#meuForm {
     width: 100%;
 }
 
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    background: none;
-}
 
 th, td {
     padding: 8px 4px;
@@ -29,13 +23,12 @@ th, td {
 }
 
 th {
-    font-size: 20px;
-    color: #ff9000;
+    color: #EFB9FF;
     text-align: center;
     padding-bottom: 10px;
 }
 
-input[type="text"] {
+input[type="text"], input[type="date"] {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #ccc;
@@ -49,13 +42,13 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-    border-color: #ff9000;
+    border-color: #EFB9FF;
     outline: none;
     background: #fffbe6;
 }
 
-button[type="submit"] {
-    background: #ff9000;
+button[type="submit"],[type="reset"] {
+    background: #EFB9FF;
     color: white;
     border: none;
     border-radius: 6px;
@@ -63,13 +56,12 @@ button[type="submit"] {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     transition: background 0.2s, transform 0.2s;
 }
 
-button[type="submit"]:hover {
-    background: #ffaa33;
+button[type="submit"]:hover,  button[type="reset"]:hover {
+    background: #EFB9FF;
     transform: translateY(-2px);
 }
 
@@ -110,8 +102,8 @@ address {
     text-decoration: none;
     font-size: 10px;
     font-weight: bold;
-    background: #ffaa33;
+    background: #EFB9FF;
     transform: translateY(-2px);
-    border-radius: 25px;
+    border-radius: 8px;
     padding: 4px 8px;
     }
