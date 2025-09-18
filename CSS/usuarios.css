@@ -62,7 +62,7 @@ body::before {
     font-size: 12px;
     font-weight: bold;
     background: #EFB9FF ;
-    border-radius: 25px;
+    border-radius: 8px;
     padding: 8px 15px;
     z-index: 1003;
     transition: all 0.3s ease;
